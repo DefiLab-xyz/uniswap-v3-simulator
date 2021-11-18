@@ -40,11 +40,11 @@
 
 .text {
   position:absolute;
-  top: 35px;
+  top: 40px;
   left: -50px;
   width: 140px;
   font-size: 12px;
-  padding: 2;
+  padding: 1;
   text-align: center;
   transition-delay: 0.2s;
   visibility: hidden;

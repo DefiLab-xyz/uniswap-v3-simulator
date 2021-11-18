@@ -1,11 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@100;200;300;400;500;600;700;800&display=swap');
 
-body {
-  font-family: 'Barlow', sans-serif;
-  color: #5f696f;
+:root {
+  --darkest-grey: #4d5458;
+  --medium-grey: #5f696f;
 }
 
-.parent-container {
+body {
+  font-family: 'Barlow', sans-serif;
+  color: var(--medium-grey);
+}
+
+div.parent-container {
   min-width: 1200px;
   width: 100vw;
   display: flex;
@@ -14,7 +19,7 @@ body {
   padding: 0;
 }
 
-.parent-container {
+div.parent-container {
   background: -moz-linear-gradient(135deg, rgba(255,225,232,0.33) 54%, rgba(255,225,232,0.41) 59%, rgba(255,241,245,0.89) 93%, rgba(255,241,245,1) 100%);
   background: -webkit-linear-gradient(135deg, rgba(255,225,232,0.33) 54%, rgba(255,225,232,0.41) 59%, rgba(255,241,245,0.89) 93%, rgba(255,241,245,1) 100%);
   background: -o-linear-gradient(135deg, rgba(255,225,232,0.33) 54%, rgba(255,225,232,0.41) 59%, rgba(255,241,245,0.89) 93%, rgba(255,241,245,1) 100%);
@@ -22,9 +27,15 @@ body {
   background: linear-gradient(315deg, rgba(255,225,232,0.33) 54%, rgba(255,225,232,0.41) 59%, rgba(255,241,245,0.89) 93%, rgba(255,241,245,1) 100%);
 }
 
+div.dashboard-container {
+  display: 'flex';
+}
+
+
 h1 {
   font-size: 18px;
   font-weight: 600;
+  color: var(--darkest-grey);
 }
 
 button.list-item {
@@ -33,6 +44,7 @@ button.list-item {
   inset 2px 2px 4px rgba(65,58,75, 0.1),
   inset -1px -1px 1px rgba(255,255,255, 1),
   inset -2px -2px 5px rgb(255,255,255),
+  /* inset -4px -4px 8px rgb(2255,255,255), */
   -1px -1px 1px rgba(241, 232, 252, 0.1),
   -3px -3px 3px rgba(241, 232, 252, 0.3),
    1px 1px 3px rgba(65,58,75, 0.01);
@@ -46,4 +58,11 @@ button.list-item:hover {
 
 button.list-item:disabled {
   background: rgba(212, 211, 211, 1);
+}
+
+.outer-glow {
+  background-color: rgba(255,255,255,0.4);
+  border: 1px solid white;
+  border-radius: 15px;
+  box-shadow:  3px 3px 5px #BABECC, -3px -3px 10px #f7f5fe;
 }

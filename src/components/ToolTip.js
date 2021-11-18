@@ -1,4 +1,4 @@
-import styles from '../styles/Tooltip.module.css'
+import styles from '../styles/modules/Tooltip.module.css'
 
 const ToolTip = (props) => {
 

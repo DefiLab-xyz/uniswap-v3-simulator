@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from "react-router-dom";
 import Grid from '../components/Grid'
 import ToolTip from '../components/ToolTip'
 import twitter from '../assets/twitter.svg'
@@ -8,7 +9,6 @@ import gitcoin from '../assets/gitcoin.svg'
 import qrCode from '../assets/qrcode.png'
 import donate from '../assets/heart.svg'
 import hamburger from '../assets/menu.svg'
-import { Link } from "react-router-dom";
 import NavData from '../constants/NavBar.json'
 
 const NavMenu = (props) => {
@@ -16,15 +16,16 @@ const NavMenu = (props) => {
   const [navMenuVis, setNavMenuVis] = useState("hidden");
 
   const navMenuStyle = {
-    left: -210, 
+    left: -200, 
     top: 30, 
+    width: 240,
     zIndex: "999999", 
     display: "grid", 
     alignItems: "center", 
     margin: "15px", 
     textAlign:"center", 
-    backgroundColor: 
-    "#e5faf8", 
+    backgroundColor: "#e5faf8", 
+    fill: '#4d5458',
     padding:"15px"
   }
 
@@ -62,8 +63,7 @@ const NavMenu = (props) => {
     text={<NavItems></NavItems>}
     textStyle={navMenuStyle}
     onClick={() => navMenuVis === null ? setNavMenuVis('hidden') : setNavMenuVis(null)}
-    onBlur={() => setNavMenuVis('hidden')}
-    >
+    onBlur={() => setNavMenuVis('hidden')}>
       <img src={hamburger} alt="Site Menu navigation" style={props.imageStyle}></img>
     </ToolTip>
   )
@@ -87,7 +87,7 @@ const ERC20Donation = (props) => {
 
   const textStyle = {
     left: -220, 
-    top: 20, 
+    top: 30, 
     width: "240px",
     zIndex: "999999", 
     display: "grid", 
@@ -121,7 +121,7 @@ const GitCoin = (props) => {
     fill: '#5f696f' }
 
   return (
-    <ToolTip text={"Donate on GitCoin"} buttonStyle={{backgroundColor: "rgba(128, 232, 221, 0.5)"}}>
+    <ToolTip text={"Donate on GitCoin"} buttonStyle={{backgroundColor: "rgba(128, 232, 221, 0.5)"}} textStyle={{backgroundColor:"#e5faf8"}}>
       <a href="https://gitcoin.co/grants/2575/defilab_xyz " target="_blank" rel="noreferrer">
         <img src={gitcoin} alt="GitCoin link" style={imageStyle}></img>
       </a>
@@ -136,7 +136,7 @@ const SocialLinks = (props) => {
     {key:"medium", src: medium, alt: "Medium profile DefiLab", text: "Learn more on Medium", href: "https://defi-lab.medium.com"}];
 
   const links = linkData.map((link) => 
-    <ToolTip key={link.key} text={link.text}>
+    <ToolTip key={link.key} text={link.text} textStyle={{backgroundColor:"#e5faf8"}}>
       <a href={link.href} target="_blank" rel="noreferrer"><img src={link.src} alt={link.alt} style={props.imageStyle}></img></a>
     </ToolTip>
   );
@@ -178,7 +178,7 @@ const genStyles = (props) => {
     links: {
       display: "flex", 
       justifyContent: "flex-end",
-      gridColumn: "43 / span 10",
+      gridColumn: "43 / span 17",
       gridRow: "2 / span 1",
       ...props.linkStyle 
     },
@@ -189,7 +189,8 @@ const genStyles = (props) => {
       height: "12px", 
       padding: 0, 
       margin:0,
-      fill: '#5f696f',
+      // fill: '#5f696f',
+      fill: '#4d5458',
       ...props.imageStyle 
     }
   };

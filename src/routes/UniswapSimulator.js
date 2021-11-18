@@ -19,12 +19,20 @@ useEffect(() => {
   handleResize();
 }, []);
 
-//-----------------------------------------------------------------------------------------------
-
 useEffect(() => {
   window.addEventListener('resize', handleResize);
   return () => window.removeEventListener('resize', handleResize);
 }, );
+
+//-----------------------------------------------------------------------------------------------
+
+const SidebarContainer = (props) => {
+
+}
+
+const DashboardContainer = (props) => {
+
+}
 
   return (
     <div className="parent-container">
@@ -33,6 +41,8 @@ useEffect(() => {
         minWidth={pageMinWidth}
         title="Uniswap V3 Strategy Simulator">
       </NavBar>
+      <div className="dashboard-container">
+      </div>
     </div>
   )
 }
