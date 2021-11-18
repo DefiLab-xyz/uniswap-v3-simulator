@@ -1,0 +1,52 @@
+.container {
+  position: relative;
+  display: inline-flex;
+}
+
+.button {
+  background-color: transparent;
+  color:#E784BA;
+  outline: none;
+  box-shadow: 1px 1px 1px rgba(65,58,75, 0.1),
+  2px 2px 4px rgba(65,58,75, 0.1),
+  -1px -1px 1px rgba(255, 255, 255, 0.5),
+  -2px -2px 4px rgba(255, 255, 255, 0.5),
+  inset -1px -1px 1px rgba(241, 232, 252, 0.1),
+  inset -3px -3px 3px rgba(241, 232, 252, 0.3),
+  inset 1px 1px 3px rgba(65,58,75, 0.01);
+  border: 0.5px solid rgba(255,255,255,0.7);
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  border-radius: 50%;
+  height: 30px;
+  width: 30px;
+  margin-left: 6px;
+  margin-bottom: 6px;
+  font-size: 9px;
+  text-align:center;
+  vertical-align: middle;
+  padding: 0;
+
+}
+
+.container:hover .text {
+  visibility: visible;
+  box-shadow: -2px -2px 5px #f2f2f2, 2px 2px 10px #BABECC;
+  border-radius: 8px;
+  border: 1px solid #fae7fc;
+  padding: 12px;
+  background-color: #f8ddfb;
+}
+
+.text {
+  position:absolute;
+  top: 35px;
+  left: -50px;
+  width: 140px;
+  font-size: 12px;
+  padding: 2;
+  text-align: center;
+  transition-delay: 0.2s;
+  visibility: hidden;
+  z-index: 9999999;
+}

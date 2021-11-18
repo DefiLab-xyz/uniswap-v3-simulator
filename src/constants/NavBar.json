@@ -1,0 +1,7 @@
+{
+  "navItems": [
+    {"name": "DefiLab Home", "id": "home", "link": "/home"},
+    {"name": "Uniswap V3 Simulator", "id": "UniswapV3", "link": "/uniswapv3simulator"},
+    {"name": "Polygon Now", "id": "Polygon", "link": "/home"}
+  ]
+}
