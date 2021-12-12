@@ -1,3 +1,9 @@
+:root {
+  --darkest-grey: #4d5458;
+  --medium-grey: #5f696f;
+  --min-screen-width: 1200px;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -11,3 +17,4 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+

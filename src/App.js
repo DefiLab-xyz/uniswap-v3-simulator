@@ -1,5 +1,5 @@
 import './styles/App.css';
-import UniswapSimulator from './routes/UniswapSimulator'
+import UniswapSimulator from './containers/UniswapSimulator'
 
 export default function App() {
   return (

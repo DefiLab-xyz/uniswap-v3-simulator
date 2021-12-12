@@ -1,0 +1,67 @@
+.sidebar {
+  grid-column: 2 / span 11;
+  grid-row: 2;
+  height: fit-content;
+  padding-top: 5px;
+  padding-bottom: 20px; 
+  /* z-index: 9 */
+}
+
+.sub-container {
+  background-color: rgba(175,129,228, 0.05);
+  border: 1px solid white;
+  border-radius: 15px;
+  box-shadow:  inset 1px 1px 1px #BABECC, inset -1px -1px 1px #f7f5fe;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 10px;
+  padding-bottom: 8px;
+  padding-top: 5px;
+}
+
+.input-container {
+  text-align: center;
+}
+
+.input-label {
+  margin-top: 3px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.default-input {
+  width: calc(100% - 40px);
+  height: 30px;
+}
+
+.toggle-input {
+  width: calc(100% - 85px);
+  height: 25px;
+  font-size: 14px;
+}
+
+.toggle-button {
+  box-shadow: -1px -1px 1px #fff, 1px 1px 1px #babecc;
+  margin: 5px;
+  margin-bottom: 10px;
+  margin-left: 5px;
+  text-align: center;
+  vertical-align: middle;
+  font-family: 'Barlow', sans-serif;
+  font-weight: 400;
+  font-size:  16px;
+  height: 20px;
+  width: 30px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  padding: 0;
+  padding-bottom: 2.4px;
+  border-radius: 15px;
+}
+
+.toggle-img {
+  width: 14px;
+  height: 14px; 
+  margin-top: 2px;
+}

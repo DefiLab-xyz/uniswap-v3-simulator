@@ -1,0 +1,17 @@
+.menu {
+  left: -200;
+  top: 30;
+  width: 240;
+  z-index: 999999; 
+  display: grid;
+  align-items: center; 
+  margin: 15px; 
+  text-align: center; 
+  background-color: #e5faf8; 
+  fill: #4d5458;
+  padding: 15px
+}
+
+.menu-item {
+
+}

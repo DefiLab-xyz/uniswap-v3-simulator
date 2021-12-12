@@ -9,7 +9,7 @@ import gitcoin from '../assets/gitcoin.svg'
 import qrCode from '../assets/qrcode.png'
 import donate from '../assets/heart.svg'
 import hamburger from '../assets/menu.svg'
-import NavData from '../constants/NavBar.json'
+import NavData from '../data/NavBar.json'
 
 const NavMenu = (props) => {
 
@@ -172,7 +172,9 @@ const genStyles = (props) => {
   return {
     title: {
       gridColumn: "3 / span 30",
-      gridRow: "2 / span 2",
+      gridRow: "1 / span 3",
+      verticalAlign: "middle",
+      marginTop: 20,
       ...props.titleStyle 
     },
     links: {
