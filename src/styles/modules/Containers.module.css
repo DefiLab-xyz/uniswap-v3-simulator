@@ -1,0 +1,6 @@
+.strategy-overview {
+  grid-row: 17 / span 54;
+  display: grid;
+  grid-template-rows: repeat(10, 1fr);
+  grid-row-gap: 0.5em;
+}

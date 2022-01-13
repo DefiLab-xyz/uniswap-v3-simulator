@@ -1,24 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import {setPool, selectPool} from '../store/pool'
+import {fetchPoolData} from '../store/pool'
 import {selectAllProtocols, selectProtocolId, setProtocol} from '../store/protocol'
-import { setDefaultInvestment, selectInvestment } from '../store/investment'
+import { setDefaultInvestment } from '../store/investment'
 import styles from '../styles/modules/PoolSearch.module.css'
 import cat from '../assets/cat.svg'
-import poolSearchData from '../data/poolsearch'
 import {tokensBySymbol} from '../api/thegraph/uniTokens'
 import {top50PoolsByTvl, poolsByTokenId, poolsByTokenIds} from '../api/thegraph/uniPools'
 import {formatLargeNumber} from '../helpers/numbers'
-
 
 const SearchItems = (props) => {
 
   const dispatch = useDispatch();
 
   const handleOnMouseDown = (item) => {
-    if (props.onClick) props.onClick(item);
-    dispatch(setPool(item));
+    dispatch(fetchPoolData(item));
     dispatch(setDefaultInvestment(item.token0Price));
+    if (props.onClick) props.onClick(item);
   }
 
   const list = props.items.map((item) => 
@@ -61,17 +59,20 @@ const LoadingSearchItems = (props) => {
 
 const SearchLabels = (props) => {
 
-  const [labels, setLabels] = useState(poolSearchData().labels);
+  const [labels, setLabels] = useState([{name: "Pool", sortable: false, sortClass: 'sort-icon-disabled', labelClass: 'search-label-symbol'}, 
+  {name: "Fee Tier", sortable: false, sortClass: 'sort-icon-disabled', labelClass: 'search-label-fee-tier'}, 
+  {name: "TVL", sortable: true, sortClass: 'sort-icon-show', labelClass: 'search-label-tvl', field: "totalValueLockedUSD"},
+  {name: "Volume 24h", sortable: true, sortClass: 'sort-icon-hide', labelClass: 'search-label-volume-usd', field: "volumeUSD"},
+  {name: "Fees 24h", sortable: true, sortClass: 'sort-icon-hide', labelClass: 'search-label-fee-usd', field: "feesUSD"}]);
 
   const handleLabelSort = (label) => {
     if (props.onClick) props.onClick(label);
 
-    const templabels = [...labels].forEach(d => {
+    labels.forEach(d => {
       if (d.sortable) {
         return d.name === label.name ? d.sortClass = 'sort-icon-show' : d.sortClass = 'sort-icon-hide';
       }
     });
-    setLabels(templabels);
   }
 
   const searchLabels = labels.map(d => {
@@ -92,6 +93,7 @@ const SearchResults = (props) => {
 
   const [searchResults, setSearchResults] = useState(null);
   const searchStringController = useRef(new AbortController());
+  const protocolID = useSelector(selectProtocolId);
 
   const searchStringIsAnId = (searchString) => searchString.length && searchString.length === 42 && searchString.startsWith('0x');
   const searchStringIsValid = (searchString) => searchString.trim() && typeof(searchString) === 'string' && searchString.trim().length > 0;
@@ -111,35 +113,33 @@ const SearchResults = (props) => {
   }
 
   useEffect(() => {
-
     setSearchResults(null);  
 
     if (props.visibility !== 'none') {
       searchStringController.current = new AbortController();
 
       if (searchStringIsValid(props.searchString)) { 
-        searchForPool(searchStringController.current, props.searchString, props.protocol).then(searchResults => {
+        searchForPool(searchStringController.current, props.searchString, protocolID).then(searchResults => {
           setSearchResults(searchResults);
         });
       } else if (props.searchString === "") {
-        handleTop50Pools(searchStringController.current, props.protocol);
+        handleTop50Pools(searchStringController.current, protocolID);
       }
 
     } 
 
     return () => searchStringController.current.abort();
 
-  }, [props.searchString, props.protocol]);
+  }, [props.searchString, protocolID]);
+
+  
 
   const handleLabelClick = (label) => {
     if (props.labelOnClick) props.labelOnClick();
-   
     const sortBy = label.field;
-
-    const tempResults = {...searchResults}.sort((a, b) => {
+    const tempResults = searchResults.sort((a, b) => {
       return parseFloat(a["poolDayData"][0][sortBy]) > parseFloat(b["poolDayData"][0][sortBy]) ? -1 : 1;
     });
-
     setSearchResults(tempResults);
   }
 
@@ -191,18 +191,12 @@ const SearchInput = (props) => {
 
   const inputRef = useRef();
   const searchIcon = `${String.fromCharCode(8981)}`;
+  const handleInput = (e) => { if (props.handleInput) { props.handleInput(e); } }
 
-  const handleInput = (e) => {  
-    if (props.handleInput) { props.handleInput(e) }
-  }
-
+  // closes search box when user click outside of search input. Disabled when search label or protocol is clicked. 
   const handleBlur = (e) => {
-    if (props.disableBlur) {
-      inputRef.current.focus();
-    }
-    if (props.handleBlur) {
-      props.handleBlur(e)
-    }
+    if (props.disableBlur) { inputRef.current.focus(); }
+    if (props.handleBlur) { props.handleBlur(e); }
   }
 
   return(
@@ -234,25 +228,16 @@ const SearchDescription = (props) => {
 }
 
 // Search for Uniswap V3 Pools by ID or token symbol.
-
-// - Toggle Protocol : updates protocol object - passed to props.handleProtocolChange
-
 const PoolSearch = (props) => {
 
   const [inputValue, setInputValue] = useState("USDC / WETH");
   const [selected, setSelected] = useState("USDC / WETH");
-  // const [protocol, setProtocol] = useState(0);
   const [visibility, setVisibility] = useState('none');
   const [disableBlur, setDisableBlur] = useState(false);
 
   const handleInput = (e) => {
     setInputValue(e.target.value);
   }
-
-  // const handleProtocolChange = (prot) => {
-  //   setDisableBlur(true);
-  //   setProtocol(prot);
-  // }
 
   const handleDisableBlur = ()  => setDisableBlur(true);
 
@@ -298,7 +283,7 @@ const PoolSearch = (props) => {
         </SearchResults>
       </div>
     </div>
-  )
+  );
 }
 
 export default PoolSearch

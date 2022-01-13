@@ -48,6 +48,12 @@ ul {
     overflow: scroll;
 }
 
+svg {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
 button {
   box-shadow: -1px -1px 1px #fff, 1px 1px 1px #babecc;
   text-align: center;
@@ -70,7 +76,7 @@ button:active {
 
 button.selected {
   box-shadow: 1px 1px 1px #fff, -1px -1px 1px #babecc;
-  background-color: rgba(175,129,228, 0.05);
+  background-color: rgba(255, 255, 255, 0.5)
 }
 
 button.selected:hover {
@@ -149,3 +155,66 @@ button.list-item:disabled {
   border-radius: 15px;
   box-shadow:  3px 3px 5px #BABECC, -3px -3px 10px #f7f5fe;
 }
+
+.inner-glow {
+  box-shadow: inset 1px 1px 1px #babecc, inset -1px -1px 5px #f2f2f2;
+  border-radius: 8px;
+  border: 1px solid #fff;
+}
+
+.dashboard-section {
+  grid-column: 14 / span 45;
+  padding: 2%;
+  padding-top: 10px;
+  padding-top: 15px;
+}
+
+.title {
+  font-weight: 500;
+}
+
+.y-axis-label {
+  font-size: 12px;
+  fill: rgb(95, 105, 111);
+  stroke: none;
+  font-weight: 400;
+}
+
+.mouseover-container {
+  fill: transparent;
+  opacity: 0.2;
+}
+
+.mouse-over-marker-line {
+  stroke-width: 1px;
+  stroke: rgb(175, 129, 228); 
+  stroke-dasharray: 2 2;
+}
+
+.mouse-over-text {
+  z-index: 9999;
+  font-size: 11px;
+  font-weight: 400;
+  fill: rgb(42, 46, 49);
+  stroke: none;
+}
+
+.current-price-line {
+  stroke-width: 1px;
+  stroke: rgb(255, 102, 102);
+  stroke-dasharray: 2 2;
+}
+
+.current-price-circle {
+  stroke-width: 1px;
+  stroke-dasharray: none;
+  fill: none;
+}
+
+.strategy-drag-control rect {
+  fill: var(--light-grey);
+  stroke: var(--medium-grey);
+  stroke-width: 2px;
+  stroke-opacity: 0.2;
+}
+

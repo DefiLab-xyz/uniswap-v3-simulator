@@ -14,7 +14,7 @@ export const parsePrice = (price) => {
   else if (price > 1000000) {
     return parseInt(price);
   }
-  else if(price > 1) {
+  else if (price > 1) {
     return round(price, 2);
   }
   else {
@@ -57,7 +57,7 @@ export const minInArray = (data, col) => {
   return min;
 }
 
-export const genRand = (min, max, decimalPlaces) => {  
+export const genRandBetween = (min, max, decimalPlaces) => {  
   const rand = Math.random() * (max - min) + min;
   const power = Math.pow(10, decimalPlaces);
   return Math.floor(rand * power) / power;
@@ -77,4 +77,9 @@ export const formatLargeNumber = (n) => {
   const base = abbrev.indexOf(suffix) + 1;
   return suffix ? round(n / pow(1000,base), 2) + suffix : '' + round(n,2);
   
+}
+
+export const roundWithFactor = (number) => {
+  const factor = String(parseInt(number)).length - 1;
+  return Math.pow(10, factor);
 }

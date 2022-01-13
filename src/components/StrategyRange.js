@@ -13,16 +13,11 @@ const StrategyInput = (props) => {
   const tick = props.inputVals.value * ((feeTier / 1000000) * 2);
 
   const handleCrement = (crement) => {
-    console.log(`props.id: ${props.id}`)
-    console.log(`props.keyId: ${props.keyId}`)
-    console.log(`crement: ${(tick * crement)}`)
-    console.log(feeTier)
-    dispatch(crementStrategyRangeInputVal({strategyId: props.id, InputValueKey: props.keyId, crement: (tick * crement)}));
-   
+    dispatch(crementStrategyRangeInputVal({id: props.id, key: props.keyId, crement: (tick * crement)}));
   }
 
   const handleInputChange = (e) => {
-    dispatch(setStrategyRangeInputVal({strategyId: props.id, InputValueKey: props.keyId, value: e.target.value}));
+    dispatch(setStrategyRangeInputVal({id: props.id, key: props.keyId, value: e.target.value}));
   }
 
   return (
@@ -41,7 +36,6 @@ const StrategyInput = (props) => {
 }
 
 const StrategyRange = (props) => {
-
   const strategies = useSelector(selectStrategyRanges);
 
   const containers = strategies.map(strat => {

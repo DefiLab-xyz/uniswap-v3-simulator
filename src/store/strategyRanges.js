@@ -1,4 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { createSelector } from "reselect";
+import { roundToNearestTick } from "../helpers/uniswap/liquidity";
 
 const initialState = [
 {id: "S1", name: "Strategy 1", color: "rgb(124, 194, 246)", 
@@ -6,28 +8,115 @@ const initialState = [
 {id: "S2", name: "Strategy 2", color: "rgb(175, 129, 228)", 
   inputs:  { min: { value: 1, name: "Min", label: "Min Range S1" }, max: {value: 1, name: "Max", label: "Max Range S1" } }}];
 
+export const validateStrategyRangeValue = (strategy, key, value) => {
+  if (key === 'min') {
+    return strategy.inputs["max"].value > value ? true : false;
+  }
+  else if (key === 'max') {
+    return strategy.inputs["min"].value < value ? true : false;
+  }
+
+  return false;
+}
+
+export const updateStrategyRangeInputVal = (range) => {
+
+  return (dispatch, getState) => {
+    const baseDecimal = getState().pool.value.baseToken.decimals;
+    const quoteDecimal = getState().pool.value.quoteToken.decimals;
+    const feeTier = getState().pool.value.feeTier;
+    // dispatch(setStrategyRangeInputVal({key: range.key, id: range.id, value: roundToNearestTick(range.value, feeTier, baseDecimal, quoteDecimal)}))
+    dispatch(setStrategyRangeInputVal({key: range.key, id: range.id, value: range.value}))
+  
+  }
+}
 
 export const strategyRanges = createSlice({
   name: "strategyRanges",
   initialState: initialState,
   reducers: {
     crementStrategyRangeInputVal: (state, action) => {
-      const index = state.findIndex(i => i.id === action.payload.strategyId);
-      const key = action.payload.InputValueKey;
-      const crement = action.payload.crement;
+      const index = state.findIndex(i => i.id === action.payload.id);
+      if (index >= 0) {
+        const key = action.payload.key;
+        const crement = action.payload.crement;
+        const newValue = parseFloat(state[index].inputs[key].value) + parseFloat(crement);
+        if (validateStrategyRangeValue(state[index], key, newValue)) {
+          state[index].inputs[key].value = newValue;
+        }
+        
+      }
+    
+    },
+    toggleStrategyRangeInputVals: (state, action) => {
+      if (action.payload.baseToken) {
 
-      state[index].inputs[key].value = parseFloat(state[index].inputs[key].value) + parseFloat(crement);
+        const baseDecimal = action.payload.baseToken.decimals;
+        const quoteDecimal = action.payload.quoteToken.decimals;
+        const feeTier = action.payload.feeTier;
+
+        const min1 = 1 / state[0].inputs["min"].value;
+        const max1 = 1 / state[0].inputs["max"].value;
+        const min2 = 1 / state[1].inputs["min"].value;
+        const max2 = 1 / state[1].inputs["max"].value;
+
+        state[0].inputs["min"].value = roundToNearestTick(min1, feeTier, baseDecimal, quoteDecimal);
+        state[0].inputs["max"].value = roundToNearestTick(max1, feeTier, baseDecimal, quoteDecimal);
+        state[1].inputs["min"].value = roundToNearestTick(min2, feeTier, baseDecimal, quoteDecimal);
+        state[1].inputs["max"].value = roundToNearestTick(max2, feeTier, baseDecimal, quoteDecimal);
+
+      }
+
+    },
+    setDefaultStrategyRangeInputVals: (state, action) => {
+
+      if (action.payload.baseToken) {
+
+        const currentPrice = action.payload.baseToken.currentPrice;
+        const baseDecimal = action.payload.baseToken.decimals;
+        const quoteDecimal = action.payload.quoteToken.decimals;
+        const std = action.payload.std;
+        const feeTier = action.payload.feeTier;
+
+        if (!isNaN(std) && std === 1) { 
+          state[0].inputs["min"].value = roundToNearestTick(currentPrice * 0.9, feeTier, baseDecimal, quoteDecimal);
+          state[0].inputs["max"].value = roundToNearestTick(currentPrice * 1.1, feeTier, baseDecimal, quoteDecimal);
+          state[1].inputs["min"].value = roundToNearestTick(currentPrice * 1.1, feeTier, baseDecimal, quoteDecimal);
+          state[1].inputs["max"].value = roundToNearestTick(currentPrice * 1.2, feeTier, baseDecimal, quoteDecimal);
+        }
+        else {
+          const stdP = (std / currentPrice) * 100;
+          const multiplier = stdP < 2 ? 8 : 1;
+     
+          state[0].inputs["min"].value = roundToNearestTick(currentPrice - (multiplier * std), feeTier, baseDecimal, quoteDecimal);
+          state[0].inputs["max"].value = roundToNearestTick(currentPrice + (multiplier * std), feeTier, baseDecimal, quoteDecimal);
+          state[1].inputs["min"].value = roundToNearestTick(currentPrice - ((multiplier * 2) * std), feeTier, baseDecimal, quoteDecimal);
+          state[1].inputs["max"].value = roundToNearestTick(currentPrice + ((multiplier * 2)  * std), feeTier, baseDecimal, quoteDecimal);
+        }
+        // console.log(action)
+      }
+
     },
     setStrategyRangeInputVal: (state, action) => {
-      const index = state.findIndex(i => i.id === action.payload.strategyId);
-      const key = action.payload.InputValueKey;
-      const value = action.payload.value;
+      const index = state.findIndex(i => i.id === action.payload.id);
+      if (index >= 0) {
 
-      state[index].inputs[key].value = parseFloat(value);
+        const key = action.payload.key;
+        const value = parseFloat(action.payload.value);
+        if (validateStrategyRangeValue(state[index], key, value)) { 
+          state[index].inputs[key].value = parseFloat(value);
+        }
+        
+      }
+      
     }
   }
 });
 
 export const selectStrategyRanges = state => state.strategyRanges;
-export const { setStrategyRangeInputVal, crementStrategyRangeInputVal} = strategyRanges.actions;
+export const selectStrategyRangeById = createSelector([strategies => strategies, (strategies, id) => id], (strategies, id) => {
+  return strategies.find(d => d.id === id);
+});
+
+export const { setStrategyRangeInputVal, setDefaultStrategyRangeInputVals, crementStrategyRangeInputVal, toggleStrategyRangeInputVals} = strategyRanges.actions;
 export default strategyRanges.reducer;

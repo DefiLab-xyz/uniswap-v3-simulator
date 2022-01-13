@@ -1,8 +1,8 @@
-import { urlForProtocol } from "./helpers";
+import { urlForProtocol, requestBody } from "./helpers";
 
-export const getPoolDayData = async (token, signal, protocol) => {
+export const getPoolDayData = async (token, signal, protocol, dataParser) => {
 
-  const query = `query PoolDayDatas($token: ID!){ 
+  const query = `query PoolDayDatas($token: ID!) { 
   poolDayDatas (first:90, orderBy:date, orderDirection:desc, where:{pool:$token}) 
   {
     date
@@ -24,20 +24,11 @@ export const getPoolDayData = async (token, signal, protocol) => {
   const url = urlForProtocol(protocol);
 
   try {
-    const response = await fetch(url, {
-      method:'POST',
-      signal: signal,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ 
-        query: query,
-        variables: {token: token},
-      })
-    });
+    const response = await fetch(url, requestBody({query: query, variables: {token: token}, signal: signal}));
 
     const data = await response.json();
     if (data && data.data && data.data.poolDayDatas) {
+      if (dataParser) return dataParser(data.data.poolDayDatas);
       return data.data.poolDayDatas;
     }
     else {

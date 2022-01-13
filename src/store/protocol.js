@@ -12,8 +12,8 @@ export const protocolSlice = createSlice({
   initialState: {value: protocols[0]},
   reducers: {
     setProtocol: (state, action) => {
-      if (protocols.map(d => d.id).has(action.payload)) {
-        state.value = action.payload;
+      if (protocols.map(d => d.id).includes(action.payload.id)) {
+        state.value = protocols[action.payload.id];
       }
     }
   }
@@ -23,6 +23,8 @@ export const selectAllProtocols = state => protocols;
 export const selectProtocol = state => state.protocol.value;
 export const selectProtocolId = state => state.protocol.value.id;
 export const selectProtocolName = state => state.protocol.value.title;
+export const selectProtocolLogo = state => state.protocol.value.logo;
+
 
 export const { setProtocol } = protocolSlice.actions;
 export default protocolSlice.reducer;

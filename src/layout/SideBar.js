@@ -1,11 +1,15 @@
 import React, { useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import {parsePrice} from '../helpers/numbers'
+
 import styles from '../styles/modules/SideBar.module.css'
-import {selectBaseToken, toggleBaseToken, refreshCurrentPrices, selectCurrentPrice, selectPoolID, selectFeeTier} from '../store/pool'
+import {parsePrice} from '../helpers/numbers'
+
+import {selectBaseToken, toggleBaseToken, refreshCurrentPrices, selectCurrentPrice, selectPoolID, setLoading} from '../store/pool'
 import { selectInvestment, setDefaultInvestment, setInvestment } from '../store/investment'
 import { selectProtocol } from '../store/protocol'
+
 import {PoolCurrentPrices} from '../api/thegraph/uniPools'
+
 import PoolSearch from '../components/PoolSearch'
 import { ToggleButton, RefreshButton } from '../components/Button'
 import StrategyRange from '../components/StrategyRange'
@@ -15,11 +19,10 @@ const BaseToken = (props) => {
 
   const dispatch = useDispatch();
   const baseToken = useSelector(selectBaseToken);
-  const currentPrice = useSelector(selectCurrentPrice);
 
   const handlePriceToggle = () => {
     dispatch(toggleBaseToken());
-    dispatch(setDefaultInvestment(currentPrice));
+    dispatch(setDefaultInvestment());
   }
 
   return ( 
@@ -35,11 +38,12 @@ const Investment = (props) => {
 
   const dispatch = useDispatch();
   const investment = useSelector(selectInvestment);
+  const baseToken = useSelector(selectBaseToken)
   const handleInputChange = (e) => dispatch(setInvestment(e.target.value));
 
   return ( 
     <div className={styles["input-container"]}>
-      <label className={styles["input-label"]}>Investment</label>
+      <label className={styles["input-label"]}>{`Investment ${baseToken.symbol}`}</label>
       <input type="number" className={styles["default-input"]} label="Base Token" value={investment} onChange={(e) => handleInputChange(e)}></input>
     </div>
   );
@@ -57,7 +61,7 @@ const CurrentPrice = (props) => {
   const handleRefresh = () => {
     abortController.current.abort();
     abortController.current = new AbortController();
-
+    dispatch(setLoading(true));
     PoolCurrentPrices(abortController.current.signal, protocol.id, poolID).then(d => {
       dispatch(refreshCurrentPrices(d));
     });

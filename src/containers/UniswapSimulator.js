@@ -1,12 +1,16 @@
-import '../styles/UniswapSimulator.css';
+import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect } from "react";
-import Grid from "../components/Grid"
+
+import '../styles/UniswapSimulator.css';
 import NavBar from "../layout/NavBar";
 import SideBar from "../layout/SideBar";
 import DashBoard from "../layout/DashBoard";
-import { setPool } from '../store/pool';
+import PoolOverview from '../layout/PoolOverview';
+import StrategyOverview from '../layout/StrategyOverview';
+import Grid from "../components/Grid"
 import {poolById} from '../api/thegraph/uniPools'
-import { useSelector, useDispatch } from 'react-redux';
+import { fetchPoolData } from '../store/pool';
+import { setWindowDimensions, selectWindowDimensions } from '../store/window';
 import { selectProtocolId } from '../store/protocol';
 
 
@@ -17,10 +21,13 @@ const UniswapSimulator = (props) => {
 //-----------------------------------------------------------------------------------------------
 
 const pageMinWidth = 1200;
-const [windowDim, setWindowDim] = useState({width: window.innerWidth, height: window.innerHeight});
+const windowDim = useSelector(selectWindowDimensions);
+const dispatch = useDispatch();
 
 const handleResize = () => {
-    setWindowDim({width: window.innerWidth, height: window.innerHeight});
+  if (window.innerWidth >= pageMinWidth) {
+    dispatch(setWindowDimensions({ width: window.innerWidth, height: window.innerHeight }));
+  }
 };
 
 useEffect(() => {
@@ -37,36 +44,35 @@ useEffect(() => {
 // GET DEFAULT POOL ON LOAD (USDC / WETH) 0.3%
 //-----------------------------------------------------------------------------------------------
 const protocol = useSelector(selectProtocolId);
-const dispatch = useDispatch();
 
 useEffect(() => {
   const abortController = new AbortController();
+
   poolById("0x8ad599c3a0ff1de082011efddc58f1908eb6e6d8", abortController.signal, protocol).then( pool => {
-    if (pool) dispatch(setPool(pool));
+    if (pool) dispatch(fetchPoolData(pool));
   });
+
   return () => abortController.abort();
+
 }, []);
+
+//-----------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------
 
   return (
     <div className="App">
       <div className="parent-container">
         <NavBar
-          width={windowDim.width}
-          minWidth={pageMinWidth}
+          width={windowDim.width} minWidth={pageMinWidth}
           title="Uniswap V3 Strategy Simulator">
         </NavBar>
         <Grid className="dashboard-container"
-          rows={150}
-          columns={62}
-          cellAspectRatio={0.82}
-          gridGap={5}
-          gridWidth={windowDim.width}
-          minWidth={pageMinWidth}
-        >
-          <SideBar
-            width={windowDim.width}
-            minWidth={pageMinWidth}>
-          </SideBar>
+          rows={150} columns={62}
+          cellAspectRatio={0.82} gridGap={5}
+          gridWidth={windowDim.width} minWidth={pageMinWidth}>
+          <PoolOverview></PoolOverview>
+          <StrategyOverview></StrategyOverview>
+          <SideBar width={windowDim.width} minWidth={pageMinWidth}></SideBar>
           <DashBoard></DashBoard>
         </Grid>
       </div>
