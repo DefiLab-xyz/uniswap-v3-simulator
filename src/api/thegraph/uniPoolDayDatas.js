@@ -32,6 +32,7 @@ export const getPoolDayData = async (token, signal, protocol, dataParser) => {
       return data.data.poolDayDatas;
     }
     else {
+      console.log("nothing returned")
       return null;
     }
 

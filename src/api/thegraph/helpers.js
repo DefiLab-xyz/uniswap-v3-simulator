@@ -1,6 +1,7 @@
 export const urlForProtocol = (protocol) => {
-  return protocol === 1 ? "https://api.thegraph.com/subgraphs/name/ianlapham/uniswap-optimism-dev" : 
+  return protocol === 1 ? "https://api.thegraph.com/subgraphs/name/ianlapham/optimism-post-regenesis" : 
     protocol === 2 ? "https://api.thegraph.com/subgraphs/name/ianlapham/arbitrum-minimal" :
+    protocol === 3 ? "https://api.thegraph.com/subgraphs/name/ianlapham/uniswap-v3-polygon" :
     "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3";
 }
 

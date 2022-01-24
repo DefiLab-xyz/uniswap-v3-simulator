@@ -66,6 +66,8 @@ export const fetchPoolData = pool => {
     const dailyPrices = await getPoolDayData(pool.id, null, protocol);
     const poolStats = genDailyStats(dailyPrices);
 
+    console.log(pool);
+
     const payload = {
       ...pool,
       baseToken: {id: 0, symbol: pool.token0.symbol, name: pool.token0.name, decimals: pool.token0.decimals, currentPrice: parseFloat(pool.token0Price)},

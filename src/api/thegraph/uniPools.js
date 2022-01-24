@@ -73,7 +73,7 @@ const poolQueryFields = `{
 }`
 
 export const top50PoolsByTvl = async (signal, protocol) => {
-
+  console.log("calling top 50")
   const url = urlForProtocol(protocol);
 
   const query = `
@@ -85,7 +85,7 @@ export const top50PoolsByTvl = async (signal, protocol) => {
 
     const response = await fetch(url, requestBody({query: query, signal: signal}));
     const data = await response.json();
-
+    console.log(data)
     if (data && data.data && data.data.pools) {
       return data.data.pools;
     }

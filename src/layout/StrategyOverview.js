@@ -1,6 +1,6 @@
 
 import { useState, useEffect, useRef, useCallback } from "react"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import styles from '../styles/modules/StrategyOverview.module.css'
 import { maxInArray } from "../helpers/numbers"
 import { V3MaxLimit, V3MinLimit } from "../helpers/uniswap/strategies"
@@ -9,7 +9,7 @@ import { V3MaxLimit, V3MinLimit } from "../helpers/uniswap/strategies"
 import { selectCurrentPrice, selectBaseToken, selectQuoteToken } from "../store/pool"
 import { selectInvestment } from "../store/investment"
 import { selectStrategies } from "../store/strategies"
-import { selectStrategyRanges } from "../store/strategyRanges"
+import { selectStrategyRanges, selectSelectedStrategyRanges } from "../store/strategyRanges"
 
 // Components //
 import {LineChart} from "../components/charts/LineChart"
@@ -146,8 +146,14 @@ const StrategyOverviewChart = (props) => {
 }
 
 const StrategyOverviewIndicators = (props) => {
+
+  const selectedStrategies = useSelector(selectSelectedStrategyRanges);
   return (
-    <div></div>
+    <div className={`${styles['strategy-indicators']}`}>
+      <ConcentratedLiquidityMultiplier strategies={selectedStrategies}></ConcentratedLiquidityMultiplier>
+      <StrategyRangeSize strategies={selectedStrategies}></StrategyRangeSize>
+      <StrategyTokenRatio chartData={props.chartData}></StrategyTokenRatio>
+    </div>
   )
 }
 
@@ -185,7 +191,7 @@ const StrategyOverview = (props) => {
     <div className={`${styles['strategy-overview-container']} dashboard-section outer-glow`}>
       <Title></Title>
       <StrategyOverviewChart chartData={chartData} v3StrategyData={v3StrategyData} chartDomain={chartDomain}></StrategyOverviewChart>
-      <StrategyOverviewIndicators></StrategyOverviewIndicators>
+      <StrategyOverviewIndicators chartData={chartData}></StrategyOverviewIndicators>
     </div>
   )
 }

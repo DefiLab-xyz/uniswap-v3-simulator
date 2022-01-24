@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { chartColors } from "../data/colorsUniswap";
 import { strategyV3, hodlToken1, hodlToken2, hodl5050, V2Unbounded } from "../helpers/uniswap/strategies"
+import { setStrategyRangeSelected } from './strategyRanges'
+
 
 const initialState = [
   {name: `HODL 100% USDC`, id: "hodl1", color: chartColors.lightPink, selected: false, genData: (inputs) => { return hodlToken1(inputs)}}, 
@@ -11,19 +13,10 @@ const initialState = [
   {name: "V3 Strategy 1", id: "S1", color: chartColors.blue, selected: true, genData: (inputs) => { return strategyV3(inputs)}}];
 
 
-  // const range1Inputs = { minPrice: strategyRanges[0].inputs.min.value, maxPrice: strategyRanges[0].inputs.max.value };
-  // const range2Inputs = { minPrice: strategyRanges[1].inputs.min.value, maxPrice: strategyRanges[1].inputs.max.value };
-
-  // const step = Math.max(currentPrice, (range1Inputs.maxPrice * 1.1) / 2, (range2Inputs.maxPrice * 1.1) / 2);
-  // const inputsAll = { investment: investment, currentPrice: currentPrice, step: step };
-
-  // return strategies.map(d => {
-  //   const inputs = d.id === 'v31' ? {...range1Inputs, ...inputsAll} : d.id === 'v32' ? {...range2Inputs, ...inputsAll} : {...inputsAll};
-  //   return {id: d.id, data: d.genData(inputs)};
-  // });
-
-export const genStrategyData = () => {
+export const toggleSelectedStrategy = action => {
   return (dispatch, getState) => {
+    dispatch(setSelectedStrategy(action));
+    dispatch(setStrategyRangeSelected(action));
     // const strategyRange1 = getState().strategyRanges[0].inputs;
     // const strategyRange2 = getState().strategyRanges[1].inputs;
     // const currentPrice = getState().pool.baseToken.currentPrice;
@@ -42,7 +35,7 @@ export const strategies = createSlice({
       state[base].name = `HODL 100% ${action.payload.base}`;
       state[quote].name = `HODL 100% ${action.payload.quote}`;
     },
-    toggleSelectedStrategy: (state, action) => {
+    setSelectedStrategy: (state, action) => {
       const index = state.findIndex(i => i.id === action.payload);
       state[index].selected = state[index].selected === true ? false : true;
     }
@@ -50,5 +43,5 @@ export const strategies = createSlice({
 });
 
 export const selectStrategies = state => state.strategies;
-export const { updatePoolStrategyNames,  toggleSelectedStrategy } = strategies.actions;
+export const { updatePoolStrategyNames, setSelectedStrategy } = strategies.actions;
 export default strategies.reducer

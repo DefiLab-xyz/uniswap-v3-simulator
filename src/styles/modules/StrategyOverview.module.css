@@ -2,14 +2,22 @@
   grid-row: 17 / span 54;
   display: grid;
   grid-template-rows: repeat(30, 1fr);
+  grid-template-columns: repeat(60, 1fr);
   grid-row-gap: 0.5em;
 }
 
 .title {
   grid-row: 1 / span 1;
+  grid-column: 1 / span 60;
 }
 
 .strategy-chart {
-  grid-row: 2 / span 14;
+  grid-row: 2 / span 12;
+  grid-column: 1 / span 40;
   display: flex;
 }
+
+.strategy-indicators {
+  grid-row: 2 / span 12;
+  grid-column: 42 / span 29;
+} 
