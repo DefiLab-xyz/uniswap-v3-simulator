@@ -8,10 +8,10 @@
 }
 
 .sub-container {
-  background-color: rgba(175,129,228, 0.05);
-  border: 1px solid white;
+  background-color: var(--semi-transparent-background);
+  border: var(--border-color);
   border-radius: 15px;
-  box-shadow:  inset 1px 1px 1px #BABECC, inset -1px -1px 1px #f7f5fe;
+  box-shadow:  var(--inner-glow);
   margin-left: 10px;
   margin-right: 10px;
   margin-top: 10px;

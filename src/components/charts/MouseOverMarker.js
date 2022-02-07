@@ -68,6 +68,7 @@ export const MouseOverMarker = (props) => {
       </MouseOverText>
       <rect className={`mouseover-container`} x={0} y={0} 
         width={props.width || 0} height={props.height || 0 }
+        style={{strokeWidth: 0, stroke: "none"}}
         onMouseMove={ (e) => mouseMove(e) } onMouseEnter={mouseEnter} onMouseLeave={mouseLeave}
       ></rect>
       {props.children}

@@ -4,7 +4,6 @@ import { selectSelectedStrategyRanges } from '../store/strategyRanges'
 import { useSelector } from 'react-redux'
 import { round } from '../helpers/numbers'
 import React, { Fragment, useCallback, useEffect, useState } from 'react'
-import { current } from '@reduxjs/toolkit'
 
 
 export const ConcentratedLiquidityMultiplier = (props) => {
@@ -66,7 +65,7 @@ export const StrategyRangeSize = (props) => {
  
 
   return (
-    <div className={styles['range-sizes-outer-container']}>
+    <div className={`${styles['range-sizes-outer-container']} `}>
       <div className={styles['title']}>Range Size</div>
       <div className={`${styles['range-sizes-outer-container']} inner-glow`}>
         <MinMaxLabels></MinMaxLabels>

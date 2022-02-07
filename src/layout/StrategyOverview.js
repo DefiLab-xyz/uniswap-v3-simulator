@@ -1,6 +1,6 @@
 
 import { useState, useEffect, useRef, useCallback } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import styles from '../styles/modules/StrategyOverview.module.css'
 import { maxInArray } from "../helpers/numbers"
 import { V3MaxLimit, V3MinLimit } from "../helpers/uniswap/strategies"
@@ -10,11 +10,13 @@ import { selectCurrentPrice, selectBaseToken, selectQuoteToken } from "../store/
 import { selectInvestment } from "../store/investment"
 import { selectStrategies } from "../store/strategies"
 import { selectStrategyRanges, selectSelectedStrategyRanges } from "../store/strategyRanges"
+import { genChartData, genV3StrategyData, genSelectedChartData, genSelectedStrategyData } from "../helpers/uniswap/strategiesChartData"
 
 // Components //
-import {LineChart} from "../components/charts/LineChart"
+import { LineChart } from "../components/charts/LineChart"
 import StrategyDrag from "../components/charts/StrategyDrag"
 import { ConcentratedLiquidityMultiplier, StrategyRangeSize, StrategyTokenRatio } from "../components/StrategyIndicators"
+import { ToggleButtonsFlex } from "../components/ButtonList"
 
 const Title = (props) => {
 
@@ -27,85 +29,6 @@ const Title = (props) => {
     </div>
   );
 }
-
-
-const inputsForChartData = (currentPrice, investment, strategyRanges, strategies) => {
-  const range1Inputs = { minPrice: strategyRanges[0].inputs.min.value, maxPrice: strategyRanges[0].inputs.max.value };
-  const range2Inputs = { minPrice: strategyRanges[1].inputs.min.value, maxPrice: strategyRanges[1].inputs.max.value };
-  const step = Math.max(currentPrice, (range1Inputs.maxPrice * 1.1) / 2, (range2Inputs.maxPrice * 1.1) / 2);
-  const inputsAll = { investment: investment, currentPrice: currentPrice, step: step };
-
-  return { range1Inputs: range1Inputs, range2Inputs: range2Inputs, inputsAll: inputsAll  }
-}
-
-const genChartData = (currentPrice, investment, strategyRanges, strategies) => {
-
-  const { range1Inputs, range2Inputs, inputsAll } = inputsForChartData(currentPrice, investment, strategyRanges, strategies);
-
-  return strategies.map(d => {
-    const inputs = d.id === 'S1' ? {...range1Inputs, ...inputsAll} : d.id === 'S2' ? {...range2Inputs, ...inputsAll} : {...inputsAll};
-    return {id: d.id, data: d.genData(inputs)};
-  });
-}
-
-const filterV3StrategyData = (strategyData, chartData) => {
-
-  if (chartData) {
-    const filteredData = chartData.filter( d => d.x >= strategyData.min.cx && d.x <= strategyData.max.cx );
-    filteredData.push({x: strategyData.max.cx, y: strategyData.max.cy});
-    filteredData.unshift({x: strategyData.min.cx, y: strategyData.min.cy});
-    return filteredData;
-  }
-
-  return [];
-}
-
-const genV3StrategyData = (currentPrice, investment, strategyRanges, strategies, chartData) => {
-
-  const { range1Inputs, range2Inputs, inputsAll } = inputsForChartData(currentPrice, investment, strategyRanges, strategies);
-  const s1DragData = {max: V3MaxLimit({...range1Inputs, ...inputsAll}), min: V3MinLimit({...range1Inputs, ...inputsAll})};
-  const s2DragData = {max: V3MaxLimit({...range2Inputs, ...inputsAll}), min: V3MinLimit({...range2Inputs, ...inputsAll})};
-
-  return [ { id: "S1" , data: filterV3StrategyData(s1DragData, chartData.find(strat => strat.id === "S1").data)} , 
-  { id: "S2" , data: filterV3StrategyData(s2DragData, chartData.find(strat => strat.id === "S2").data)} ];
-
-}
-
-const genSelectedStrategyData = (data, strategies) => {
-
-  const strategyDragData = [];
-  const strategyDragColors = [];
-  const strategyIds = [];
-
-  data.forEach(d => {
-    const strat = strategies.find(strat => strat.id === d.id);
-    if (strat && strat.selected === true) {
-      strategyDragData.push(d.data);
-      strategyDragColors.push(strat.color);
-      strategyIds.push(d.id);
-    }  
-  });
-
-  return { data: strategyDragData, colors: strategyDragColors, ids: strategyIds }
-}
-
-const genSelectedChartData = (data, strategies) => {
-
-    const chartData = [];
-    const chartColors = [];
-
-      strategies.forEach(d => {
-        if (d.selected) {
-          const tempdata = data.find(strat => strat.id === d.id);
-          if (tempdata && tempdata.hasOwnProperty('data')) {
-            chartData.push(tempdata.data);
-            chartColors.push(d.color);
-          }        
-        }
-      });
-
-      return { data: chartData, colors: chartColors }
-  }
 
 
 const StrategyOverviewChart = (props) => {
@@ -157,6 +80,21 @@ const StrategyOverviewIndicators = (props) => {
   )
 }
 
+const StrategyToggle = (props) => {
+
+  const strategies = useSelector(selectStrategyRanges);
+  const buttons = strategies.map( d => {
+    return {id: d.id, label: d.name, style: {color: d.color}}
+  });
+
+  const handleStrategyChange = (strategy) => {
+    console.log(strategy);
+  }
+  return (
+   <ToggleButtonsFlex buttons={buttons} className={styles["strategy-buttons"]} handleToggle={handleStrategyChange}></ToggleButtonsFlex>
+  )
+}
+
 
 const StrategyOverview = (props) => {
 
@@ -192,6 +130,7 @@ const StrategyOverview = (props) => {
       <Title></Title>
       <StrategyOverviewChart chartData={chartData} v3StrategyData={v3StrategyData} chartDomain={chartDomain}></StrategyOverviewChart>
       <StrategyOverviewIndicators chartData={chartData}></StrategyOverviewIndicators>
+      <StrategyToggle></StrategyToggle>
     </div>
   )
 }

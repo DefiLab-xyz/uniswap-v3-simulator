@@ -4,17 +4,11 @@
 }
 
 .button {
-  background-color: transparent;
-  color:#E784BA;
+  background-color: var(--semi-transparent-background);
+  color:var(--font-color);
   outline: none;
-  box-shadow: 1px 1px 1px rgba(65,58,75, 0.1),
-  2px 2px 4px rgba(65,58,75, 0.1),
-  -1px -1px 1px rgba(255, 255, 255, 0.5),
-  -2px -2px 4px rgba(255, 255, 255, 0.5),
-  inset -1px -1px 1px rgba(241, 232, 252, 0.1),
-  inset -3px -3px 3px rgba(241, 232, 252, 0.3),
-  inset 1px 1px 3px rgba(65,58,75, 0.01);
-  border: 0.5px solid rgba(255,255,255,0.7);
+  box-shadow: var(--outer-glow);
+  border: var(--border-color);
   transition: all 0.2s ease-in-out;
   cursor: pointer;
   border-radius: 50%;
@@ -31,11 +25,11 @@
 
 .container:hover .text {
   visibility: visible;
-  box-shadow: -2px -2px 5px #f2f2f2, 2px 2px 10px #BABECC;
+  box-shadow: var(--outer-glow-intense);
   border-radius: 8px;
-  border: 1px solid #fae7fc;
+  border: var(--border-color);
   padding: 12px;
-  background-color: #f8ddfb;
+  background-color: var(--background);
 }
 
 .text {

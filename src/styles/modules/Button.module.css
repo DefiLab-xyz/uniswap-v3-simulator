@@ -1,5 +1,5 @@
 button {
-  box-shadow: -1px -1px 1px #fff, 1px 1px 1px #babecc;
+  box-shadow: var(--button-border);
   text-align: center;
   vertical-align: middle;
   font-family: 'Barlow', sans-serif;
@@ -7,6 +7,7 @@ button {
   border: none;
   outline: none;
   background-color: transparent;
+  color: var(--font-color);
 }
 
 button:hover {

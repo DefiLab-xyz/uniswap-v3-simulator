@@ -99,7 +99,7 @@ const ChartContainer = forwardRef((props, ref) => {
 
   return (
     <ChartContext.Provider value={{ scale:scale, chartContainer: chartContainerRef.current}}>
-    <div className={`${props.className}`} ref={ref}>
+    <div className={`chart-container ${props.className}`} ref={ref}>
     <svg className={"chart-container-svg"}>
       <rect className={`mouseover-container`} x={margin.left} y={margin.top} 
         width={width} height={height} ref={chartContainerRef}></rect>

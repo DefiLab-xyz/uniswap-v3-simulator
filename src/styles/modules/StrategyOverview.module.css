@@ -20,4 +20,8 @@
 .strategy-indicators {
   grid-row: 2 / span 12;
   grid-column: 42 / span 29;
-} 
+}
+
+.strategy-buttons {
+  grid-row: 15;
+}

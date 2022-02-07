@@ -200,8 +200,9 @@ const Ticks = (props) => {
     const tickText = axisTickText(props, translateCoords);
 
     return <g 
+      className="chart-axis-ticks"
       transform={"translate(" + translateCoords.x + ", " + translateCoords.y + ")"}
-      style={{strokeWidth: "0.4", fill: "#5f696f", fontSize: "8px"}}
+      // style={{strokeWidth: "0.4", fill: "#5f696f", fontSize: "8px"}}
       key={`tick-${i}`}>
         <line 
         style={{strokeWidth:"0.4"}}
@@ -231,14 +232,12 @@ export const Axis = (props) => {
     const lineCoords = axisLineCoords(props);   
     
     return (
-      <g className={`${props.axisType}-axis-${props.className}`} >
+      <g className={`chart-axis ${props.axisType}-axis-${props.className}`} >
         <line 
         x1={lineCoords.x1} 
         y1={lineCoords.y1} 
         x2={lineCoords.x2} 
-        y2={lineCoords.y2} 
-        stroke={props.stroke || "#5f696f"} 
-        style={{strokeWidth:"0.4"}}/>
+        y2={lineCoords.y2} />
         <Ticks 
         x1={lineCoords.x1} 
         x2={lineCoords.x2} 

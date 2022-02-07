@@ -27,7 +27,7 @@ const BaseToken = (props) => {
 
   return ( 
     <div className={styles["input-container"]}>
-      <label className={styles["input-label"]}>Base Token</label>
+      <label className={styles["input-label"]}>Base Token</label><br></br>
       <input className={styles["toggle-input"]} label="Base Token" value={baseToken ? baseToken.symbol : ""}></input>
       <ToggleButton onClick={handlePriceToggle} alt="toggle base currency"></ToggleButton>
     </div>

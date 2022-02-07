@@ -8,10 +8,11 @@ import DashBoard from "../layout/DashBoard";
 import PoolOverview from '../layout/PoolOverview';
 import StrategyOverview from '../layout/StrategyOverview';
 import Grid from "../components/Grid"
-import {poolById} from '../api/thegraph/uniPools'
+import { poolById } from '../api/thegraph/uniPools'
 import { fetchPoolData } from '../store/pool';
 import { setWindowDimensions, selectWindowDimensions } from '../store/window';
 import { selectProtocolId } from '../store/protocol';
+import ThemeToggle from '../components/ThemeToggle';
 
 
 const UniswapSimulator = (props) => {

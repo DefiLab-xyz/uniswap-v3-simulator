@@ -26,11 +26,11 @@
   width: 40%; 
   text-align: center; 
   border-radius: 8px;
-  background-color: rgba(255, 255, 255, 0.2);
+  /* background-color: rgba(255, 255, 255, 0.2); */
 }
 
 .range-sizes-outer-container {
-  background: transparent;
+  /* background: transparent; */
   padding: 10px;
   display: grid;
   justify-content: center;
