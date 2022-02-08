@@ -114,30 +114,31 @@ const ChartContainer = forwardRef((props, ref) => {
   }
 
   return (
-    <ChartContext.Provider value={{ scale:scale, chartContainer: chartContainerRef.current}}>
-    <div className={`chart-container ${props.className}`} ref={ref}>
-    <svg className={"chart-container-svg"}>
-      <rect className={`mouseover-container`} x={margin.left} y={margin.top} 
-        width={width} height={height} ref={chartContainerRef}></rect>
-      <g className={"chart-container-g"} transform={translate}>
-      <Axes scale={scale} scaleRight={scale && scale.yRight && scale.x ? {x: scale.x, y: scale.yRight} : null}
-            width={width} height={height} 
-            margin={margin} chartProps={props.chartProps}>
-      </Axes>
-      <AxesLabels ylabel={props.chartProps.ylabel || ""} xlabel={props.chartProps.xlabel || ""} ylabelRight={props.chartProps.ylabelRight || ""}
-            margin={margin} height={height} 
-            width={width}>
-      </AxesLabels>
-      {props.children}
-      <MouseOverMarker mouseOverMarker={props.mouseOverMarker}
-          width={width} height={height} scale={scale} 
-          mouseOverText={props.mouseOverText || []} handleMouseOver={props.handleMouseOver}
-      ></MouseOverMarker>
-      <CurrentPriceLine domain={props.domain} scale={scale} currentPriceLine={props.currentPriceLine}></CurrentPriceLine>
-      <Loader cx={"50%"} cy={"50%"} loading={loading}></Loader>
-      </g>
-    </svg>
-   </div> 
+    <ChartContext.Provider value={{ scale:scale, chartContainer: chartContainerRef.current, chartWidth: width, chartHeight: height}}>
+      <div className={`chart-container ${props.className}`} ref={ref}>
+        <svg className={"chart-container-svg"}>
+          <rect className={`mouseover-container`} x={margin.left} y={margin.top} 
+            width={width} height={height} ref={chartContainerRef}></rect>
+          <g className={"chart-container-g"} transform={translate}>
+          <Axes scale={scale} scaleRight={scale && scale.yRight && scale.x ? {x: scale.x, y: scale.yRight} : null}
+                width={width} height={height} 
+                margin={margin} chartProps={props.chartProps}>
+          </Axes>
+          <AxesLabels ylabel={props.chartProps.ylabel || ""} xlabel={props.chartProps.xlabel || ""} ylabelRight={props.chartProps.ylabelRight || ""}
+                margin={margin} height={height} 
+                width={width}>
+          </AxesLabels>
+          {props.children}
+          <MouseOverMarker mouseOverMarker={props.mouseOverMarker} mouseOverMarkerPos={props.mouseOverMarkerPos}
+            mouseOverMarkerPosX={props.mouseOverMarkerPosX || 0}  mouseOverMarkerPosY={ props.mouseOverMarkerPosY || height + 20}
+            width={width} height={height} scale={scale} 
+            mouseOverText={props.mouseOverText || []} handleMouseOver={props.handleMouseOver}
+          ></MouseOverMarker>
+          <CurrentPriceLine domain={props.domain} scale={scale} currentPriceLine={props.currentPriceLine}></CurrentPriceLine>
+          <Loader cx={"50%"} cy={"50%"} loading={loading}></Loader>
+          </g>
+        </svg>
+    </div> 
    </ChartContext.Provider>
   )
 });

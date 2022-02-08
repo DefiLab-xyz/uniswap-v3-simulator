@@ -22,27 +22,28 @@ export const MouseOverMarker = (props) => {
 
   const [visibility, setVisibility] = useState('none');
   const [linePosition, setLinePosition] = useState({x1: 0, x2: 0, y1: 0, y2: 0});
-  const [textPosition, setTextPosition] = useState({x: 0, y: 0});
-  const [textAnchor, setTextAnchor] = useState("start")
+  const [textPosition, setTextPosition] = useState({x: props.mouseOverMarkerPosX || 0, y: props.mouseOverMarkerPosY || 0});
+  const [textAnchor, setTextAnchor] = useState("start");
 
   const positionLine = (xEvent) => {
     setLinePosition({x1: xEvent, x2: xEvent, y1: 0, y2: props.height});
   }
 
   const positionText = (xEvent) => {
+
     const textAnchorMargin = props.width / 2 >  xEvent ? 10 : -10; 
     const textAnchor = props.width / 2 >  xEvent ? "start" : "end"; 
     const x = xEvent + textAnchorMargin;
 
     setTextPosition({x: x, y: props.mouseOverTextY || - 5 });
-    setTextAnchor(textAnchor)
+    setTextAnchor(textAnchor);
   }
 
   const mouseMove = (e) => {
     const xEvent = e.clientX - e.target.getBoundingClientRect().left;
     positionLine(xEvent);
     if (props.handleMouseOver && props.scale && props.scale.hasOwnProperty("x")) props.handleMouseOver(xEvent, props.scale);
-    if (props.MouseOverMarkerPos !== "fixed") positionText(xEvent);
+    if (props.mouseOverMarkerPos !== "fixed") positionText(xEvent);
   }
 
   const mouseEnter = () => {
@@ -54,6 +55,12 @@ export const MouseOverMarker = (props) => {
     setVisibility('none');
     if (props.handleHoverMouseOut) props.handleHoverMouseOut();
   }
+
+  useEffect(() => {
+    if ( props.mouseOverMarkerPos === 'fixed') {
+      setTextPosition({x: props.mouseOverMarkerPosX || 0, y: props.mouseOverMarkerPosY || 0});
+    }
+  }, [props.mouseOverMarkerPosY, props.mouseOverMarkerPosX, props.mouseOverMarkerPos])
 
   if (!props.mouseOverMarker) return (<></>);
 

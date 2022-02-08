@@ -127,7 +127,7 @@ export const LineChartDoubleAxis = (props) => {
   return (
    <ChartContainer className={props.className} ref={containerRef} data={props.data}
     domain={props.domain} margin={props.margin}
-    chartProps={props.chartProps} handleScale={handleScale} currentPriceLine={props.currentPriceLine}
+    chartProps={props.chartProps} handleScale={handleScale} currentPriceLine={props.currentPriceLine} mouseOverMarkerPos={props.mouseOverMarkerPos}
     mouseOverMarker={props.mouseOverMarker} mouseOverText={props.mouseOverText || []} handleMouseOver={props.handleMouseOver}>
       <Lines colors={[props.colors[0]]} data={props.data} 
         scale={scale} domain={props.domain}

@@ -17,10 +17,12 @@ import { selectStrategyRanges, selectSelectedStrategyRanges } from "../store/str
 import { genChartData, genV3StrategyData, genSelectedChartData, genSelectedStrategyData } from "../helpers/uniswap/strategiesChartData"
 
 // Components //
+import { Line } from "../components/charts/Line"
 import { LineChart, LineChartDoubleAxis } from "../components/charts/LineChart"
 import StrategyDrag from "../components/charts/StrategyDrag"
 import { ConcentratedLiquidityMultiplier, StrategyRangeSize, StrategyTokenRatio } from "../components/StrategyIndicators"
 import { ToggleButtonsFlex } from "../components/ButtonList"
+import { produceWithPatches } from "@reduxjs/toolkit/node_modules/immer"
 
 const Title = (props) => {
 
@@ -64,10 +66,10 @@ const StrategyOverviewChart = (props) => {
   <LineChart
     className={`${styles['chart']} ${styles['strategy-chart']} inner-glow`}
     data={chartData.data} domain={props.chartDomain}
-    avgLine={true} mouseOverMarker={true} 
+    avgLine={true} mouseOverMarker={true}
     chartProps={chartProps} colors={chartData.colors}
     currentPriceLine={true} margin={margin}>
-      <StrategyDrag data={v3StrategyData.data} colors={v3StrategyData.colors} ids={v3StrategyData.ids} domain={props.chartDomain} ></StrategyDrag>
+      <StrategyDrag data={v3StrategyData.data} colors={v3StrategyData.colors} ids={v3StrategyData.ids} domain={props.chartDomain}></StrategyDrag>
   </LineChart>
   )
 }
@@ -95,10 +97,6 @@ const StrategyToggle = (props) => {
     if (props.handleStrategyChange) props.handleStrategyChange(strategy);
   }
 
-  useEffect(() => {
-    handleStrategyChange(buttons[0]);
-  }, [])
-
   return (
    <ToggleButtonsFlex buttons={buttons} className={styles["strategy-buttons"]} handleToggle={handleStrategyChange}></ToggleButtonsFlex>
   )
@@ -114,7 +112,9 @@ const TokenRatioChart = (props) => {
   const [chartDomain, setChartDomain] = useState();
   const [maxToken, setMaxToken] = useState();
   const [minToken, setMinToken] = useState();
-  const [hoverVals, setHoverVals] = useState();
+  const [maxLineData, setMaxLineData] = useState({x1: 0, x2: 0});
+  const [minLineData, setMinLineData] = useState({x1: 0, x2: 0});
+  const [mouseOverText, setMouseOverText] = useState();
 
   const margin = {top: 20, right: 90, bottom: 140, left: 70};
 
@@ -122,16 +122,15 @@ const TokenRatioChart = (props) => {
   ylabel: `Qty ${quoteToken.symbol}` , ylabelRight: `Qty ${baseToken.symbol}` , xlabel: "", 
   yScaleKey: "token", yScaleKeyRight: "base" }
 
-  const handleHover = (xEvent, data, scale) => {
+  const handleMouseOver = (xEvent, scale) => {
 
-    if (scale ) {
+    if (scale) {
       const bisect = bisector(d => d.x);
-      const idx = bisect.left(data[0], parseFloat(scale.x.invert(xEvent)));
-      const x = `Price: ${parsePrice(data[0][idx].x)} ${props.base}`
-      const y1 = `${parsePrice(data[0][idx].token)} ${props.token}`
-      const y2 = `${parsePrice(data[0][idx].base)} ${props.base}`
-
-      setHoverVals([x, y1, y2]);
+      const idx = bisect.left(chartData, parseFloat(scale.x.invert(xEvent)));
+      const x = `Price: ${parsePrice(chartData[idx].x)} ${baseToken.symbol}`
+      const y1 = `${parsePrice(chartData[idx].token)} ${quoteToken.symbol}`
+      const y2 = `${parsePrice(chartData[idx].base)} ${baseToken.symbol}`
+      setMouseOverText([x, y1, y2]);
     }
   }
   
@@ -158,12 +157,24 @@ const TokenRatioChart = (props) => {
     }
 
   }, [currentPrice, props.chartData, props.strategyLimits]);
+
+  useEffect(() => {
+    console.log(props.strategyLimits)
+    if (props.strategyLimits) {
+      
+      setMinLineData({x1: props.strategyLimits.min, x2: props.strategyLimits.min});
+      setMaxLineData({x1: props.strategyLimits.max, x2: props.strategyLimits.max});
+    }
+  }, [props.strategyLimits]);
   
   return (
-    <LineChartDoubleAxis  className={`${styles['token-ratio-chart']} inner-glow`}
-    data={[chartData]} domain={chartDomain} lineType="area"
-    chartProps={chartProps} colors={["rgb(238, 175, 246)", "rgb(249, 193, 160)"]}
-    currentPriceLine={true} margin={margin} mouseOverMarker={true}>
+    <LineChartDoubleAxis className={`${styles['token-ratio-chart']} inner-glow`}
+      data={[chartData]} domain={chartDomain} lineType="area"
+      chartProps={chartProps} colors={["rgb(238, 175, 246)", "rgb(249, 193, 160)"]}
+      currentPriceLine={true} margin={margin} mouseOverMarker={true} mouseOverMarkerPos="fixed"
+      mouseOverText={mouseOverText} handleMouseOver={handleMouseOver}>
+      <Line className="min-limit-line" useParentScale={true} data={minLineData} stroke={props.strategy && props.strategy.color ? props.strategy.color : "white"}></Line>
+      <Line className="max-limit-line" useParentScale={true} data={maxLineData} stroke={props.strategy && props.strategy.color ? props.strategy.color : "white"}></Line>
     </LineChartDoubleAxis>
   )
 }
@@ -173,8 +184,9 @@ const PositionBreakdown = (props) => {
   const [strategyLimits, setStrategyLimits] = useState();
 
   useEffect(() => {
+    console.log(props.selectedStrategy)
     if (props.selectedStrategy && props.selectedStrategy.inputs) {
-      setStrategyLimits({min: props.selectedStrategy.inputs.min.value, max: props.selectedStrategy.inputs.max.value })
+      setStrategyLimits({ min: props.selectedStrategy.inputs.min.value, max: props.selectedStrategy.inputs.max.value })
     }
   }, [props.selectedStrategy])
 
@@ -198,13 +210,17 @@ const StrategyOverview = (props) => {
   const [v3StrategyData, setV3StrategyData] = useState();
   const [chartDomain, setChartDomain] = useState();
 
-  const [selectedStrategyToggle, setSelectedStrategyToggle] = useState();
+  const [selectedStrategyToggle, setSelectedStrategyToggle] = useState(strategyRanges[0]);
   const [selectedStrategyChartData, setSelectedStrategyChartData] = useState();
 
   const updateSelectedStrategyToggle = (strategy) => {
     const selected = strategyRanges.find(d => d.id === strategy.id);
     setSelectedStrategyToggle(selected);
   }
+
+  useEffect(() => {
+    updateSelectedStrategyToggle(selectedStrategyToggle);
+  }, [strategyRanges])
 
   useEffect(() => {
     setChartData(genChartData(currentPrice, investment, strategyRanges, strategies));
