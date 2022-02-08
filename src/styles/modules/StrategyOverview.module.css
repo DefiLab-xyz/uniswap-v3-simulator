@@ -25,3 +25,13 @@
 .strategy-buttons {
   grid-row: 15;
 }
+
+.position-breakdown-container {
+  grid-row: 17 / span 12;
+  grid-column: 1 / span 25;
+}
+
+.token-ratio-chart {
+  height: 100%;
+  width: 100%;
+}

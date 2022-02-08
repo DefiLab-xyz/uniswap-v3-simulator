@@ -21,7 +21,6 @@ export const genChartData = (currentPrice, investment, strategyRanges, strategie
 }
 
 export const filterV3StrategyData = (strategyData, chartData) => {
-
   if (chartData) {
     const filteredData = chartData.filter( d => d.x >= strategyData.min.cx && d.x <= strategyData.max.cx );
     filteredData.push({x: strategyData.max.cx, y: strategyData.max.cy});

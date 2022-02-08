@@ -12,16 +12,23 @@ const Axes = (props) => {
 
     return (<Fragment>
       <Axis 
-        scale={props.scale} 
+        scale={props.scaleBottom || props.scale} 
         width={props.width} height={props.height} 
         margin={props.margin}
         axisType="bottom" scaleType={props.chartProps.scaleTypeX || "linear"} dataType={props.chartProps.dataTypeX || "number"}>
       </Axis>
       <Axis 
-        scale={props.scale} 
+        scale={props.scaleLeft || props.scale} 
         width={props.width} height={props.height} 
         margin={props.margin}
         axisType="left" scaleType={props.chartProps.scaleTypeY || "linear"} dataType={props.chartProps.dataTypeY || "number"} textAnchor="end">
+       </Axis>
+       <Axis 
+        scale={props.scaleRight} 
+        width={props.width} height={props.height} 
+        margin={props.margin} 
+        axisType="right" scaleType={props.chartProps.scaleTypeYRight || "linear"} dataType={props.chartProps.dataTypeYRight || "number"} 
+        >
        </Axis>
     </Fragment>);
 }
@@ -29,12 +36,21 @@ const Axes = (props) => {
 const AxesLabels = (props) => {
 
   const yLabel = !props.loading && props.height > 0 && props.margin && props.margin.left ? props.ylabel : "";
+  const yLabelRight = !props.loading && props.height > 0 && props.margin && props.margin.right ? props.ylabelRight : "";
+
+  useEffect(() => { console.log(yLabelRight)}, [yLabelRight])
+
   return (
     <g>
       <text 
-      className={"y-axis-label"}
-      x={-props.height + (props.height / 2)} y={-props.margin.left / 1.5}
-      textAnchor="middle" transform="rotate(-90)">{yLabel}
+        className={"y-axis-label"}
+        x={-props.height + (props.height / 2)} y={-props.margin.left / 1.5}
+        textAnchor="middle" transform="rotate(-90)">{yLabel}
+      </text>
+      <text 
+        className={"y-axis-label y-axis-label-right"}
+        x={-props.height + props.height / 2} y={ props.width + props.margin.left - (10)}
+        textAnchor="middle" transform="rotate(-90)">{yLabelRight}
       </text>
     </g>
   )
@@ -69,8 +85,8 @@ const ChartContainer = forwardRef((props, ref) => {
 
       const x = chartscale({domain: props.domain.x, range: [0, width], scaleType: props.chartProps.scaleTypeX || "linear"});
       const y = chartscale({domain: props.domain.y, range:[height, 0], scaleType: props.chartProps.scaleTypeY || "linear"});
-     
-      setScale({x: x, y: y});
+      const yRight = props.domain.hasOwnProperty('yRight') ? chartscale({domain: props.domain.yRight, range:[height, 0], scaleType: props.chartProps.scaleTypeYRight || "linear"}) : null;
+      setScale({x: x, y: y, yRight: yRight });
     }
 
   }, [windowDim, props.domain, props.data, ref, props.chartProps, props.margin]);
@@ -104,11 +120,11 @@ const ChartContainer = forwardRef((props, ref) => {
       <rect className={`mouseover-container`} x={margin.left} y={margin.top} 
         width={width} height={height} ref={chartContainerRef}></rect>
       <g className={"chart-container-g"} transform={translate}>
-      <Axes scale={scale} 
+      <Axes scale={scale} scaleRight={scale && scale.yRight && scale.x ? {x: scale.x, y: scale.yRight} : null}
             width={width} height={height} 
             margin={margin} chartProps={props.chartProps}>
       </Axes>
-      <AxesLabels ylabel={props.chartProps.ylabel} xlabel={props.chartProps.ylabel} 
+      <AxesLabels ylabel={props.chartProps.ylabel || ""} xlabel={props.chartProps.xlabel || ""} ylabelRight={props.chartProps.ylabelRight || ""}
             margin={margin} height={height} 
             width={width}>
       </AxesLabels>

@@ -202,7 +202,6 @@ const Ticks = (props) => {
     return <g 
       className="chart-axis-ticks"
       transform={"translate(" + translateCoords.x + ", " + translateCoords.y + ")"}
-      // style={{strokeWidth: "0.4", fill: "#5f696f", fontSize: "8px"}}
       key={`tick-${i}`}>
         <line 
         style={{strokeWidth:"0.4"}}
@@ -256,7 +255,7 @@ export const Axis = (props) => {
     );
   }
   else {
-    return(<g className={`${props.axisType}-axis-${props.uniqueName}`}></g>)
+    return(<g className={`chart-axis-empty ${props.axisType}-axis-${props.uniqueName}`}></g>)
   }
 
 }

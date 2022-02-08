@@ -18,7 +18,7 @@ const MouseOverText = (props) => {
   )
 }
 
-export const MouseOverMarker = (props) => {
+export const MouseOverMarker = (props) => { 
 
   const [visibility, setVisibility] = useState('none');
   const [linePosition, setLinePosition] = useState({x1: 0, x2: 0, y1: 0, y2: 0});
@@ -34,7 +34,7 @@ export const MouseOverMarker = (props) => {
     const textAnchor = props.width / 2 >  xEvent ? "start" : "end"; 
     const x = xEvent + textAnchorMargin;
 
-    setTextPosition({x: x, y: props.mouseOverTextY || -5 });
+    setTextPosition({x: x, y: props.mouseOverTextY || - 5 });
     setTextAnchor(textAnchor)
   }
 

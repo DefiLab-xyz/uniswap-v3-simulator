@@ -17,11 +17,6 @@ export const toggleSelectedStrategy = action => {
   return (dispatch, getState) => {
     dispatch(setSelectedStrategy(action));
     dispatch(setStrategyRangeSelected(action));
-    // const strategyRange1 = getState().strategyRanges[0].inputs;
-    // const strategyRange2 = getState().strategyRanges[1].inputs;
-    // const currentPrice = getState().pool.baseToken.currentPrice;
-    // const investment = getState().investment.value;
-    // const step = Math.max(currentPrice, (strategyRange1.max.value * 1.1) / 2, (strategyRange2.max.value * 1.1) / 2);
   }
 }
 
