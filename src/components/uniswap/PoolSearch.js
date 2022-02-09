@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import {fetchPoolData} from '../store/pool'
-import {selectAllProtocols, selectProtocolId, setProtocol} from '../store/protocol'
-import { setDefaultInvestment } from '../store/investment'
-import styles from '../styles/modules/PoolSearch.module.css'
-import cat from '../assets/cat.svg'
-import {tokensBySymbol} from '../api/thegraph/uniTokens'
-import {top50PoolsByTvl, poolsByTokenId, poolsByTokenIds} from '../api/thegraph/uniPools'
-import {formatLargeNumber} from '../helpers/numbers'
+import {fetchPoolData} from '../../store/pool'
+import {selectAllProtocols, selectProtocolId, setProtocol} from '../../store/protocol'
+import { setDefaultInvestment } from '../../store/investment'
+import styles from '../../styles/modules/PoolSearch.module.css'
+import cat from '../../assets/cat.svg'
+import {tokensBySymbol} from '../../api/thegraph/uniTokens'
+import {top50PoolsByTvl, poolsByTokenId, poolsByTokenIds} from '../../api/thegraph/uniPools'
+import {formatLargeNumber} from '../../helpers/numbers'
 
 const SearchItems = (props) => {
 

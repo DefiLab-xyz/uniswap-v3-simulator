@@ -2,36 +2,74 @@
   grid-row: 17 / span 54;
   display: grid;
   grid-template-rows: repeat(30, 1fr);
-  grid-template-columns: repeat(60, 1fr);
+  grid-template-columns: repeat(80, 1.25%);
   grid-row-gap: 0.5em;
 }
 
 .title {
   grid-row: 1 / span 1;
-  grid-column: 1 / span 60;
+  grid-column: 1 / span 40;
 }
 
 .strategy-chart {
   grid-row: 2 / span 12;
-  grid-column: 1 / span 40;
+  grid-column: 1 / span 50;
   display: flex;
 }
 
 .strategy-indicators {
   grid-row: 2 / span 12;
-  grid-column: 42 / span 29;
+  grid-column: 52 / span 29;
 }
 
 .strategy-buttons {
-  grid-row: 15;
+  grid-row: 16;
+  grid-column: 35;
+  width: 140px;
 }
 
 .position-breakdown-container {
-  grid-row: 17 / span 12;
-  grid-column: 1 / span 25;
+  grid-row: 18 / span 9;
+  grid-column: 1 / span 36;
+  overflow: hidden;
+  display: relative;
+}
+
+.position-breakdown-title {
+  grid-row: 17 / span 1;
+  grid-column: 2 / span 40;
+  display: flex;
+  align-content: center;
+  align-items: center;
 }
 
 .token-ratio-chart {
   height: 100%;
   width: 100%;
+}
+
+.token-ratio-chart g text {
+  fill: var(--font-color);
+}
+
+.token-ratio-visible {
+  transform: translate(0%, 0);
+  transition: 0.5s ease-in-out;
+}
+
+.token-ratio-hidden {
+  transform: translate(-100%, 0%);
+  transition: 0.5s ease-in-out;
+  
+}
+
+.token-value-visible {
+  transform: translate(0%, -100%);
+  transition: 0.5s ease-in-out;
+}
+
+.token-value-hidden {
+  transform: translate(100%, -100%);
+  transition: 0.5s ease-in-out;
+  
 }

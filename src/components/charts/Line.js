@@ -8,8 +8,7 @@ export const Line = (props) => {
   const chartContextData = useContext(ChartContext);
 
   useEffect(() => {
-    console.log(props.data)
-    if ( props.useParentScale && props.data) {
+    if ( chartContextData.scale && props.useParentScale && props.data) {
       const lineDataTemp = { 
         x1: props.data.x1 ? chartContextData.scale.x(props.data.x1) : 0, 
         x2: props.data.x2 ? chartContextData.scale.x(props.data.x2) : 0, 
@@ -19,7 +18,7 @@ export const Line = (props) => {
 
       setLineData(lineDataTemp)
     }
-    else if( !props.useParentScale && props.data) {
+    else if( chartContextData.scale && !props.useParentScale && props.data) {
       const lineDataTemp = { 
         x1: props.data.x1 ? props.data.x1 : 0, 
         x2: props.data.x2 ? props.data.x2 : 0, 

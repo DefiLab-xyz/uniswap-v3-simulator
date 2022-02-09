@@ -10,7 +10,7 @@ import { selectProtocol } from '../store/protocol'
 
 import {PoolCurrentPrices} from '../api/thegraph/uniPools'
 
-import PoolSearch from '../components/PoolSearch'
+import PoolSearch from '../components/uniswap/PoolSearch'
 import { ToggleButton, RefreshButton } from '../components/Button'
 import StrategyRange from '../components/StrategyRange'
 import StrategyPicker from '../components/StrategyPicker'

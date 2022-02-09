@@ -264,6 +264,11 @@ button.list-item:disabled {
   font-weight: 500;
 }
 
+.sub-title {
+  font-size: 14px;
+  font-weight: 500;
+}
+
 .y-axis-label {
   font-size: 12px;
   fill: var(--font-color);

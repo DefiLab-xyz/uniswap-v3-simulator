@@ -1,16 +1,28 @@
 import { useState, useRef, useEffect } from 'react'
-import {line, area, curveBasis, curveCardinal} from 'd3-shape'
+import {line, area, curveBasis, curveCardinal, stack} from 'd3-shape'
 import ChartContainer from './ChartContainer'
 
 
-const genLine = (type, scale, domain, xScaleKey, yScaleKey, curveType) => {
+const genLine = (type, scale, domain, xScaleKey, yScaleKey, curveType, stacked) => {
 
   if (type === 'area') {
-    return area()
-    .x((d) => { return scale.x(d[xScaleKey])})
-    .y0((d) => { return scale.y(domain.y[0])})
-    .y1((d) => { return scale.y(d[yScaleKey])})
-    .curve(!curveType ? curveBasis: curveType)
+    if (stacked) {
+
+      return area()
+      .x((d) => { return scale.x(d.data[xScaleKey])})
+      .y0((d) => { return scale.y(d[0])})
+      .y1((d) => { return scale.y(d[1])})
+      .curve(!curveType ? curveBasis: curveType)
+
+    }
+    else {
+      return area()
+      .x((d) => { return scale.x(d[xScaleKey])})
+      .y0((d) => { return scale.y(domain.y[0])})
+      .y1((d) => { return scale.y(d[yScaleKey])})
+      .curve(!curveType ? curveBasis: curveType);
+    }
+   
   }
   else {
       return line()
@@ -28,7 +40,7 @@ export const Lines = (props) => {
 
   if (dataForLine(props)) {
 
-    const line = genLine(props.lineType, props.scale, props.domain, props.xScaleKey || 'x', props.yScaleKey || 'y', props.curveType); 
+    const line = genLine(props.lineType, props.scale, props.domain, props.xScaleKey || 'x', props.yScaleKey || 'y', props.curveType, props.stacked); 
     const lines = props.data.map((d, i) => {
 
       if (props.lineType === 'area') {
@@ -105,6 +117,42 @@ export const LineChart = (props) => {
 
 }
 
+export const LineChartStacked = (props) => {
+
+  const containerRef = useRef();
+  const [scale, setScale] = useState();
+  const [stackedData, setStackedData] = useState();
+
+  const handleScale = (newScale) => {
+    setScale(newScale);
+  }
+
+  useEffect(() => {
+    if (props.data && props.keys) {
+      var stacker = stack();
+      stacker.keys(props.keys);
+      setStackedData(stacker(props.data));
+    }
+    
+  }, [props.data, props.keys, props.domain])
+
+
+  return (
+   <ChartContainer className={props.className} ref={containerRef} data={stackedData}
+    domain={props.domain} margin={props.margin} mouseOverMarkerPos={props.mouseOverMarkerPos}
+    chartProps={props.chartProps} handleScale={handleScale} currentPriceLine={props.currentPriceLine}
+    mouseOverMarker={props.mouseOverMarker} mouseOverText={props.mouseOverText || []} handleMouseOver={props.handleMouseOver}>
+      <Lines colors={props.colors} data={stackedData} 
+        scale={scale} domain={props.domain} stacked={true}
+        margin={props.margin || {top: 20, right: 30, bottom: 30, left: 70}} lineType={props.lineType}
+        strokeWidth={props.strokeWidth} fillOpacity={props.fillOpacity}>
+      </Lines>
+      {props.children}
+   </ChartContainer>
+  );
+
+}
+
 export const LineChartDoubleAxis = (props) => {
 
   const containerRef = useRef();
@@ -119,10 +167,6 @@ export const LineChartDoubleAxis = (props) => {
       setScaleRight({x: newScale.x, y: newScale.yRight});
     }
   }
-
-  useEffect(() => {
-    // console.log(props.data[0])
-  }, [props.data])
 
   return (
    <ChartContainer className={props.className} ref={containerRef} data={props.data}
