@@ -52,7 +52,7 @@ export const genSelectedStrategyData = (data, strategies) => {
     const strat = strategies.find(strat => strat.id === d.id);
     if (strat && strat.selected === true) {
       strategyDragData.push(d.data);
-      strategyDragColors.push(strat.color);
+      strategyDragColors.push(strat.style.color);
       strategyIds.push(d.id);
     }  
   });
@@ -70,7 +70,7 @@ export const genSelectedChartData = (data, strategies) => {
         const tempdata = data.find(strat => strat.id === d.id);
         if (tempdata && tempdata.hasOwnProperty('data')) {
           chartData.push(tempdata.data);
-          chartColors.push(d.color);
+          chartColors.push(d.style.color);
         }        
       }
     });

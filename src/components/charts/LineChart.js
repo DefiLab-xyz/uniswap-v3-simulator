@@ -103,7 +103,7 @@ export const LineChart = (props) => {
 
   return (
    <ChartContainer className={props.className} ref={containerRef} data={props.data}
-    domain={props.domain} margin={props.margin}
+    domain={props.domain} margin={props.margin} mouseOverMarkerPos={props.mouseOverMarkerPos}
     chartProps={props.chartProps} handleScale={handleScale} currentPriceLine={props.currentPriceLine}
     mouseOverMarker={props.mouseOverMarker} mouseOverText={props.mouseOverText || []} handleMouseOver={props.handleMouseOver}>
       <Lines colors={props.colors} data={props.data} 

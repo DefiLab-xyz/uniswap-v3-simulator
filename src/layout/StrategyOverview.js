@@ -23,6 +23,7 @@ import { ConcentratedLiquidityMultiplier, StrategyRangeSize, StrategyTokenRatio 
 import { ToggleButtonsFlex } from "../components/ButtonList"
 import TokenRatioChart from "../components/uniswap/TokenRatioChart"
 import TokenValueSplitChart from "../components/uniswap/TokenValueSplitChart"
+import ImpermanentLossChart from "../components/uniswap/ImpermanentLossChart"
 
 const Title = (props) => {
 
@@ -206,6 +207,11 @@ const StrategyOverview = (props) => {
       <StrategyOverviewIndicators chartData={chartData}></StrategyOverviewIndicators>
       <StrategyToggle handleStrategyChange={updateSelectedStrategyToggle}></StrategyToggle>
       <PositionBreakdown selectedStrategy={selectedStrategyToggle} chartData={selectedStrategyChartData}></PositionBreakdown>
+      <ImpermanentLossChart className={styles['imp-loss-chart-container']} 
+        classNameTitle={styles['imp-loss-chart-title']}
+        classNameDropdown={styles['imp-loss-chart-dropdown']}
+        selectedStrategy={selectedStrategyToggle} data={chartData}>
+      </ImpermanentLossChart>
     </div>
   )
 }

@@ -30,18 +30,42 @@
 
 .position-breakdown-container {
   grid-row: 18 / span 9;
-  grid-column: 1 / span 36;
+  grid-column: 1 / span 39;
   overflow: hidden;
   display: relative;
+}
+
+.imp-loss-chart-title {
+  grid-row: 16 / span 2;
+  grid-column: 42 / span 39;
+} 
+
+.imp-loss-chart-dropdown {
+  grid-row: 16 / span 2;
+  grid-column: 62 / span 19;
+} 
+
+
+.imp-loss-chart-container {
+  grid-row: 18 / span 9;
+  grid-column: 42 / span 39;
+}
+
+.imp-loss-chart-title {
+  grid-row: 17 / span 1;
+  grid-column: 42 / span 39;
+  display: flex;
+  align-items: flex-end;
 }
 
 .position-breakdown-title {
   grid-row: 17 / span 1;
   grid-column: 2 / span 40;
   display: flex;
-  align-content: center;
-  align-items: center;
+  align-items: flex-end;
 }
+
+
 
 .token-ratio-chart {
   height: 100%;
@@ -60,7 +84,6 @@
 .token-ratio-hidden {
   transform: translate(-100%, 0%);
   transition: 0.5s ease-in-out;
-  
 }
 
 .token-value-visible {
@@ -73,3 +96,25 @@
   transition: 0.5s ease-in-out;
   
 }
+
+.imp-loss-chart-dropdown {
+  text-align: right;
+  grid-row: 16 / span 1;
+}
+
+.imp-loss-chart-dropdown + button {
+  margin-top: 5px;
+  grid-row: 17 / span 1;
+  grid-column: 63 / span 12;
+  overflow: visible;
+}
+
+.imp-loss-chart-dropdown + button + div {
+  margin-top: 5px;
+  grid-row: 18 / span 4;
+  grid-column: 63 / span 12;
+  overflow: visible;
+  display: grid;
+  justify-items: start;
+}
+

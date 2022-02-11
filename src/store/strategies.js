@@ -5,12 +5,12 @@ import { setStrategyRangeSelected } from './strategyRanges'
 
 
 const initialState = [
-  {name: `HODL 100% USDC`, id: "hodl1", color: chartColors.lightPink, selected: false, genData: (inputs) => { return hodlToken1(inputs)}}, 
-  {name: `HODL 100% WETH`, id: "hodl2", color: chartColors.darkPink, selected: false, genData: (inputs) => { return hodlToken2(inputs)}}, 
-  {name: "HODL 50/50", id: "hodl5050", color: chartColors.orange, selected: false, genData: (inputs) => { return hodl5050(inputs)}}, 
-  {name: "Unbounded (V2)", id: "v2", color: chartColors.green, selected: true, genData: (inputs) => { return V2Unbounded(inputs)}},  
-  {name: "V3 Strategy 2", id: "S2", color: chartColors.purple, selected: true, genData: (inputs) => { return strategyV3(inputs)}}, 
-  {name: "V3 Strategy 1", id: "S1", color: chartColors.blue, selected: true, genData: (inputs) => { return strategyV3(inputs)}}];
+  {name: `HODL 100% USDC`, id: "hodl1", style: { color: chartColors.lightPink }, selected: false, genData: (inputs) => { return hodlToken1(inputs)}}, 
+  {name: `HODL 100% WETH`, id: "hodl2", style: { color: chartColors.darkPink }, selected: false, genData: (inputs) => { return hodlToken2(inputs)}}, 
+  {name: "HODL 50/50", id: "hodl5050", style: { color: chartColors.orange }, selected: false, genData: (inputs) => { return hodl5050(inputs)}}, 
+  {name: "Unbounded (V2)", id: "v2", style: { color: chartColors.green }, selected: true, genData: (inputs) => { return V2Unbounded(inputs)}},  
+  {name: "V3 Strategy 2", id: "S2", style: { color: chartColors.purple }, selected: true, genData: (inputs) => { return strategyV3(inputs)}}, 
+  {name: "V3 Strategy 1", id: "S1", style: { color: chartColors.blue }, selected: true, genData: (inputs) => { return strategyV3(inputs)}}];
 
 
 export const toggleSelectedStrategy = action => {

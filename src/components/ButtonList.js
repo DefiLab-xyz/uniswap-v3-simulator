@@ -26,3 +26,29 @@ export const ToggleButtonsFlex = (props) => {
     </div>
   )
 }
+
+export const ButtonListGrid = (props) => {
+
+  const [selected, setSelected] = useState(0);
+
+  const handleSelected = (d, i) => {
+    setSelected(i);
+    if (props.handleSelected) props.handleSelected(d);
+  }
+
+  const buttons = !props.buttons ? (<></>) :
+  props.buttons.map((d, i) => {
+    return ( 
+      <button  style={d.style}
+        onMouseDown={() => handleSelected(d, i)} className={ selected === i ? `${styles["button-list-grid"]} ${props.classNameButton}` : `${styles["button-list-grid"]} ${props.classNameButton}` }>
+        { props.labelKey ? d[props.labelKey] : d.label || ""}
+      </button>
+    );
+  });  
+
+  return (
+    <div className={`${styles['button-list-grid-container']} ${props.className}`} style={props.style}>
+      {buttons}
+    </div>
+  )
+}

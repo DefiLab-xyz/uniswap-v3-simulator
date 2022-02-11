@@ -70,7 +70,7 @@ const TokenRatioChart = (props) => {
   const [minLineData, setMinLineData] = useState({x1: 0, x2: 0});
   const [mouseOverText, setMouseOverText] = useState();
 
-  const margin = {top: 40, right: 90, bottom: 120, left: 70};
+  const margin = {top: 40, right: 90, bottom: 100, left: 70};
 
   const chartProps = { dataTypeX: "number", dataTypeY: "number", dataTypeYRight: "number", 
   ylabel: `Qty ${quoteToken.symbol}` , ylabelRight: `Qty ${baseToken.symbol}` , xlabel: "", 

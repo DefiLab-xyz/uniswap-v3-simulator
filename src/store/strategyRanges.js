@@ -3,11 +3,11 @@ import { createSelector } from "reselect";
 import { roundToNearestTick } from "../helpers/uniswap/liquidity";
 
 const initialState = [
-{id: "S1", name: "Strategy 1", color: "rgb(124, 194, 246)", 
+{id: "S1", name: "V3 Strategy 1", color: "rgb(124, 194, 246)", 
   inputs: { min: { value: 1, name: "Min", label: "Min Range S1" }, max: {value: 1, name: "Max", label: "Max Range S1" } },
   liquidityMultiplier: 1, selected: true
 }, 
-{id: "S2", name: "Strategy 2", color: "rgb(175, 129, 228)", 
+{id: "S2", name: "V3 Strategy 2", color: "rgb(175, 129, 228)", 
   inputs:  { min: { value: 1, name: "Min", label: "Min Range S1" }, max: {value: 1, name: "Max", label: "Max Range S1" } },
   liquidityMultiplier: 1, selected: true
 }];

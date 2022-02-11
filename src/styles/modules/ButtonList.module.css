@@ -4,7 +4,7 @@
   justify-content: flex-start;
   font-size: 14px; 
   font-weight: 500;
-  margin-bottom: 5px;
+  /* margin-bottom: 5px; */
  
 }
 
@@ -31,4 +31,11 @@
 
 .toggle-button-selected:hover {
   box-shadow: inset 1px 1px 2px #babecc, inset -1px -1px 2px #f7f5fe;
+}
+
+.button-list-grid {
+  margin: 5px;
+  width: 180px;
+  height: 20px;
+  z-index: 999;
 }
