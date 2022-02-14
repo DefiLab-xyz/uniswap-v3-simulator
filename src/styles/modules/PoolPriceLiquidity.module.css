@@ -1,0 +1,34 @@
+.pool-price-liquidity-container {
+  grid-row: 72 / span 20;
+  display: grid;
+  grid-template-rows: repeat(10, 1fr);
+}
+
+.title {
+  grid-row: 1 / span 1;
+  display: flex;
+}
+
+.chart-container {
+  grid-row: 2 / span 9;
+  display: flex;
+}
+
+.daily-price-chart-container, .daily-prices-title {
+  margin-right: 3%;
+}
+
+.liquidity-density-chart-container, .liquidity-density-title {
+  margin-left: 3%;
+}
+
+.daily-prices-title {
+  margin-right: 4%;
+  margin-left: 2%;
+  margin-bottom: 1%;
+}
+
+.liquidity-density-title {
+  margin-left: 4%;
+  margin-bottom: 1%;
+}

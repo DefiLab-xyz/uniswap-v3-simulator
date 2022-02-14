@@ -11,7 +11,6 @@ const Bars = (props) => {
       return <rect 
       className={"bar"}
       key={`bar-${i}`}
-      // fill="none" 
       style={props.style}
       x={props.scale.x(d.x)}
       y={props.scale.y(d.y)}

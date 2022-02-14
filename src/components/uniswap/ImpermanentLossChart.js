@@ -34,7 +34,6 @@ const ImpermanentLossChart = (props) => {
 
 
   const handleSelectedCompareStrategy = (strategy) => {
-    console.log(strategy)
     setSelectedCompareStrategy(strategy);
   }
 
@@ -42,15 +41,14 @@ const ImpermanentLossChart = (props) => {
       if (props.data && selectedCompareStrategy && props.selectedStrategy) {
         const strategy = props.data.find(d => d.id === props.selectedStrategy.id);
         const compareStrategy = props.data.find(d => d.id === selectedCompareStrategy.id);
+
         setChartData(V3ImpLossData(strategy.data, compareStrategy.data))
         setChartColor(selectedCompareStrategy.style.color);
-        console.log(V3ImpLossData(strategy.data, compareStrategy.data))
       }
   }, [props.data, selectedCompareStrategy, props.selectedStrategy]);
 
   useEffect(() => {
     if (chartData) {
-      const xMin = Math.min(...chartData.map(d => d.x), 0);
       const yMin = Math.min(...chartData.map(d => d.y), 0);
       const xMax = Math.max(...chartData.map(d => d.x));
       const yMax = Math.max(...chartData.map(d => d.y));
@@ -63,7 +61,7 @@ const ImpermanentLossChart = (props) => {
 
     return (
       <div class={`sub-title ${props.className}`}>
-        <span>{`Impermanent Loss`}</span>
+        <span>{`Price Risk / Impermanent Loss`}</span>
       </div>
     );
   }

@@ -262,6 +262,8 @@ button.list-item:disabled {
 
 .title {
   font-weight: 500;
+  display: flex;
+  align-items: flex-end;
 }
 
 .sub-title {
@@ -340,5 +342,15 @@ g.chart-axis-ticks {
 
 .chart-container {
   background-color: var(--semi-transparent-background);
+}
+
+.candle-green { 
+  fill: #9bd8c8;
+  stroke: #9bd8c8
+}
+
+.candle-red {
+  fill: rgb(255, 102, 102);
+  stroke: rgb(255, 102, 102)
 }
 

@@ -146,7 +146,7 @@ export const selectStrategyRangeById = createSelector([strategies => strategies,
 export const selectSelectedStrategyRanges = state => {
   const selectedStrategies = [];
   state.strategyRanges.forEach(d => {
-    if (d.selected) { selectedStrategies.push(d)}
+    if (d.selected) { selectedStrategies.push(d) }
   });
   
   return selectedStrategies;

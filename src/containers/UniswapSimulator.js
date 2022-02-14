@@ -2,17 +2,24 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect } from "react";
 
 import '../styles/UniswapSimulator.css';
+
+// Layout //
 import NavBar from "../layout/NavBar";
 import SideBar from "../layout/SideBar";
 import DashBoard from "../layout/DashBoard";
 import PoolOverview from '../layout/PoolOverview';
 import StrategyOverview from '../layout/StrategyOverview';
+import PoolPriceLiquidity from '../layout/PoolPriceLiquidity';
+
+// Components //
 import Grid from "../components/Grid"
+
+// Sata //
 import { poolById } from '../api/thegraph/uniPools'
 import { fetchPoolData } from '../store/pool';
 import { setWindowDimensions, selectWindowDimensions } from '../store/window';
 import { selectProtocolId } from '../store/protocol';
-import ThemeToggle from '../components/ThemeToggle';
+
 
 
 const UniswapSimulator = (props) => {
@@ -73,6 +80,7 @@ useEffect(() => {
           gridWidth={windowDim.width} minWidth={pageMinWidth}>
           <PoolOverview></PoolOverview>
           <StrategyOverview></StrategyOverview>
+          <PoolPriceLiquidity></PoolPriceLiquidity>
           <SideBar width={windowDim.width} minWidth={pageMinWidth}></SideBar>
           <DashBoard></DashBoard>
         </Grid>

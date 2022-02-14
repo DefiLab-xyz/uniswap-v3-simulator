@@ -56,6 +56,8 @@ const genLiquidityData = (data, feeTier) => {
   });
 }
 
+
+
 export const fetchPoolData = pool => {
   return async (dispatch, getState) => {
 
