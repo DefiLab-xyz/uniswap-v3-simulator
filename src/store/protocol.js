@@ -1,15 +1,18 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createSelector } from "@reduxjs/toolkit";
 import optimism from '../assets/optimism-logo.svg'
 import ethereum from '../assets/eth-logo.svg'
 import arbitrum from '../assets/arbitrum-logo.png'
+import polygon from '../assets/polygon.png'
 
 const protocols = [{id: 0, title: "ethereum", logo: ethereum}, 
 {id: 1, title: "optimism", logo: optimism}, 
-{id: 2, title: "arbitrum", logo: arbitrum}];
+{id: 2, title: "arbitrum", logo: arbitrum},
+{id: 3, title: "polygon", logo: polygon},
+{id: 4, title: "perpetual", logo: optimism}];
 
 export const protocolSlice = createSlice({
   name: "protocol",
-  initialState: {value: protocols[0]},
+  initialState: { value: protocols[0] },
   reducers: {
     setProtocol: (state, action) => {
       if (protocols.map(d => d.id).includes(action.payload.id)) {
@@ -24,6 +27,11 @@ export const selectProtocol = state => state.protocol.value;
 export const selectProtocolId = state => state.protocol.value.id;
 export const selectProtocolName = state => state.protocol.value.title;
 export const selectProtocolLogo = state => state.protocol.value.logo;
+
+export const selectProtocolsByIds = createSelector([protocols => protocols, (protocols, ids) => ids], (protocols, ids) => {
+  return protocols.filter(d => ids.includes(d.id));
+});
+
 
 
 export const { setProtocol } = protocolSlice.actions;

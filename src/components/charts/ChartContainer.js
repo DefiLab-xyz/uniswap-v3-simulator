@@ -38,8 +38,6 @@ const AxesLabels = (props) => {
   const yLabel = !props.loading && props.height > 0 && props.margin && props.margin.left ? props.ylabel : "";
   const yLabelRight = !props.loading && props.height > 0 && props.margin && props.margin.right ? props.ylabelRight : "";
 
-  useEffect(() => { console.log(yLabelRight)}, [yLabelRight])
-
   return (
     <g>
       <text 
@@ -114,7 +112,7 @@ const ChartContainer = forwardRef((props, ref) => {
   }
 
   return (
-    <ChartContext.Provider value={{ scale:scale, chartContainer: chartContainerRef.current, chartWidth: width, chartHeight: height}}>
+    <ChartContext.Provider value={{ scale: scale, chartContainer: chartContainerRef.current, chartWidth: width, chartHeight: height}}>
       <div className={`chart-container ${props.className}`} ref={ref}>
         <svg className={"chart-container-svg"}>
           <rect className={`mouseover-container`} x={margin.left} y={margin.top} 

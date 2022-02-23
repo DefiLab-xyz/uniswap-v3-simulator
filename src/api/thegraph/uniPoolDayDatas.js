@@ -16,6 +16,7 @@ export const getPoolDayData = async (token, signal, protocol, dataParser) => {
     volumeToken1
     close
     open
+    txCount
 
 
  }

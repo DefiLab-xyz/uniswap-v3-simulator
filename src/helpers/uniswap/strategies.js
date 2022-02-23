@@ -38,8 +38,6 @@ export const strategyV3 = (inputs) => {
       value = y;
     }
 
-
-
      return {x: price, y: value, token: x, base: y }
   });
 

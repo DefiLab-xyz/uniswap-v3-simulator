@@ -11,6 +11,7 @@ import {getPoolDayData} from '../api/thegraph/uniPoolDayDatas'
 const initialState = {
 id: "", 
 feeTier: 0, 
+name: "",
 baseToken: {id: 0, symbol: "", name: "", decimals: "", currentPrice: ""},
 quoteToken: {id: 1, symbol: "", name: "", decimals: "", currentPrice: ""},
 loading: true, std: "", mean: "", normStd: "", liquidity: ""};
@@ -31,7 +32,8 @@ const genLiquidityData = (data, feeTier) => {
 
   let cumsum = 0;
   const multiplier = 1 + (feeTier / 500000);
-  let len = data.length;
+  if (data && data.length && data.length > 0) {
+    let len = data.length;
 
   return data.map((d, i) => {
     cumsum += parseFloat(d.liquidityNet);
@@ -54,22 +56,24 @@ const genLiquidityData = (data, feeTier) => {
       tickIdx1: parseInt((d.tickIdx * -1) - width)
     }
   });
+  }
+  
 }
 
-
-
 export const fetchPoolData = pool => {
+
   return async (dispatch, getState) => {
 
     dispatch(setLoading(true));
 
-    const protocol = getState().protocol.value.id;
+    const protocol = pool.protocol ? pool.protocol : getState().protocol.value.id;
     const ticks = await liquidityByPoolId(pool.id, null, protocol);
     const dailyPrices = await getPoolDayData(pool.id, null, protocol);
     const poolStats = genDailyStats(dailyPrices);
 
     const payload = {
       ...pool,
+      name: pool.token1.symbol + " / " + pool.token0.symbol,
       baseToken: {id: 0, symbol: pool.token0.symbol, name: pool.token0.name, decimals: pool.token0.decimals, currentPrice: parseFloat(pool.token0Price)},
       quoteToken: {id: 1, symbol: pool.token1.symbol, name: pool.token1.name, decimals: pool.token1.decimals, currentPrice: parseFloat(pool.token1Price)},
       loading: false,
@@ -83,6 +87,10 @@ export const fetchPoolData = pool => {
     payload.poolDayData = dailyPrices;
     dispatch(setPool(payload));
     dispatch(setDefaultStrategyRangeInputVals(payload));
+
+    if (payload.toggleBase === true) {
+      dispatch(toggleBaseToken());
+    }
   }
 };
 
@@ -109,6 +117,8 @@ export const poolSlice = createSlice({
 
       state.value.baseToken = oldquote; 
       state.value.quoteToken = oldbase;
+      state.value.name = oldbase.symbol + " / " + oldquote.symbol;
+      
     },
     refreshCurrentPrices: (state, action) => {
       const basePriceField = "token" + state.value.baseToken.id + "Price";
@@ -132,6 +142,7 @@ export const selectPoolDayData = state => state.pool.value.poolDayData;
 export const selectLoading = state => state.pool.value.loading;
 export const selectNormStd = state => parseFloat(state.pool.value.normStd);
 export const selectLiquidity = state => state.pool.value.liquidity;
+export const selectPoolName = state => state.pool.value.name;
 
 export const selectYesterdaysPriceData = state => {
   if (state.pool.value.poolDayData && state.pool.value.poolDayData.length &&

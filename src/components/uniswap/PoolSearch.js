@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import {fetchPoolData} from '../../store/pool'
-import {selectAllProtocols, selectProtocolId, setProtocol} from '../../store/protocol'
+import {fetchPoolData, selectPoolName, toggleBaseToken} from '../../store/pool'
+import {selectAllProtocols, selectProtocolId, selectProtocolsByIds, setProtocol} from '../../store/protocol'
 import { setDefaultInvestment } from '../../store/investment'
 import styles from '../../styles/modules/PoolSearch.module.css'
 import cat from '../../assets/cat.svg'
@@ -12,10 +12,17 @@ import {formatLargeNumber} from '../../helpers/numbers'
 const SearchItems = (props) => {
 
   const dispatch = useDispatch();
-
   const handleOnMouseDown = (item) => {
-    dispatch(fetchPoolData(item));
-    dispatch(setDefaultInvestment(item.token0Price));
+    
+    if (props.baseTokenHidden) {
+      dispatch(setDefaultInvestment(item.token1Price));
+      dispatch(fetchPoolData({...item, toggleBase: true}));
+    }
+    else {
+      dispatch(fetchPoolData(item));
+      dispatch(setDefaultInvestment(item.token0Price));
+    }
+
     if (props.onClick) props.onClick(item);
   }
 
@@ -88,7 +95,6 @@ const SearchLabels = (props) => {
   )
 }
 
-
 const SearchResults = (props) => {
 
   const [searchResults, setSearchResults] = useState(null);
@@ -112,20 +118,29 @@ const SearchResults = (props) => {
     return tokenPairs && tokenPairs.length && tokenPairs.length > 0 ? await poolsByTokenIds(tokenPairs.map(d => d.id), abortController.signal, props.protocol) : "empty";
   }
 
+  const defaultSearch = () => {
+
+  }
+
   useEffect(() => {
+
     setSearchResults(null);  
 
     if (props.visibility !== 'none') {
-      searchStringController.current = new AbortController();
-
-      if (searchStringIsValid(props.searchString)) { 
-        searchForPool(searchStringController.current, props.searchString, protocolID).then(searchResults => {
-          setSearchResults(searchResults);
-        });
-      } else if (props.searchString === "") {
-        handleTop50Pools(searchStringController.current, protocolID);
+      if (props.customSearch) {
+        setSearchResults(props.customSearch(props.searchString));
       }
+      else {
+        searchStringController.current = new AbortController();
 
+        if (searchStringIsValid(props.searchString)) { 
+          searchForPool(searchStringController.current, props.searchString, protocolID).then(searchResults => {
+            setSearchResults(searchResults);
+          });
+        } else if (props.searchString === "") {
+          handleTop50Pools(searchStringController.current, protocolID);
+        }
+      }
     } 
 
     return () => searchStringController.current.abort();
@@ -150,7 +165,7 @@ const SearchResults = (props) => {
     return (
       <React.Fragment>
         <SearchLabels visibility={props.visibility} onClick={handleLabelClick}></SearchLabels>
-        <SearchItems visibility={props.visibility} items={searchResults} onClick={props.itemOnClick}></SearchItems>
+        <SearchItems baseTokenHidden={props.baseTokenHidden} visibility={props.visibility} items={searchResults} onClick={props.itemOnClick}></SearchItems>
       </React.Fragment>
     );
   }
@@ -164,13 +179,21 @@ const Protocol = (props) => {
 
   const dispatch = useDispatch();
   const protocolID = useSelector(selectProtocolId);
+  const protocolsAll = useSelector(selectAllProtocols);
+  const [protocolsSelected, setProtocolsSelected] = useState([]);
 
   const handleProtocolChange = (prot) => {
     if (props.handleProtocolChange) props.handleProtocolChange();
     dispatch(setProtocol(prot));
   }
 
-  const protocols = useSelector(selectAllProtocols).map((prot) => {
+  useEffect(() => {
+    const protocols = props.protocols && props.protocols.length && props.protocols.length > 0 ? 
+    selectProtocolsByIds(protocolsAll, props.protocols) : protocolsAll;
+    setProtocolsSelected(protocols);
+  }, [props.protocols, protocolsAll]);
+
+  const protocols = protocolsSelected.map((prot) => {
     return ( 
       <button 
         title={prot.title}
@@ -230,8 +253,8 @@ const SearchDescription = (props) => {
 // Search for Uniswap V3 Pools by ID or token symbol.
 const PoolSearch = (props) => {
 
-  const [inputValue, setInputValue] = useState("USDC / WETH");
-  const [selected, setSelected] = useState("USDC / WETH");
+  const [inputValue, setInputValue] = useState(useSelector(selectPoolName));
+  const selected = useSelector(selectPoolName);
   const [visibility, setVisibility] = useState('none');
   const [disableBlur, setDisableBlur] = useState(false);
 
@@ -253,9 +276,14 @@ const PoolSearch = (props) => {
     setDisableBlur(false);
   }
 
+
+  useEffect(() => {
+    setInputValue(selected);
+  }, [selected])
+
   const handlePoolSelected = (item) => {
     if (props.handlePoolSelected) props.handlePoolSelected(item);
-    setSelected(item.token0.symbol + " / " + item.token1.symbol);
+    // setSelected(item.token0.symbol + " / " + item.token1.symbol);
     setInputValue(item.token0.symbol + " / " + item.token1.symbol);
     setVisibility('none');
   }
@@ -273,11 +301,13 @@ const PoolSearch = (props) => {
           handleBlur={toggleVisibility} 
           visibility={visibility} 
           disableBlur={disableBlur}>
-          <Protocol handleProtocolChange={handleDisableBlur} visibility={visibility}></Protocol>
+          <Protocol handleProtocolChange={handleDisableBlur} visibility={visibility} protocols={props.protocols}></Protocol>
         </SearchInput>
-        <SearchResults 
+        <SearchResults
+          customSearch={props.customSearch} 
           searchString={inputValue} 
           visibility={visibility} 
+          baseTokenHidden={props.baseTokenHidden}
           labelOnClick={handleDisableBlur}
           itemOnClick={handlePoolSelected}>
         </SearchResults>

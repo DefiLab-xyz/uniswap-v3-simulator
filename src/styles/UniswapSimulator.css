@@ -351,6 +351,12 @@ g.chart-axis-ticks {
 
 .candle-red {
   fill: rgb(255, 102, 102);
-  stroke: rgb(255, 102, 102)
+  stroke: rgb(255, 102, 102);
+}
+
+rect.bar {
+  stroke-width: 0.5px;
+  fill: rgba(238, 175, 246, 0.5);
+  stroke: rgba(238, 175, 246, 0.6); 
 }
 

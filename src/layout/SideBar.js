@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import styles from '../styles/modules/SideBar.module.css'
@@ -79,18 +79,20 @@ const CurrentPrice = (props) => {
 
 const SideBar = (props) => {
 
+  const baseToken = props.baseTokenHidden === true ? false : <BaseToken></BaseToken>
+
   return (
     <div className={`${styles["sidebar"]} outer-glow`}>
       <div className={styles['sub-container']}>
-        <PoolSearch></PoolSearch>
-        <BaseToken></BaseToken>
+        <PoolSearch protocols={props.protocols} customSearch={props.customSearch} baseTokenHidden={props.baseTokenHidden}></PoolSearch>
+        {baseToken}
       </div>
       <div className={styles['sub-container']}>
         <Investment></Investment>
         <CurrentPrice></CurrentPrice>
       </div>
-      <StrategyRange></StrategyRange>
-      <StrategyPicker></StrategyPicker>
+      <StrategyRange leverageHidden={props.leverageHidden}></StrategyRange>
+      <StrategyPicker strategies={props.strategies}></StrategyPicker>
     </div>
   )
 }

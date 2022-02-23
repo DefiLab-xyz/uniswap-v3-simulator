@@ -1,4 +1,3 @@
-import protocol from "../../store/protocol";
 import { minTvl, urlForProtocol, requestBody } from "./helpers";
 
 export const PoolCurrentPrices = async (signal, protocol, pool) => {
@@ -73,7 +72,7 @@ const poolQueryFields = `{
 }`
 
 export const top50PoolsByTvl = async (signal, protocol) => {
-  console.log("calling top 50")
+
   const url = urlForProtocol(protocol);
 
   const query = `
@@ -85,7 +84,7 @@ export const top50PoolsByTvl = async (signal, protocol) => {
 
     const response = await fetch(url, requestBody({query: query, signal: signal}));
     const data = await response.json();
-    console.log(data)
+    // console.log(data)
     if (data && data.data && data.data.pools) {
       return data.data.pools;
     }
@@ -117,6 +116,32 @@ export const top50PoolsByTvl = async (signal, protocol) => {
       if (pools.id && pools.id.length && pools.id.length === 1) {
         return pools.id[0]
       }
+    }
+    else {
+      return null;
+    }
+
+  } catch (error) {
+    return {error: error};
+  }
+
+}
+
+export const poolByIds = async (ids, signal, protocol) => {
+
+  const url = urlForProtocol(protocol);
+  const query =  `query Pools($ids: [Bytes]!) { id: pools(where: { id_in: $ids } orderBy:totalValueLockedETH, orderDirection:desc) 
+   ${poolQueryFields}
+  }`
+
+  try {
+
+    const response = await fetch(url, requestBody({query: query, variables: {ids: ids}, signal: signal}));
+    const data = await response.json();
+
+    if (data && data.data && data.data.id) {
+        return data.data.id
+  
     }
     else {
       return null;

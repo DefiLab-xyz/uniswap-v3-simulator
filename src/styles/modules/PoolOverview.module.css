@@ -21,17 +21,11 @@
   margin-right: 3%;
 }
 
-rect {
+/* rect {
   stroke-width: 0.5px;
   fill: rgba(238, 175, 246, 0.5);
   stroke: rgba(238, 175, 246, 0.6); 
-}
-
-rect.bar {
-  stroke-width: 0.5px;
-  fill: rgba(238, 175, 246, 0.5);
-  stroke: rgba(238, 175, 246, 0.6); 
-}
+} */
 
 .pool-stats-container {
   grid-row: 2 / span 9;

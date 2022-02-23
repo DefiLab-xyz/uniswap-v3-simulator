@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createSelector } from "@reduxjs/toolkit";
 import { chartColors } from "../data/colorsUniswap";
 import { strategyV3, hodlToken1, hodlToken2, hodl5050, V2Unbounded } from "../helpers/uniswap/strategies"
 import { setStrategyRangeSelected } from './strategyRanges'
@@ -38,5 +38,8 @@ export const strategies = createSlice({
 });
 
 export const selectStrategies = state => state.strategies;
+export const selectStrategiesByIds = createSelector([strategies => strategies, (strategies, ids) => ids], (strategies, ids) => {
+  return strategies.filter(d => ids.includes(d.id));
+});
 export const { updatePoolStrategyNames, setSelectedStrategy } = strategies.actions;
 export default strategies.reducer

@@ -16,7 +16,7 @@ import Grid from "../components/Grid"
 
 // Sata //
 import { poolById } from '../api/thegraph/uniPools'
-import { fetchPoolData } from '../store/pool';
+import { fetchPoolData, selectPool } from '../store/pool';
 import { setWindowDimensions, selectWindowDimensions } from '../store/window';
 import { selectProtocolId } from '../store/protocol';
 
@@ -52,12 +52,18 @@ useEffect(() => {
 // GET DEFAULT POOL ON LOAD (USDC / WETH) 0.3%
 //-----------------------------------------------------------------------------------------------
 const protocol = useSelector(selectProtocolId);
+const poolS = useSelector(selectPool);
+
+useEffect(() => {
+  console.log(poolS)
+}, [ poolS])
 
 useEffect(() => {
   const abortController = new AbortController();
 
   poolById("0x8ad599c3a0ff1de082011efddc58f1908eb6e6d8", abortController.signal, protocol).then( pool => {
     if (pool) dispatch(fetchPoolData(pool));
+   
   });
 
   return () => abortController.abort();
@@ -81,7 +87,7 @@ useEffect(() => {
           <PoolOverview></PoolOverview>
           <StrategyOverview></StrategyOverview>
           <PoolPriceLiquidity></PoolPriceLiquidity>
-          <SideBar width={windowDim.width} minWidth={pageMinWidth}></SideBar>
+          <SideBar width={windowDim.width} minWidth={pageMinWidth} protocols={[0, 1, 2, 3]} leverageHidden={true}></SideBar>
           <DashBoard></DashBoard>
         </Grid>
       </div>

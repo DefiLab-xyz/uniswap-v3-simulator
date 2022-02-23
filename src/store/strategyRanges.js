@@ -5,11 +5,11 @@ import { roundToNearestTick } from "../helpers/uniswap/liquidity";
 const initialState = [
 {id: "S1", name: "V3 Strategy 1", color: "rgb(124, 194, 246)", 
   inputs: { min: { value: 1, name: "Min", label: "Min Range S1" }, max: {value: 1, name: "Max", label: "Max Range S1" } },
-  liquidityMultiplier: 1, selected: true
+  liquidityMultiplier: 1, selected: true, leverage: 1
 }, 
 {id: "S2", name: "V3 Strategy 2", color: "rgb(175, 129, 228)", 
   inputs:  { min: { value: 1, name: "Min", label: "Min Range S1" }, max: {value: 1, name: "Max", label: "Max Range S1" } },
-  liquidityMultiplier: 1, selected: true
+  liquidityMultiplier: 1, selected: true, leverage: 1
 }];
 
 const calcContrentratedLiquidityMultiplier = (min, max) => {
@@ -62,10 +62,6 @@ export const strategyRanges = createSlice({
         const baseDecimal = action.payload.baseToken.decimals;
         const quoteDecimal = action.payload.quoteToken.decimals;
         const feeTier = action.payload.feeTier;
-
-        console.log(action.payload)
-
-        // console.log(selectStrategyRanges());
 
         const max1 = 1 / state[0].inputs["min"].value;
         const min1 = 1 / state[0].inputs["max"].value;

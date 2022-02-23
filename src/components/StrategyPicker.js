@@ -1,17 +1,18 @@
 import { useDispatch, useSelector } from 'react-redux'
-import {selectStrategies, toggleSelectedStrategy} from '../store/strategies'
+import {selectStrategies, toggleSelectedStrategy, selectStrategiesByIds} from '../store/strategies'
 
 
 const StrategyPicker = (props) => {
 
-  const strategies = useSelector(selectStrategies);
+  const strategiesAll = useSelector(selectStrategies);
+  const selectedStrategies = props.strategies ? selectStrategiesByIds(strategiesAll, props.strategies) : strategiesAll; 
   const dispatch = useDispatch();
 
   const toggleStrategySelect = (strategy) => {
     dispatch(toggleSelectedStrategy(strategy));
   }
  
-  const list = strategies.slice(0).reverse().map(d => {
+  const list = selectedStrategies.slice(0).reverse().map( d => {
     return (
       <button  
         onClick={() => toggleStrategySelect(d.id)}

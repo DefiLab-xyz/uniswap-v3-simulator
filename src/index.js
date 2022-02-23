@@ -7,6 +7,7 @@ import reportWebVitals from './reportWebVitals'
 import './styles/index.css';
 
 import UniswapSimulator from './containers/UniswapSimulator';
+import PerpetualSimulator from './containers/PerpetualSimulator';
 import Home from './containers/Home';
 import PolygonNow from './containers/PolygonNow';
 
@@ -18,8 +19,9 @@ render(
     <Provider store={Store}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<UniswapSimulator/>}/>
+          <Route path="/" element={<PerpetualSimulator/>}/>
           <Route path="/uniswapv3simulator" element={<UniswapSimulator/>}/>
+          <Route path="/perpetualsimulator" element={<PerpetualSimulator/>}/>
           <Route path="/home" element={<Home/>}/>
           <Route path="/polygonnow" element={<PolygonNow/>}/>
         </Routes> 

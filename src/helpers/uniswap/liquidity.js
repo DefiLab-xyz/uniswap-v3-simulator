@@ -26,6 +26,8 @@ export const calcLiquidity1 =(sqrtA, sqrtB, amount, decimals) => {
 
 export const calc24HrFee = (priceData, pool) => {
 
+  console.log(priceData)
+
   const priceToken0usd = parseFloat(priceData.volumeUSD) / parseFloat(priceData.volumeToken0)
   const priceToken1usd = parseFloat(priceData.volumeUSD) / parseFloat(priceData.volumeToken1)
 
