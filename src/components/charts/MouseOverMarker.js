@@ -1,21 +1,25 @@
-import { useEffect, useState} from 'react'
-import { round,  formatLargeNumber, parsePrice} from '../../helpers/numbers'
+import { useEffect, useState, useContext} from 'react'
+import { ChartContext } from './ChartContainer';
 
+export const MouseOverText = (props) => {
+  if (props.text && props.text.length) {
+    
+    const text = props.text.map((d, i) => {
+      return ( <text className={`mouse-over-text mouse-over-text-${i}`}
+        x={props.textPosition.x}
+        y={props.textPosition.y + (17 * (i + 1))}
+        textAnchor={props.textAnchor}
+      >{d}</text>);
+    });
+  
+    return (
+      <g className="mouse-over-marker-text-container"
+        style={{display: props.visibility}}>{text}</g>
+    )
+  }
 
-const MouseOverText = (props) => {
-
-  const text = props.text.map((d, i) => {
-    return ( <text className={`mouse-over-text mouse-over-text-${i}`}
-      x={props.textPosition.x}
-      y={props.textPosition.y + (17 * (i + 1))}
-      textAnchor={props.textAnchor}
-    >{d}</text>);
-  });
-
-  return (
-    <g className="mouse-over-marker-text-container"
-      style={{display: props.visibility}}>{text}</g>
-  )
+  return ( <g className="empty-mouseover-text"></g> );
+ 
 }
 
 export const MouseOverMarker = (props) => { 
@@ -24,6 +28,7 @@ export const MouseOverMarker = (props) => {
   const [linePosition, setLinePosition] = useState({x1: 0, x2: 0, y1: 0, y2: 0});
   const [textPosition, setTextPosition] = useState({x: props.mouseOverMarkerPosX || 0, y: props.mouseOverMarkerPosY || 0});
   const [textAnchor, setTextAnchor] = useState("start");
+  const chartContextData = useContext(ChartContext)
 
   const positionLine = (xEvent) => {
     setLinePosition({x1: xEvent, x2: xEvent, y1: 0, y2: props.height});
@@ -37,12 +42,13 @@ export const MouseOverMarker = (props) => {
 
     setTextPosition({x: x, y: props.mouseOverTextY || - 5 });
     setTextAnchor(textAnchor);
+
   }
 
   const mouseMove = (e) => {
     const xEvent = e.clientX - e.target.getBoundingClientRect().left;
     positionLine(xEvent);
-    if (props.handleMouseOver && props.scale && props.scale.hasOwnProperty("x")) props.handleMouseOver(xEvent, props.scale);
+    if (props.handleMouseOver && props.scale && props.scale.hasOwnProperty("x")) props.handleMouseOver(xEvent, props.scale, chartContextData);
     if (props.mouseOverMarkerPos !== "fixed") positionText(xEvent);
   }
 

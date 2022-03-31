@@ -1,3 +1,25 @@
+import { round} from "../numbers";
+
+export const genTokenRatios = (strategyData, currentPrice) => {
+
+  const getRatioIndsForPrice = (strategyData, currentPrice) =>  {
+    return strategyData.reduce((acc, obj) =>
+       Math.abs(currentPrice - obj.x) < Math.abs(currentPrice - acc.x) ? obj : acc
+     );
+   }
+
+  const genRatioIndicators = (strategyData, currentPrice) => {
+    const ratioVals = getRatioIndsForPrice(strategyData, currentPrice);
+    if (ratioVals) {
+      const token0 = round((ratioVals.base / ratioVals.y) * 100, 2);
+      const token1 = round(100 - token0, 2);
+      return {token0: token0, token1: token1 };
+    }
+  };
+
+  return genRatioIndicators(strategyData, currentPrice);
+}
+
 export const strategyV3 = (inputs) => {
 
   const token1V2 = inputs.investment / 2;

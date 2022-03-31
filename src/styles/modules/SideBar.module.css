@@ -4,7 +4,8 @@
   height: fit-content;
   padding-top: 5px;
   padding-bottom: 20px; 
-  /* z-index: 9 */
+  position: sticky;
+  top: 20px;
 }
 
 .sub-container {

@@ -7,7 +7,10 @@ export const sumArray = (arr) => {
   return arr.reduce((a, b) => a + b, 0);
 }
 
-export const parsePrice = (price) => {
+export const parsePrice = (price, percent) => {
+
+  const rounder = percent ? 2 : 4;
+
   if (price === 0) {
     return 0;
   }
@@ -19,7 +22,7 @@ export const parsePrice = (price) => {
   }
   else {
     const m = -Math.floor( Math.log(Math.abs(price)) / Math.log(10) + 1);
-    return round(price, m + 4);
+    return round(price, m + rounder);
 
   }
 }

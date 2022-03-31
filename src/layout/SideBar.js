@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import styles from '../styles/modules/SideBar.module.css'
 import {parsePrice} from '../helpers/numbers'
 
-import {selectBaseToken, toggleBaseToken, refreshCurrentPrices, selectCurrentPrice, selectPoolID, setLoading} from '../store/pool'
+import {selectBaseToken, toggleBaseToken, refreshCurrentPrices, selectCurrentPrice, selectPoolID, setLoading, setCurrentPrice} from '../store/pool'
 import { selectInvestment, setDefaultInvestment, setInvestment } from '../store/investment'
 import { selectProtocol } from '../store/protocol'
 
@@ -57,6 +57,8 @@ const CurrentPrice = (props) => {
   const protocol = useSelector(selectProtocol);
   const poolID = useSelector(selectPoolID);
   const currentPrice = useSelector(selectCurrentPrice) || 0;
+  const handleInputChange = (e) => dispatch(setCurrentPrice(e.target.value));
+
 
   const handleRefresh = () => {
     abortController.current.abort();
@@ -71,7 +73,7 @@ const CurrentPrice = (props) => {
     <div className={styles["input-container"]}>
       <label className={styles["input-label"]}>Current Price</label>
       <RefreshButton onClick={handleRefresh} alt="Refresh Current Price"></RefreshButton>
-      <input className={styles["default-input"]} label="Current Price" value={parsePrice(currentPrice)}></input>
+      <input className={styles["default-input"]} label="Current Price" value={parsePrice(currentPrice)} onChange={(e) => handleInputChange(e)}></input>
     </div>     
   );
 
@@ -91,8 +93,9 @@ const SideBar = (props) => {
         <Investment></Investment>
         <CurrentPrice></CurrentPrice>
       </div>
-      <StrategyRange leverageHidden={props.leverageHidden}></StrategyRange>
       <StrategyPicker strategies={props.strategies}></StrategyPicker>
+      <StrategyRange leverageHidden={props.leverageHidden}></StrategyRange>
+      
     </div>
   )
 }

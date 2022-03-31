@@ -22,8 +22,7 @@ const StrategyPicker = (props) => {
     </button>
     );
   });
-  
-  
+
   return (
     <div style={{paddingTop: 15, paddingLeft: "5%", display: "grid", alignItems: "center"}}>{list}</div>);
 }

@@ -37,6 +37,8 @@ export const strategies = createSlice({
   }
 });
 
+
+export const selectCompareStrategies = state => state.strategies.filter( s => s.id !== 'S1' && s.id !== 'S2');
 export const selectStrategies = state => state.strategies;
 export const selectStrategiesByIds = createSelector([strategies => strategies, (strategies, ids) => ids], (strategies, ids) => {
   return strategies.filter(d => ids.includes(d.id));

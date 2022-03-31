@@ -1,5 +1,5 @@
 /*
-   * Credit for this toggle component goes to Ryan Finni:
+   * Credit for toggle component goes to Ryan Finni:
    * https://letsbuildui.dev/articles/building-a-dark-mode-theme-toggle
 */
 
@@ -52,6 +52,7 @@ const themeProperties = (mode) => {
 }
 
 const updateTheme = (theme) => {
+  
   const propertySettings = themeProperties(theme);
 
   if (propertySettings && propertySettings.length) {
@@ -66,13 +67,21 @@ const updateTheme = (theme) => {
 }
 
 const ThemeToggle = (props) => {
+
   const [isEnabled, setIsEnabled] = useState(false);
 
   useEffect(() => {
-    const theme = isEnabled ? 'light' : 'dark';
+    const theme = isEnabled ? 'dark' : 'light';
     updateTheme(theme);
-    //  updateTheme('dark');
   }, [isEnabled]);
+
+  useEffect(() => {
+    const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+    if (prefersDarkScheme) {
+      updateTheme('dark');
+      setIsEnabled(true)
+    }
+  }, []);
 
   const toggleState = () => {
     setIsEnabled((prevState) => !prevState);

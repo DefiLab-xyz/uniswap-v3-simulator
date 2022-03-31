@@ -14,19 +14,19 @@ const Axes = (props) => {
       <Axis 
         scale={props.scaleBottom || props.scale} 
         width={props.width} height={props.height} 
-        margin={props.margin}
+        margin={props.margin} supressTickText={props.supressTickText}
         axisType="bottom" scaleType={props.chartProps.scaleTypeX || "linear"} dataType={props.chartProps.dataTypeX || "number"}>
       </Axis>
       <Axis 
         scale={props.scaleLeft || props.scale} 
         width={props.width} height={props.height} 
-        margin={props.margin}
+        margin={props.margin} supressTickText={props.supressTickText}
         axisType="left" scaleType={props.chartProps.scaleTypeY || "linear"} dataType={props.chartProps.dataTypeY || "number"} textAnchor="end">
        </Axis>
        <Axis 
         scale={props.scaleRight} 
         width={props.width} height={props.height} 
-        margin={props.margin} 
+        margin={props.margin} supressTickText={props.supressTickText}
         axisType="right" scaleType={props.chartProps.scaleTypeYRight || "linear"} dataType={props.chartProps.dataTypeYRight || "number"} 
         >
        </Axis>
@@ -59,6 +59,7 @@ export const ChartContext = createContext();
 const ChartContainer = forwardRef((props, ref) => {
 
   const windowDim = useSelector(selectWindowDimensions);
+  const [chartProps, setChartProps] = useState();
   const loading = useSelector(selectLoading);
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
@@ -69,8 +70,15 @@ const ChartContainer = forwardRef((props, ref) => {
   const chartContainerRef = useRef();
 
   useEffect(() => {
+    const defaultProps = { scaleTypeX: "linear", scaleTypeY:"linear", scaleTypeYRight: "linear",
+    dataTypeX: "date", dataTypeY: "number", ylabel: "", xlabel: "", ylabelRight: "", supressTickText: false, barPadding: 0.3 };
+    setChartProps({...defaultProps, ...props.chartProps});
 
-    if (ref.current.clientWidth && props.domain && props.data && props.chartProps) {
+  }, [props.chartProps]);
+
+  useEffect(() => {
+
+    if (ref.current.clientWidth && props.domain && props.data && chartProps) {
 
       const margin = props.margin || {top: 20, right: 30, bottom: 30, left: 70};
       const width = ref.current.clientWidth - margin.left - margin.right;
@@ -81,17 +89,17 @@ const ChartContainer = forwardRef((props, ref) => {
       setHeight(height);
       setTranslate("translate("+ margin.left +"," + margin.top + ")");
 
-      const x = chartscale({domain: props.domain.x, range: [0, width], scaleType: props.chartProps.scaleTypeX || "linear"});
-      const y = chartscale({domain: props.domain.y, range:[height, 0], scaleType: props.chartProps.scaleTypeY || "linear"});
-      const yRight = props.domain.hasOwnProperty('yRight') ? chartscale({domain: props.domain.yRight, range:[height, 0], scaleType: props.chartProps.scaleTypeYRight || "linear"}) : null;
+      const x = chartscale({domain: props.domain.x, range: [0, width], scaleType: chartProps.scaleTypeX, barPadding: chartProps.barPadding || 0});
+      const y = chartscale({domain: props.domain.y, range:[height, 0], scaleType: chartProps.scaleTypeY});
+      const yRight = props.domain.hasOwnProperty('yRight') ? chartscale({domain: props.domain.yRight, range:[height, 0], scaleType: chartProps.scaleTypeYRight}) : null;
       setScale({x: x, y: y, yRight: yRight });
     }
 
-  }, [windowDim, props.domain, props.data, ref, props.chartProps, props.margin]);
+  }, [windowDim, props.domain, props.data, ref, chartProps, props.margin]);
 
   useEffect(() => {
-    if (props.handleScale) { props.handleScale(scale) };
-  }, [scale]);
+    if (props.handleScale) { props.handleScale(scale, chartProps) };
+  }, [scale, chartProps]);
 
   useEffect(() => {
     if (props.handleWidth) { props.handleWidth(width) };
@@ -101,11 +109,11 @@ const ChartContainer = forwardRef((props, ref) => {
     if (props.handleHeight) { props.handleHeight(height) };
   }, [height]);
 
-  if (loading) {
+  if (loading || props.loading) {
     return (
       <div className={`${props.className}`} ref={ref}>
         <svg className={"chart-container-svg"}>
-          <Loader cx={"50%"} cy={"50%"} loading={loading}></Loader>
+          <Loader cx={"50%"} cy={"50%"} loading={props.loading || loading}></Loader>
         </svg>
       </div>
     )
@@ -119,10 +127,10 @@ const ChartContainer = forwardRef((props, ref) => {
             width={width} height={height} ref={chartContainerRef}></rect>
           <g className={"chart-container-g"} transform={translate}>
           <Axes scale={scale} scaleRight={scale && scale.yRight && scale.x ? {x: scale.x, y: scale.yRight} : null}
-                width={width} height={height} 
-                margin={margin} chartProps={props.chartProps}>
+                width={width} height={height} supressTickText={chartProps.supressTickText}
+                margin={margin} chartProps={chartProps}>
           </Axes>
-          <AxesLabels ylabel={props.chartProps.ylabel || ""} xlabel={props.chartProps.xlabel || ""} ylabelRight={props.chartProps.ylabelRight || ""}
+          <AxesLabels ylabel={chartProps.ylabel} xlabel={chartProps.xlabel} ylabelRight={chartProps.ylabelRight}
                 margin={margin} height={height} 
                 width={width}>
           </AxesLabels>
@@ -133,7 +141,7 @@ const ChartContainer = forwardRef((props, ref) => {
             mouseOverText={props.mouseOverText || []} handleMouseOver={props.handleMouseOver}
           ></MouseOverMarker>
           <CurrentPriceLine domain={props.domain} scale={scale} currentPriceLine={props.currentPriceLine}></CurrentPriceLine>
-          <Loader cx={"50%"} cy={"50%"} loading={loading}></Loader>
+          <Loader cx={"50%"} cy={"50%"} loading={props.loading || loading}></Loader>
           </g>
         </svg>
     </div> 

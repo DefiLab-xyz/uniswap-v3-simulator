@@ -96,7 +96,7 @@ const StrategyDragControls = (props) => {
   if (props.scale && props.domain && props.domain.y) {
     return (
       props.ids.map((d,i) => {
-        return (<StrategyDragControl id={d} scale={props.scale} color={props.colors[i]} y={props.scale.y(props.domain.y[0]) + (50 * (i + 1) - (i * 2))} ></StrategyDragControl>)
+        return (<StrategyDragControl key={d} id={d} scale={props.scale} color={props.colors[i]} y={props.scale.y(props.domain.y[0]) + (50 * (i + 1) - (i * 2))} ></StrategyDragControl>)
       })
     )
   }
@@ -115,8 +115,8 @@ const StrategyDrag = (props) => {
             <Lines colors={props.colors} data={props.data} 
             scale={chartContextData.scale} domain={props.domain}
             margin={props.margin || {top: 20, right: 30, bottom: 30, left: 70}} lineType="area"
-            strokeWidth={props.strokeWidth} fillOpacity={props.fillOpacity}>
-          </Lines>
+            strokeWidth={() => { return 0} } fillOpacity={props.fillOpacity}>
+            </Lines>
           <StrategyDragControls ids={props.ids} scale={chartContextData.scale} colors={props.colors} domain={props.domain}></StrategyDragControls>
         </g>
         )

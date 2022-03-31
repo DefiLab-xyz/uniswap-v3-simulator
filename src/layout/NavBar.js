@@ -97,7 +97,6 @@ const ERC20Donation = (props) => {
     alignItems: "center", 
     margin: "15px", 
     textAlign:"center", 
-    // backgroundColor: "#e5faf8", 
     padding:"15px" }
 
   return (
@@ -108,7 +107,7 @@ const ERC20Donation = (props) => {
     onClick={() => donationVis === null ? setDonationVis('hidden') : setDonationVis(null)}
     onBlur={() => setDonationVis('hidden')}
     >
-      <Donate alt="ERC20 QR code donation to DefiLab" className="nav-icon nav-icon-heart" ></Donate>
+      <Donate alt="ERC20 QR code donation to DefiLab" className="nav-icon nav-icon-heart"></Donate>
       {/* <img src={donate} alt="ERC20 QR code donation to DefiLab" style={props.imageStyle}></img> */}
     </ToolTip>
   )

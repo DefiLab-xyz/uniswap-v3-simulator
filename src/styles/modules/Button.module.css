@@ -53,3 +53,9 @@ button.round {
   height: 14px;
   margin-top: 3px;
 }
+
+.crement-img {
+  width: 8;
+  height: 8px;
+  /* margin-top: 3px; */
+}

@@ -42,16 +42,17 @@ const CandleChart = (props) => {
 
   useEffect(() => {
     if (props.data && props.domain && width && scale ) {
+
       const xFat = scaleBand()
       .range([0, width])
       .domain(props.domain.x)
-      .paddingInner(0.3)
-      .paddingOuter(0.3);
+      .paddingInner(0.39)
+      .paddingOuter(0.39);
 
       const xThin = scaleBand()
       .range([0, width])
       .domain(props.domain.x)
-      .paddingInner(0.9)
+      .paddingInner(0.99)
       .paddingOuter(0.6);
 
       setFatScale({x: xFat, y: scale.y})

@@ -1,15 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
 import { roundToNearestTick } from "../helpers/uniswap/liquidity";
+import { chartColors } from "../data/colorsUniswap";
 
 const initialState = [
-{id: "S1", name: "V3 Strategy 1", color: "rgb(124, 194, 246)", 
+{id: "S1", name: "Strategy 1", color: chartColors.blue, 
   inputs: { min: { value: 1, name: "Min", label: "Min Range S1" }, max: {value: 1, name: "Max", label: "Max Range S1" } },
-  liquidityMultiplier: 1, selected: true, leverage: 1
+  liquidityMultiplier: 1, selected: true, leverage: 1, rangesEditable: true, tokenratio: {token0: 0.5, token1: 0.5}
 }, 
-{id: "S2", name: "V3 Strategy 2", color: "rgb(175, 129, 228)", 
-  inputs:  { min: { value: 1, name: "Min", label: "Min Range S1" }, max: {value: 1, name: "Max", label: "Max Range S1" } },
-  liquidityMultiplier: 1, selected: true, leverage: 1
+{id: "S2", name: "Strategy 2", color: chartColors.purple, 
+  inputs:  { min: { value: 1, name: "Min", label: "Min Range S1" }, max: {value: 1, name: "Max", label: "Max Range S2" } },
+  liquidityMultiplier: 1, selected: true, leverage: 1, rangesEditable: true, tokenratio: {token0: 0.5, token1: 0.5}
+},
+{id: "v2", name: "Unbounded", color: chartColors.green, 
+  inputs:  { min: { value: Math.pow(1.0001, -887220), name: "Min", label: "Min Range V2" }, max: {value: Math.pow(1.0001, 887220), name: "Max", label: "Max Range V2" } },
+  liquidityMultiplier: 1, selected: true, leverage: 1, rangesEditable: false, tokenratio: {token0: 0.5, token1: 0.5}
 }];
 
 const calcContrentratedLiquidityMultiplier = (min, max) => {
@@ -129,6 +134,19 @@ export const strategyRanges = createSlice({
       if (index >=0) {
         state[index].selected = state[index].selected === true ? false : true;
       }
+    },
+    setStrategyLeverage: (state, action) => {
+      const index = state.findIndex(i => i.id === action.payload.id);
+      if (index >=0) {
+        state[index].leverage = parseFloat(action.payload.leverage);
+      }
+    },
+    setTokenRatio: (state, action) => {
+      const index = state.findIndex(i => i.id === action.payload.id);
+      if (index >=0) {
+        console.log(action.payload.tokenratio)
+        state[index].tokenratio = action.payload.tokenratio;
+      }
     }
   }
 });
@@ -137,6 +155,11 @@ export const selectStrategyRanges = state => state.strategyRanges;
 
 export const selectStrategyRangeById = createSelector([strategies => strategies, (strategies, id) => id], (strategies, id) => {
   return strategies.find(d => d.id === id);
+});
+
+export const selectStrategyRangeTokenRatioById = createSelector([strategies => strategies, (strategies, id) => id], (strategies, id) => {
+  const strategy = strategies.find(d => d.id === id);
+  if (strategy) return strategy.tokenratio;
 });
 
 export const selectSelectedStrategyRanges = state => {
@@ -148,6 +171,61 @@ export const selectSelectedStrategyRanges = state => {
   return selectedStrategies;
 }
 
-export const { setStrategyRangeInputVal, setDefaultStrategyRangeInputVals, 
-  crementStrategyRangeInputVal, toggleStrategyRangeInputVals, setStrategyRangeSelected} = strategyRanges.actions;
+export const selectSelectedEditableStrategyRanges = state => {
+  const selectedStrategies = [];
+  state.strategyRanges.forEach(d => {
+    if (d.selected && d.rangesEditable) { selectedStrategies.push(d) }
+  });
+  
+  return selectedStrategies;
+}
+
+export const selectSelectedEditableTokenRatios = state => {
+  const selectedStrategies = [];
+  state.strategyRanges.forEach(d => {
+    if (d.selected && d.rangesEditable) { selectedStrategies.push(d.tokenratio) }
+  });
+  
+  return selectedStrategies;
+}
+
+export const selectEditableStrategyRanges = state => {
+  const strategies = [];
+  state.strategyRanges.forEach(d => {
+    if (d.rangesEditable) { strategies.push(d) }
+  });
+  
+  return strategies;
+}
+
+export const selectStrategyRangeMinValues = state => {
+  const strategyVals = [];
+  state.strategyRanges.forEach(d => {
+    if (d.selected && d.rangesEditable) strategyVals.push(d.inputs["min"].value);
+  });
+  
+  return strategyVals;
+}
+
+export const selectStrategyRangeMaxValues = state => {
+  const strategyVals = [];
+  state.strategyRanges.forEach(d => {
+    if (d.selected && d.rangesEditable) strategyVals.push(d.inputs["max"].value);
+  });
+  
+  return strategyVals;
+}
+
+export const selectStrategyRangeMinMaxValues = state => {
+  const strategyVals = [];
+  state.strategyRanges.forEach(d => {
+    if (d.selected && d.rangesEditable) strategyVals.push({id: d.id, min: d.inputs["min"].value, max: d.inputs["max"].value});
+  });
+  
+  return strategyVals;
+}
+
+export const { setStrategyRangeInputVal, setDefaultStrategyRangeInputVals, setStrategyLeverage,
+  crementStrategyRangeInputVal, toggleStrategyRangeInputVals, setStrategyRangeSelected, setTokenRatio} = strategyRanges.actions;
+
 export default strategyRanges.reducer;

@@ -197,7 +197,7 @@ const Ticks = (props) => {
   const tickLines = [...Array(ticks)].map((t, i) => {
 
     const translateCoords = AxisTickTranslate(props, tickCoords.space, i);
-    const tickText = axisTickText(props, translateCoords);
+    const tickText = props.supressTickText ? "" : axisTickText(props, translateCoords);
 
     return <g 
       className="chart-axis-ticks"
@@ -249,7 +249,8 @@ export const Axis = (props) => {
         dataType={props.dataType}
         margin={props.margin}
         textAnchor={props.textAnchor}
-        format={props.format}>
+        format={props.format}
+        supressTickText={props.supressTickText}>
         </Ticks>
       </g>
     );

@@ -1,29 +1,27 @@
 
 // external libs
-import { useState, useEffect, useRef, useCallback, Fragment } from "react"
-import { useSelector } from "react-redux"
-import { bisector } from 'd3-array'
+import { useState, useEffect, Fragment } from "react"
+import { useDispatch, useSelector } from "react-redux"
 
 // internal helpers
 import styles from '../styles/modules/StrategyOverview.module.css'
-import { maxInArray } from "../helpers/numbers"
+import { maxInArray, minInArray } from "../helpers/numbers"
+import { genTokenRatios } from "../helpers/uniswap/strategies"
+import { genChartData, genV3StrategyData } from "../helpers/uniswap/strategiesChartData"
 
 // Data //
 import { selectCurrentPrice, selectBaseToken, selectQuoteToken } from "../store/pool"
 import { selectInvestment } from "../store/investment"
-import { selectStrategies } from "../store/strategies"
-import { selectStrategyRanges, selectSelectedStrategyRanges } from "../store/strategyRanges"
-import { genChartData, genV3StrategyData, genSelectedChartData, genSelectedStrategyData } from "../helpers/uniswap/strategiesChartData"
+import { selectStrategies, selectStrategiesByIds } from "../store/strategies"
+import { selectStrategyRanges, selectSelectedEditableStrategyRanges, selectEditableStrategyRanges, setTokenRatio } from "../store/strategyRanges"
 
 // Components //
-
-import { LineChart } from "../components/charts/LineChart"
-import StrategyDrag from "../components/charts/StrategyDrag"
 import { ConcentratedLiquidityMultiplier, StrategyRangeSize, StrategyTokenRatio } from "../components/StrategyIndicators"
 import { ToggleButtonsFlex } from "../components/ButtonList"
 import TokenRatioChart from "../components/uniswap/TokenRatioChart"
 import TokenValueSplitChart from "../components/uniswap/TokenValueSplitChart"
 import ImpermanentLossChart from "../components/uniswap/ImpermanentLossChart"
+import StrategyOverviewChart from "../components/uniswap/StrategyOverviewChart"
 
 const Title = (props) => {
 
@@ -32,52 +30,15 @@ const Title = (props) => {
   
   return (
     <div class={`title ${styles['title']}`}>
-      <span>{`Asset Value (excl. fees) vs ${baseToken.symbol} / ${quoteToken.symbol} Price`}</span>
+      <span>{`Asset Value (excl. fees) vs ${quoteToken.symbol} / ${baseToken.symbol} Price`}</span>
     </div>
   );
 }
 
-
-const StrategyOverviewChart = (props) => {
-
-  const strategies = useSelector(selectStrategies);
-  const baseToken = useSelector(selectBaseToken);
-  const [chartData, setChartData] = useState([]);
-  const [v3StrategyData, setV3StrategyData] = useState([]);
-
-  const margin = {top: 20, right: 30, bottom: 120, left: 70};
-  const chartProps = { scaleTypeX: "linear", scaleTypeY:"linear", 
-  dataTypeX: "number", dataTypeY: "number", ylabel: `Asset Value ${baseToken.symbol}` , xlabel: "" }
-
-  useEffect(() => {
-    if (props.v3StrategyData) {
-      const strategyData = genSelectedStrategyData(props.v3StrategyData, strategies);
-      setV3StrategyData(strategyData);
-    }
-  }, [strategies, props.v3StrategyData]);
-
-  useEffect(() => {
-    if (props.chartData) {
-      const chartData = genSelectedChartData(props.chartData, strategies);
-      setChartData(chartData);
-    }
-  }, [strategies, props.chartData]);
-
-  return (    
-  <LineChart
-    className={`${styles['chart']} ${styles['strategy-chart']} inner-glow`}
-    data={chartData.data} domain={props.chartDomain}
-    avgLine={true} mouseOverMarker={true}
-    chartProps={chartProps} colors={chartData.colors}
-    currentPriceLine={true} margin={margin}>
-      <StrategyDrag data={v3StrategyData.data} colors={v3StrategyData.colors} ids={v3StrategyData.ids} domain={props.chartDomain}></StrategyDrag>
-  </LineChart>
-  )
-}
-
 const StrategyOverviewIndicators = (props) => {
 
-  const selectedStrategies = useSelector(selectSelectedStrategyRanges);
+  const selectedStrategies = useSelector(selectSelectedEditableStrategyRanges);
+
   return (
     <div className={`${styles['strategy-indicators']}`}>
       <ConcentratedLiquidityMultiplier strategies={selectedStrategies}></ConcentratedLiquidityMultiplier>
@@ -89,7 +50,8 @@ const StrategyOverviewIndicators = (props) => {
 
 const StrategyToggle = (props) => {
 
-  const strategies = useSelector(selectStrategyRanges);
+  const strategies = useSelector(selectEditableStrategyRanges);
+  
   const buttons = strategies.map( d => {
     return {id: d.id, label: d.name, style: {color: d.color}}
   });
@@ -156,16 +118,55 @@ const StrategyOverview = (props) => {
 
   const currentPrice = useSelector(selectCurrentPrice);
   const investment = useSelector(selectInvestment);
-  const strategies = useSelector(selectStrategies);
+  const strategiesAll = useSelector(selectStrategies);
+  const strategies = props.strategies ? selectStrategiesByIds(strategiesAll, props.strategies) : strategiesAll; 
   const strategyRanges = useSelector(selectStrategyRanges);
 
   const [chartData, setChartData] = useState();
-  const [v3StrategyData, setV3StrategyData] = useState();
   const [chartDomain, setChartDomain] = useState();
+
+  const [v3StrategyData, setV3StrategyData] = useState();
 
   const [selectedStrategyToggle, setSelectedStrategyToggle] = useState(strategyRanges[0]);
   const [selectedStrategyChartData, setSelectedStrategyChartData] = useState();
+  const [strategyLimits, setStrategyLimits] = useState();
 
+  //-------------------------------------------------------------------------------------------------
+  // Asset Value Chart 
+  //-------------------------------------------------------------------------------------------------
+
+  // Generate new Asset Value chart data when input values change 
+  useEffect(() => {
+      const newChartData =  genChartData(currentPrice, investment, strategyRanges, strategies, props.chartDataOverride);
+      setChartData(newChartData);
+  }, [currentPrice, investment, props.chartDataOverride, strategies, strategyRanges]);
+
+  // Generate V3 Strategy data used for drag controls when chart data or Strategy Range values change
+  useEffect(() => {
+    if (chartData) {
+      setV3StrategyData(genV3StrategyData(currentPrice, investment, strategyRanges, strategies, chartData, props.chartDataOverride || 'data'));
+    }
+  }, [chartData, currentPrice, investment, props.chartDataOverride, strategies, strategyRanges]);
+
+  // Generate Asset Value Chart's domain when chart data changes
+  useEffect(() => {
+    if (chartData && chartData.length) {
+
+      const xMax = maxInArray(chartData.map(d => d[props.chartDataOverride || 'data']), 'x');
+      const yMax = maxInArray(chartData.map(d => d[props.chartDataOverride || 'data']), 'y');
+      const yMin = minInArray(chartData.map(d => d[props.chartDataOverride || 'data']), 'y');
+      const xMin = minInArray(chartData.map(d => d[props.chartDataOverride || 'data']), 'x');
+
+      setChartDomain({x: [Math.min(xMin, 0), Math.max(xMax, 0)], y: [Math.min(yMin, 0), Math.max(yMax, Math.abs(yMin * 0.2))]});
+    }
+
+  }, [chartData]);
+
+  //-------------------------------------------------------------------------------------------------
+  // Strategy Toggle
+  //-------------------------------------------------------------------------------------------------
+
+   // Toggle which Strategy is used for Position breakdown and Impermanant Loss Charts (displays one strategy at a time)
   const updateSelectedStrategyToggle = (strategy) => {
     const selected = strategyRanges.find(d => d.id === strategy.id);
     setSelectedStrategyToggle(selected);
@@ -173,45 +174,71 @@ const StrategyOverview = (props) => {
 
   useEffect(() => {
     updateSelectedStrategyToggle(selectedStrategyToggle);
-  }, [strategyRanges])
+  }, [strategyRanges]);
+
+  // Set chart data for Position breakdown and Impermanant Loss Charts when Strategy Toggle changes
+    useEffect(() => {
+      if (chartData && selectedStrategyToggle) {
+        const selectedChartData = chartData.find(d => d.id === selectedStrategyToggle.id);
+        setSelectedStrategyChartData(selectedChartData.data);
+      }
+    }, [chartData, selectedStrategyToggle]);
+
+    // save min max values of selected strategies in an object to pass to child components
+
+    useEffect(() => {
+      if (selectedStrategyToggle && selectedStrategyToggle.inputs) {
+        setStrategyLimits({ min: selectedStrategyToggle.inputs.min.value, max: selectedStrategyToggle.inputs.max.value })
+      }
+    }, [selectedStrategyToggle])
+
+  //-------------------------------------------------------------------------------------------------
+  // Extend grid area if Asset Value Chart should display additional hover values
+  //-------------------------------------------------------------------------------------------------
 
   useEffect(() => {
-    setChartData(genChartData(currentPrice, investment, strategyRanges, strategies));
-  }, [currentPrice, investment, strategies, strategyRanges]);
 
-  useEffect(() => {
-    if (chartData && selectedStrategyToggle) {
-      const selectedChartData = chartData.find(d => d.id === selectedStrategyToggle.id)
-      setSelectedStrategyChartData(selectedChartData.data);
+    if (props.extendedHoverData) {
+
+      const styles = getComputedStyle(document.body);
+      const docEl = document.documentElement;
+
+      const strategyContainerRowSpan = styles.getPropertyValue("--strategy-container-row-span-extended");
+      const strategyChartRowSpan = styles.getPropertyValue("--strategy-chart-row-span-extended");
+
+      docEl.style.setProperty("--strategy-container-row-span", strategyContainerRowSpan);
+      docEl.style.setProperty("--strategy-chart-row-span", strategyChartRowSpan);
     }
-  }, [chartData, selectedStrategyToggle])
 
-  useEffect(() => {
-    if (chartData) {
-      setV3StrategyData(genV3StrategyData(currentPrice, investment, strategyRanges, strategies, chartData));
-    }
-  }, [chartData, currentPrice, investment, strategies, strategyRanges]);
-
-  useEffect(() => {
-    if (chartData && chartData.length) {
-      const x = maxInArray(chartData.map(d => d.data), 'x');
-      const y = maxInArray(chartData.map(d => d.data), 'y');
-      setChartDomain({x: [0, x], y: [0, y]});
-    }
-  }, [chartData]);
+  }, [props.extendedHoverData]);
 
   return (
     <div className={`${styles['strategy-overview-container']} dashboard-section outer-glow`}>
       <Title></Title>
-      <StrategyOverviewChart chartData={chartData} v3StrategyData={v3StrategyData} chartDomain={chartDomain}></StrategyOverviewChart>
+      <StrategyOverviewChart chartData={chartData} v3StrategyData={v3StrategyData} chartDomain={chartDomain} 
+        chartDataOverride={props.chartDataOverride} zeroLine={props.zeroLine} extendedHoverData={props.extendedHoverData}>
+      </StrategyOverviewChart>
       <StrategyOverviewIndicators chartData={chartData}></StrategyOverviewIndicators>
       <StrategyToggle handleStrategyChange={updateSelectedStrategyToggle}></StrategyToggle>
-      <PositionBreakdown selectedStrategy={selectedStrategyToggle} chartData={selectedStrategyChartData}></PositionBreakdown>
-      <ImpermanentLossChart className={styles['imp-loss-chart-container']} 
+      
+      { props.impLossHidden ? 
+      <Fragment>
+         <div class={`sub-title ${styles['position-breakdown-token-ratio-title']}`}>Position Breakdown By Token Ratio</div>
+        <TokenRatioChart className={`${styles["position-breakdown-token-ratio-container"]} inner-glow`} chartData={selectedStrategyChartData} strategy={selectedStrategyToggle} strategyLimits={strategyLimits}></TokenRatioChart>
+        <div class={`sub-title ${styles['position-breakdown-value-title']}`}>Position Breakdown By Token Value</div>
+        <TokenValueSplitChart className={`${styles["position-breakdown-value-container"]} inner-glow`} chartData={selectedStrategyChartData} strategy={selectedStrategyToggle} strategyLimits={strategyLimits}></TokenValueSplitChart>
+      </Fragment> :
+      <Fragment>
+        <PositionBreakdown selectedStrategy={selectedStrategyToggle} chartData={selectedStrategyChartData}></PositionBreakdown>
+        <ImpermanentLossChart className={styles['imp-loss-chart-container']} 
         classNameTitle={styles['imp-loss-chart-title']}
         classNameDropdown={styles['imp-loss-chart-dropdown']}
         selectedStrategy={selectedStrategyToggle} data={chartData}>
       </ImpermanentLossChart>
+      </Fragment>
+        
+      }
+      
     </div>
   )
 }

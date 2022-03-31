@@ -4,14 +4,19 @@ import {setDefaultStrategyRangeInputVals, toggleStrategyRangeInputVals} from "./
 
 import { stdSample } from "../helpers/std";
 import { sumArray } from "../helpers/numbers";
+import { tokensForStrategy, liquidityForStrategy } from "../helpers/uniswap/liquidity";
 
 import {liquidityByPoolId} from '../api/thegraph/uniTicks'
 import {getPoolDayData} from '../api/thegraph/uniPoolDayDatas'
+
+
 
 const initialState = {
 id: "", 
 feeTier: 0, 
 name: "",
+price_base: "",
+price_quote: "",
 baseToken: {id: 0, symbol: "", name: "", decimals: "", currentPrice: ""},
 quoteToken: {id: 1, symbol: "", name: "", decimals: "", currentPrice: ""},
 loading: true, std: "", mean: "", normStd: "", liquidity: ""};
@@ -30,24 +35,39 @@ const genDailyStats = (dailyPoolData) => {
 
 const genLiquidityData = (data, feeTier) => {
 
+  const calcTvl = (liquidity, feeTier, price, decimals) => {
+
+    const multiplier = 1 + (feeTier / 500000);
+    const T = liquidity * Math.sqrt(price);
+    const H = liquidity / Math.sqrt(price * multiplier);
+
+    const amount0 = ((Math.pow(liquidity, 2) / T) - H)  / Math.pow(10, decimals[1]);
+    const amount1 = ((Math.pow(liquidity, 2 ) / H) - T) / Math.pow(10, decimals[0]);
+
+    return [amount0, amount1];
+
+  }
+
   let cumsum = 0;
   const multiplier = 1 + (feeTier / 500000);
   if (data && data.length && data.length > 0) {
     let len = data.length;
 
   return data.map((d, i) => {
+
     cumsum += parseFloat(d.liquidityNet);
     const T = cumsum * Math.sqrt(d.price0);
     const H = cumsum / Math.sqrt(d.price0 * multiplier);
-    const width = Math.abs(parseInt(data[Math.min((len - 1), (i + 1))].tickIdx)  - parseInt(d.tickIdx))
+    const nextRecord = Math.min((len - 1), (i + 1));
+    const width = Math.abs(parseInt(data[nextRecord].tickIdx)  - parseInt(d.tickIdx))
 
     return {
       ...d, 
       decimal: parseInt(d.pool.token0.decimals) - parseInt(d.pool.token1.decimals),
       liquidity: cumsum,
       width: parseFloat(width),
-      amount0: ((Math.pow(cumsum, 2) / T) - H) / Math.pow(10, d.pool.token0.decimals),
-      amount1: ((Math.pow(cumsum, 2 ) / H) - T) / Math.pow(10, d.pool.token1.decimals),
+      tvlAmount0: ((Math.pow(cumsum, 2) / T) - H) / Math.pow(10, d.pool.token0.decimals),
+      tvlAmount1: ((Math.pow(cumsum, 2 ) / H) - T) / Math.pow(10, d.pool.token1.decimals),
       price0: parseFloat(d.price0),
       price1: parseFloat(d.price1),
       price0N: Math.pow(1.0001, d.tickIdx) / Math.pow(10, (d.pool.token1.decimals - d.pool.token0.decimals)),
@@ -74,8 +94,10 @@ export const fetchPoolData = pool => {
     const payload = {
       ...pool,
       name: pool.token1.symbol + " / " + pool.token0.symbol,
+      price_base: pool.token0.symbol,
+      price_token: pool.token1.symbol,
       baseToken: {id: 0, symbol: pool.token0.symbol, name: pool.token0.name, decimals: pool.token0.decimals, currentPrice: parseFloat(pool.token0Price)},
-      quoteToken: {id: 1, symbol: pool.token1.symbol, name: pool.token1.name, decimals: pool.token1.decimals, currentPrice: parseFloat(pool.token1Price)},
+      quoteToken: { id: 1, symbol: pool.token1.symbol, name: pool.token1.name, decimals: pool.token1.decimals, currentPrice: parseFloat(pool.token1Price)},
       loading: false,
       std: poolStats.std,
       mean: poolStats.mean,
@@ -120,6 +142,12 @@ export const poolSlice = createSlice({
       state.value.name = oldbase.symbol + " / " + oldquote.symbol;
       
     },
+    setCurrentPrice: (state, action) => {
+      if (action.payload && action.payload > 0) {
+        state.value.baseToken.currentPrice = action.payload;
+        state.value.quoteToken.currentPrice = 1 / action.payload
+      }
+    },
     refreshCurrentPrices: (state, action) => {
       const basePriceField = "token" + state.value.baseToken.id + "Price";
       const quotePriceField = "token" + state.value.quoteToken.id + "Price";
@@ -136,6 +164,7 @@ export const selectPool = state => state.pool.value;
 export const selectPoolID = state => state.pool.value.id;
 export const selectBaseToken = state => state.pool.value.baseToken;
 export const selectQuoteToken = state => state.pool.value.quoteToken;
+export const selectBaseTokenId = state => state.pool.value.baseToken.id;
 export const selectFeeTier = state => state.pool.value.feeTier;
 export const selectCurrentPrice = state => parseFloat(state.pool.value.baseToken.currentPrice);
 export const selectPoolDayData = state => state.pool.value.poolDayData;
@@ -143,6 +172,8 @@ export const selectLoading = state => state.pool.value.loading;
 export const selectNormStd = state => parseFloat(state.pool.value.normStd);
 export const selectLiquidity = state => state.pool.value.liquidity;
 export const selectPoolName = state => state.pool.value.name;
+export const selectPriceBase = state => state.pool.value.price_base;
+export const selectPriceToken = state => state.pool.value.price_token;
 
 export const selectYesterdaysPriceData = state => {
   if (state.pool.value.poolDayData && state.pool.value.poolDayData.length &&
@@ -155,5 +186,5 @@ export const selectYesterdaysPriceData = state => {
 }
 
 
-export const { setPool, refreshCurrentPrices, setLoading, setToggleBaseToken } = poolSlice.actions;
+export const { setPool, refreshCurrentPrices, setLoading, setToggleBaseToken, setCurrentPrice } = poolSlice.actions;
 export default poolSlice.reducer

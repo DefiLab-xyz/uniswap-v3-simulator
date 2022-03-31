@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from '../styles/modules/ButtonList.module.css'
 
 export const ToggleButtonsFlex = (props) => {
@@ -27,7 +27,7 @@ export const ToggleButtonsFlex = (props) => {
   )
 }
 
-export const ButtonListGrid = (props) => {
+export const ButtonListToggle = (props) => {
 
   const [selected, setSelected] = useState(0);
 
@@ -40,15 +40,45 @@ export const ButtonListGrid = (props) => {
   props.buttons.map((d, i) => {
     return ( 
       <button  style={d.style}
-        onMouseDown={() => handleSelected(d, i)} className={ selected === i ? `${styles["button-list-grid"]} ${props.classNameButton}` : `${styles["button-list-grid"]} ${props.classNameButton}` }>
+        onMouseDown={() => handleSelected(d, i)} className={ selected === i ? `${styles[`button-list-${props.type}`]} ${props.classNameButton}` : `${styles[`button-list-${props.type}`]} ${props.classNameButton}` }>
         { props.labelKey ? d[props.labelKey] : d.label || ""}
       </button>
     );
   });  
 
   return (
-    <div className={`${styles['button-list-grid-container']} ${props.className}`} style={props.style}>
+    <div className={`${styles[`button-list-${props.type}-container`]} ${props.className}`} style={props.style}>
       {buttons}
+    </div>
+  )
+}
+
+export const ButtonList = (props) => {
+
+  const [buttons, setButtons] = useState(props.buttons || []);
+
+  const handleSelected = (d, i) => {
+    const tempButtons = [...buttons];
+    tempButtons[i].selected = !tempButtons[i].selected;
+    setButtons([...tempButtons])
+    if (props.handleSelected) props.handleSelected(tempButtons[i]);
+  }
+
+  useEffect(() => {
+    setButtons(props.buttons)
+  }, [props.buttons])
+  
+  return (
+    <div className={`${styles[`button-list-${props.type}-container`]} ${props.className}`} style={props.style}>
+      {
+         buttons && buttons.length ? buttons.map((d, i) => {
+          return ( 
+            <button style={d.style}
+              onMouseDown={() => handleSelected(d, i)} className={ d.selected ? `${styles[`button-list-${props.type}-selected`]} ${props.classNameButton}` : `${styles[`button-list-${props.type}`]} ${props.classNameButton}` }>
+              { props.labelKey ? d[props.labelKey] : d.label || ""}
+            </button>
+         )}) : <></>
+        }
     </div>
   )
 }

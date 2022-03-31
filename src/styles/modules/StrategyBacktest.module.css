@@ -1,0 +1,122 @@
+:root {
+  --strategy-backtest-container-row-start : calc(var(--price-liquidity-container-row-start) + var(--price-liquidity-container-row-span) + 1);
+  --strategy-backtest-container-row-span: 60;
+  --strategy-backtest-title-span: 1;
+  --strategy-backtest-chart-span: 15;
+  --backtest-indicators-row-span: 8;
+}
+
+.strategy-backtest-container {
+  grid-row: var(--strategy-backtest-container-row-start) / span var(--strategy-backtest-container-row-span);
+  display: grid;
+  grid-template-rows: repeat(50, 2%);
+  grid-template-columns: repeat(25, 4%);
+}
+
+.strategy-backtest-title {
+  grid-row: 1 / span var(--strategy-backtest-title-span);
+  grid-column: 1 / span 25;
+}
+
+.strategy-backtest-chart {
+  grid-row: 2 / span var(--strategy-backtest-chart-span);
+  grid-column: 1 / span 25;
+}
+
+.bar-mouseover {
+  outline: 1px solid rgba(238, 175, 246);
+  /* outline-offset: 0.5; */
+  fill-opacity: 1;
+  stroke-opacity: 0.5;
+}
+
+.backtest-indicators-container {
+  grid-row: calc(var(--strategy-backtest-chart-span) + var(--strategy-backtest-title-span) + 4);
+  grid-row: span calc(var(--strategy-backtest-container-row-span) - var(--strategy-backtest-chart-span) - var(--strategy-backtest-title-span) - 3);
+  grid-column: 1 / span 25;
+  display: grid;
+  grid-template-rows: repeat(25, 4%);
+  grid-template-columns: repeat(25, 4%);
+}
+
+.backtest-indicators {
+  grid-row: 3 / span var(--backtest-indicators-row-span);
+  grid-column: 1 / span 25;
+}
+
+.backtest-indicators td, .backtest-indicators th {
+  padding: 15px;
+}
+
+.backtest-indicators th {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.strategy-toggle-container {
+  grid-row: calc(5 + var(--backtest-indicators-row-span)) / span 2;
+  grid-column: 10;
+}
+
+.strategy-toggle {
+  width: 240px;
+}
+
+.strategy-breakdown-container {
+  grid-column: 1 / span 25;
+  grid-row: calc(7 + var(--backtest-indicators-row-span)) / span 8;
+  display: grid;
+  grid-template-rows: repeat(10, 10%);
+  grid-template-columns: repeat(25, 4%);
+  grid-row-gap: 0.5em;
+}
+
+.strategy-breakdown-chart {
+  grid-row: 3 / span 9;
+}
+
+.strategy-breakdown-chart-left {
+  /* margin-right: 2%; */
+  grid-column: 1 / span 12;
+}
+
+.strategy-breakdown-chart-right {
+  grid-column: 14 / span 12;
+}
+
+.strategy-breakdown-total-return-title {
+  grid-row: 2 / span 1;
+  grid-column: 1 / span 12;
+  display: flex;
+  align-items: center;
+}
+
+.strategy-breakdown-total-return-perc-title {
+  grid-row: 2 / span 1;
+  grid-column: 14 / span 12;
+}
+
+.strategy-dropdown {
+  grid-row: 1 / span 1;
+  grid-column: 14 / span 12;
+  text-align: right;
+  padding-right: 5px;
+}
+
+
+.strategy-dropdown + button {
+  margin-top: 5px;
+  padding-bottom: 5px;
+  grid-row: 2 / span 1;
+  grid-column: 21 / span 4;
+  overflow: visible;
+}
+
+.strategy-dropdown + button + div {
+  margin-top: 5px;
+  grid-row: 4 / span 4;
+  grid-column: 21 / span 12;
+  overflow: visible;
+  display: grid;
+  justify-items: start;
+}

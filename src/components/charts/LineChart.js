@@ -54,7 +54,7 @@ export const Lines = (props) => {
             strokeLinecap="round"
             d={line(d)}
             fill={ props.colors && props.colors.length ? props.colors[i] : "rgb(238, 175, 246)" }
-            fillOpacity={ props.strokeWidth ? props.fillOpacity(d, i) : 0.3}>
+            fillOpacity={ props.fillOpacity ? props.fillOpacity(d, i) : 0.3}>
             </path>
           </g>);
       }
@@ -65,6 +65,7 @@ export const Lines = (props) => {
               class={`path-two-${props.uniqueName}`} 
               stroke={ props.colors && props.colors.length ? props.colors[i] : "rgba(238, 175, 246, 0.8)"}
               strokeWidth={ props.strokeWidth ? props.strokeWidth(d, i) : "4px"}
+              strokeDasharray={ props.dash && props.dash.length && props.dash[i] === true ? " 1 4" : ""}
               strokeLinecap="round"
               d={line(d)}
               fill="none"
@@ -74,6 +75,7 @@ export const Lines = (props) => {
               class={`path-two-${props.uniqueName}`} 
               stroke={ props.colors && props.colors.length ? props.colors[i] : "rgba(238, 175, 246, 0.8)"}
               strokeWidth={ props.strokeWidth ? props.strokeWidth(d, i) : "1px"}
+              strokeDasharray={ props.dash && props.dash.length && props.dash[i] === true ? " 1 4" : ""}
               strokeLinecap="round"
               d={line(d)}
               fill="none"
@@ -106,7 +108,7 @@ export const LineChart = (props) => {
     domain={props.domain} margin={props.margin} mouseOverMarkerPos={props.mouseOverMarkerPos}
     chartProps={props.chartProps} handleScale={handleScale} currentPriceLine={props.currentPriceLine}
     mouseOverMarker={props.mouseOverMarker} mouseOverText={props.mouseOverText || []} handleMouseOver={props.handleMouseOver}>
-      <Lines colors={props.colors} data={props.data} 
+      <Lines colors={props.colors} data={props.data} dash={props.dash}
         scale={scale} domain={props.domain}
         margin={props.margin || {top: 20, right: 30, bottom: 30, left: 70}} lineType={props.lineType}
         strokeWidth={props.strokeWidth} fillOpacity={props.fillOpacity}>
@@ -133,7 +135,6 @@ export const LineChartStacked = (props) => {
       stacker.keys(props.keys);
       setStackedData(stacker(props.data));
     }
-    
   }, [props.data, props.keys, props.domain])
 
 
@@ -142,10 +143,10 @@ export const LineChartStacked = (props) => {
     domain={props.domain} margin={props.margin} mouseOverMarkerPos={props.mouseOverMarkerPos}
     chartProps={props.chartProps} handleScale={handleScale} currentPriceLine={props.currentPriceLine}
     mouseOverMarker={props.mouseOverMarker} mouseOverText={props.mouseOverText || []} handleMouseOver={props.handleMouseOver}>
-      <Lines colors={props.colors} data={stackedData} 
+      <Lines colors={props.colors} data={stackedData} dash={props.dash}
         scale={scale} domain={props.domain} stacked={true}
         margin={props.margin || {top: 20, right: 30, bottom: 30, left: 70}} lineType={props.lineType}
-        strokeWidth={props.strokeWidth} fillOpacity={props.fillOpacity}>
+        strokeWidth={props.strokeWidth} fillOpacity={props.fillOpacity} xScaleKey={props.xScaleKey}>
       </Lines>
       {props.children}
    </ChartContainer>

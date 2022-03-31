@@ -1,7 +1,12 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
+// Styles //
 import '../styles/UniswapSimulator.css';
+import SideBarStyles from '../styles/modules/SideBar.module.css';
+import PoolOverviewStyles from '../styles/modules/PoolOverview.module.css';
+import PoolPriceLiquidityStyles from '../styles/modules/PoolPriceLiquidity.module.css';
+
 
 // Layout //
 import NavBar from "../layout/NavBar";
@@ -10,11 +15,12 @@ import DashBoard from "../layout/DashBoard";
 import PoolOverview from '../layout/PoolOverview';
 import StrategyOverview from '../layout/StrategyOverview';
 import PoolPriceLiquidity from '../layout/PoolPriceLiquidity';
+import StrategyBacktest from '../layout/StrategyBacktest';
 
 // Components //
 import Grid from "../components/Grid"
 
-// Sata //
+// Data //
 import { poolById } from '../api/thegraph/uniPools'
 import { fetchPoolData, selectPool } from '../store/pool';
 import { setWindowDimensions, selectWindowDimensions } from '../store/window';
@@ -87,6 +93,7 @@ useEffect(() => {
           <PoolOverview></PoolOverview>
           <StrategyOverview></StrategyOverview>
           <PoolPriceLiquidity></PoolPriceLiquidity>
+          <StrategyBacktest></StrategyBacktest>
           <SideBar width={windowDim.width} minWidth={pageMinWidth} protocols={[0, 1, 2, 3]} leverageHidden={true}></SideBar>
           <DashBoard></DashBoard>
         </Grid>

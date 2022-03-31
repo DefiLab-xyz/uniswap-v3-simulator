@@ -1,11 +1,11 @@
 import styles from '../styles/modules/StrategyIndicators.module.css'
 import { selectBaseToken, selectCurrentPrice, selectLoading, selectQuoteToken } from '../store/pool'
-import { selectSelectedStrategyRanges } from '../store/strategyRanges'
-import { useSelector } from 'react-redux'
+import { selectSelectedEditableStrategyRanges } from '../store/strategyRanges'
+import { useDispatch, useSelector } from 'react-redux'
 import { round } from '../helpers/numbers'
-import React, { Fragment, useCallback, useEffect, useState } from 'react'
-
-
+import React, { Fragment, useEffect, useState, useCallback } from 'react'
+import { genTokenRatios } from '../helpers/uniswap/strategies'
+import { selectTokenRatios, setTokenRatio } from '../store/tokenRatios'
 export const ConcentratedLiquidityMultiplier = (props) => {
 
   return (
@@ -14,7 +14,7 @@ export const ConcentratedLiquidityMultiplier = (props) => {
         <div className={styles['cli-value-container']}>
           {
             props.strategies.map(d => {
-             return <div className={`inner-glow ${styles['cli-value']}`} style={{color: d.color}}>{d.liquidityMultiplier}x</div>
+             return <div className={`inner-glow ${styles['cli-value']}`} style={{color: d.color}}>{round(d.liquidityMultiplier * d.leverage, 2)}x</div>
             })
           }
         </div> 
@@ -82,44 +82,31 @@ export const StrategyRangeSize = (props) => {
 
 export const StrategyTokenRatio = (props) => {
 
-  const selectedStrategies = useSelector(selectSelectedStrategyRanges);
+  const dispatch = useDispatch();
+  const selectedStrategies = useSelector(selectSelectedEditableStrategyRanges);
   const base = useSelector(selectBaseToken);
   const quote = useSelector(selectQuoteToken);
   const currentPrice = useSelector(selectCurrentPrice);
-  const [tokenRatios, setTokenRatios] = useState([]);
- 
-  const getRatioIndsForPrice = (strategyData, currentPrice) =>  {
-    return strategyData.reduce((acc, obj) =>
-       Math.abs(currentPrice - obj.x) < Math.abs(currentPrice - acc.x) ? obj : acc
-     );
-   }
-
-  const genRatioIndicators = useCallback((strategyData, currentPrice) => {
-    const ratioVals = getRatioIndsForPrice(strategyData, currentPrice);
-    if (ratioVals) {
-      const token0 = round((ratioVals.base / ratioVals.y) * 100, 2);
-      const token1 = round(100 - token0, 2);
-      return {token0: token0, token1: token1 };
-    }
-  }, []);
+  // const [tokenRatios, setTokenRatioss] = useState([]);
+  const tokenRatios =  useSelector(selectTokenRatios);
 
   useEffect(() => {
-    const tempTokenRatios = [];
-
     if (props.chartData && selectedStrategies) {
+
       selectedStrategies.forEach(sd => {
           const data = props.chartData.find(cd => cd.id === sd.id);
           if (data) {
-            const ratioIndicators = genRatioIndicators(data.data, currentPrice);
+            const ratioIndicators = genTokenRatios(data.data, currentPrice);
+
             if (ratioIndicators) {
-              ratioIndicators.color = sd.color;
-              tempTokenRatios.push(ratioIndicators);
+              ratioIndicators.id = sd.id;
+              dispatch(setTokenRatio(ratioIndicators))
+             
             }
           }
       });
-      setTokenRatios(tempTokenRatios);
     }
-  }, [selectedStrategies, props.chartData, currentPrice, genRatioIndicators]);
+  }, [selectedStrategies, props.chartData, currentPrice, dispatch]);
 
   const TokenRatioLine = (props) => {
 
@@ -147,14 +134,16 @@ export const StrategyTokenRatio = (props) => {
         <div className={styles['token-ratio-base']} >{base.symbol ? base.symbol : ""}</div>
         <div className={styles['token-ratio-quote']}>{quote.symbol ? quote.symbol : ""}</div>
         {
-          tokenRatios.map(tr => {
-            return (
+
+          selectedStrategies.map(s => {
+            const tr = tokenRatios.find( t => t.id === s.id);
+            return tr ? (
               <Fragment>
                 <TokenRatioLine tokenRatio={tr}></TokenRatioLine>
                 <div className={styles['token-ratio-base']} >{tr.token0 ? tr.token0 + "%" : ""}</div>
                 <div className={styles['token-ratio-quote']}>{tr.token1 ? tr.token1 + "%" : ""}</div>
               </Fragment>
-            )
+            ) : <></>
           })
         }
       

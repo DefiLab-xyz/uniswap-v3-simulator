@@ -9,7 +9,8 @@ const chartscale = (props) => {
     case "band":
       return scaleBand()
       .range(props.range)
-      .domain(props.domain);
+      .domain(props.domain)
+      .padding(props.barPadding || 0);
     default: return null;
   }
 }

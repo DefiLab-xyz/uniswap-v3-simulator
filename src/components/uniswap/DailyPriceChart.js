@@ -1,8 +1,8 @@
 import { Fragment, useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { selectBaseToken, selectPool, selectPoolDayData } from "../../store/pool";
+import { selectBaseToken, selectPool, selectPoolDayData, selectPriceBase, selectPriceToken } from "../../store/pool";
 import { parsePrice } from "../../helpers/numbers";
-import { selectSelectedStrategyRanges } from "../../store/strategyRanges";
+import { selectSelectedEditableStrategyRanges } from "../../store/strategyRanges";
 import CandleChart from "../charts/CandleChart";
 import { ChartContext } from "../charts/ChartContainer";
 
@@ -16,8 +16,10 @@ const dailyCandleData = (data, baseSymbol, quoteSymbol) => {
 
     const yesterday = data[ Math.min((data.length - 1), i + 1) ];
 
+    const date = new Date(d.date * 1000);
+
     candleData[baseSymbol].push({ 
-      date: d.date, 
+      date: date, 
       close: parseFloat(d.close) || 0, 
       open: parseFloat(yesterday.close) || 0,
       min: parseFloat(Math.min(d.close, yesterday.close)) || 0,
@@ -28,13 +30,13 @@ const dailyCandleData = (data, baseSymbol, quoteSymbol) => {
     });
 
     candleData[quoteSymbol].push({ 
-      date: d.date, 
+      date: date, 
       close: parseFloat(d.close) === 0 ? 0 : 1 / parseFloat(d.close) || 0, 
       open: parseFloat(yesterday.close) === 0 ? 0 : 1 / parseFloat(yesterday.close) || 0,
-      min: parseFloat(d.close) === 0 ? 0 : 1 / parseFloat(Math.min(d.close, yesterday.close)) || 0,
-      max: parseFloat(d.close) === 0 ? 0 : 1 / parseFloat(Math.max(d.close, yesterday.close)) || 0,
-      high: parseFloat(d.close) === 0 ? 0 : 1 / parseFloat(d.high) || 0,
-      low: parseFloat(d.close) === 0 ? 0 : 1 / parseFloat(d.low) || 0,
+      min: parseFloat(d.close) === 0 ? 0 : parseFloat(Math.min(1 / d.close, 1 / yesterday.close)) || 0,
+      max: parseFloat(d.close) === 0 ? 0 : parseFloat(Math.max(1 / d.close, 1 / yesterday.close)) || 0,
+      high: parseFloat(d.close) === 0 ? 0 : 1 / parseFloat(d.low) || 0,
+      low: parseFloat(d.close) === 0 ? 0 : 1 / parseFloat(d.high) || 0,
       green: parseFloat(d.close) > parseFloat(yesterday.close) ? 1 : 0
     });
 
@@ -45,15 +47,26 @@ const dailyCandleData = (data, baseSymbol, quoteSymbol) => {
 
 const StrategyRangeOverlay = (props) => {
   return (
-    <rect
+    <g className={"strategy-range-overlay"}>
+      <rect
       x={props.line.x}
       y={props.line.y}
       width={props.line.width}
       height={props.line.height}
       fill={props.color}
-      stroke={props.color}
+      stroke={0}
       fillOpacity={0.1}>
     </rect>
+    <line x1={props.line.x} x2={props.line.x + props.line.width}  
+      y1={props.line.y} y2={props.line.y}
+      stroke={props.color} strokeWidth={0.5}>
+    </line>
+    <line x1={props.line.x} x2={props.line.x + props.line.width}  
+      y1={props.line.y + props.line.height} y2={props.line.y + props.line.height}
+      stroke={props.color} strokeWidth={0.5}>
+    </line>
+    </g>
+    
   )
 }
 
@@ -80,7 +93,9 @@ const StrategyOverlays = (props) => {
 
   const dailyPrices = useSelector(selectPoolDayData);
   const pool = useSelector(selectPool);
-  const strategyRanges = useSelector(selectSelectedStrategyRanges);
+  const strategyRanges = useSelector(selectSelectedEditableStrategyRanges);
+  const priceBase = useSelector(selectPriceBase);
+  const priceToken = useSelector(selectPriceToken);
   const baseToken = useSelector(selectBaseToken);
 
   const [candleData, setCandleData] = useState();
@@ -88,28 +103,14 @@ const StrategyOverlays = (props) => {
   const [chartDomain, setChartDomain] = useState();
   const [mouseOverText, setMouseOverText] = useState();
 
-  // <rect
-  // x={max2Line.x1}
-  // y={max2Line.y1}
-  // width={max2Line.x2}
-  // height={(min2Line.y2 - max2Line.y2)}
-  // fill="#AF81E4"
-  // fillOpacity={props.s2Selected ? 0.1 : 0}
-  // ></rect>
-
-  // setMin1Line({x1: 0, x2: width , y1: y(props.minLimit1), y2: y(props.minLimit1)});
-  // setMax1Line({x1: 0, x2: width , y1: y(props.maxLimit1), y2: y(props.maxLimit1)});
-  // setMin2Line({x1: 0, x2: width , y1: y(props.minLimit2), y2: y(props.minLimit2)});
-  // setMax2Line({x1: 0, x2: width , y1: y(props.maxLimit2), y2: y(props.maxLimit2)});
-
   const chartProps = { scaleTypeX: "band", scaleTypeY:"linear", 
   dataTypeX: "date", dataTypeY: "number", ylabel: `Price ${baseToken.symbol}` , xlabel: "" }
 
   useEffect(() => {
-    if (dailyPrices && pool && pool.token0) {
-      setCandleData(dailyCandleData(dailyPrices, pool.token0.symbol , pool.token1.symbol));
+    if (dailyPrices && pool) {
+      setCandleData(dailyCandleData(dailyPrices, priceBase , priceToken));
     }
-  }, [dailyPrices, pool]);
+  }, [dailyPrices, pool, priceBase, priceToken]);
 
   useEffect(() => {
     if (baseToken && candleData && candleData[baseToken.symbol]) {
@@ -118,30 +119,33 @@ const StrategyOverlays = (props) => {
   }, [baseToken, candleData]);
 
   const handleMouseOver = (xEvent, scale) => {
+
     if (chartData && chartData[0] && scale) {
 
       const dates = chartData.map( d => d.date ); 
       const idx = dates.findIndex(d => d === scale.x.invert(xEvent));
 
-      const date = new Date(chartData[idx].date * 1000);
-      const formattedDate = date.getUTCDate() + '/' + (date.getUTCMonth() + 1) + '/' + date.getUTCFullYear();
-
-      const x = `Date: ${formattedDate}`
-      const close = `Close: ${parsePrice(chartData[idx].close)}`;
-      const open = `Open: ${parsePrice(chartData[idx].open)}`;
-      const high = `High: ${parsePrice(chartData[idx].high)}`;
-      const low = `Low: ${parsePrice(chartData[idx].low)}`;
-
-      setMouseOverText([x, close, open, high, low]);
+      if (idx >= 0) {
+        const date = new Date(chartData[idx].date * 1000);
+        const formattedDate = date.getUTCDate() + '/' + (date.getUTCMonth() + 1) + '/' + date.getUTCFullYear();
+  
+        const x = `Date: ${formattedDate}`
+        const close = `Close: ${parsePrice(chartData[idx].close)}`;
+        const open = `Open: ${parsePrice(chartData[idx].open)}`;
+        const high = `High: ${parsePrice(chartData[idx].high)}`;
+        const low = `Low: ${parsePrice(chartData[idx].low)}`;
+  
+        setMouseOverText([x, close, open, high, low]);
+      }
     }
   }
 
   useEffect(() => {
 
     if ( chartData && strategyRanges && pool && pool.normStd ) {
-      const selectedStrategies = strategyRanges.filter(d => d.selected === true);
-      const yMax = Math.max(...chartData.map(d => d.high), ...selectedStrategies.map(d => d.inputs.max.value))
-      const yMin = Math.min(...chartData.map(d => d.low), ...selectedStrategies.map(d => d.inputs.min.value))
+      const selectedStrategies = strategyRanges.filter(d => d.selected === true && d.id !== 'v2');
+      const yMax = Math.max(...chartData.map(d => d.high), ...selectedStrategies.map(d => d.inputs.max.value));
+      const yMin = Math.min(...chartData.map(d => d.low), ...selectedStrategies.map(d => d.inputs.min.value));
 
       if (pool.normStd === 1) {
         setChartDomain({x: chartData.map(d => d.date).reverse(), y: [yMin * .9 , yMax * 1.1]});

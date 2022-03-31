@@ -3,6 +3,8 @@ import toggle1 from '../assets/toggle1.svg'
 import toggle2 from '../assets/toggle2.svg'
 import refresh from '../assets/refresh.svg'
 import styles from '../styles/modules/Button.module.css'
+import { ReactComponent as  Plus } from '../assets/plus.svg'
+import { ReactComponent as  Minus } from '../assets/minus.svg'
 
 export const ToggleButton = (props) => {
   const [toggle, setToggle] = useState(0);
@@ -44,17 +46,19 @@ export const RefreshButton = (props) => {
 
 export const CrementButton = (props) => {
 
-  const icon = props.type === "decrement" ? "-" : "+";
+  const icon = props.type === "decrement" ? <Minus className={styles["crement-img"]}></Minus> : <Plus className={styles["crement-img"]}></Plus>;
   const crement = props.type === "decrement" ? -1 : 1;
   const holding= useRef(false);
   let buttonLongPress;
 
   const handleOnMouseDown = () => {
+    console.log("mousedown")
     holding.current = true;
     handleButtonHold();
   }
 
   const handleOnMouseUp = () => {
+    console.log("mouseup")
     holding.current = false;
   }
 

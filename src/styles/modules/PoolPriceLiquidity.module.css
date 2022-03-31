@@ -1,7 +1,13 @@
+:root {
+  --price-liquidity-container-row-start: calc(var(--strategy-container-row-start) + var(--strategy-container-row-span) + 1);
+  --price-liquidity-container-row-span: 20;
+}
+
 .pool-price-liquidity-container {
-  grid-row: 72 / span 20;
+  grid-row: var(--price-liquidity-container-row-start) / span var(--price-liquidity-container-row-span);
   display: grid;
-  grid-template-rows: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 10%);
+  grid-template-columns: repeat(2, 50%);
 }
 
 .title {
@@ -11,11 +17,15 @@
 
 .chart-container {
   grid-row: 2 / span 9;
-  display: flex;
+  /* display: flex; */
 }
 
 .daily-price-chart-container, .daily-prices-title {
   margin-right: 3%;
+}
+
+.daily-price-chart-container {
+  grid-column: 1 / span 1;
 }
 
 .liquidity-density-chart-container, .liquidity-density-title {
@@ -31,4 +41,11 @@
 .liquidity-density-title {
   margin-left: 4%;
   margin-bottom: 1%;
+  display: flex;
+  justify-content:space-between;
+
+}
+
+.liquidity-density-zoom button {
+  margin-right: 5px;
 }
