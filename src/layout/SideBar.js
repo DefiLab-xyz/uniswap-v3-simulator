@@ -95,7 +95,6 @@ const SideBar = (props) => {
       </div>
       <StrategyPicker strategies={props.strategies}></StrategyPicker>
       <StrategyRange leverageHidden={props.leverageHidden}></StrategyRange>
-      
     </div>
   )
 }

@@ -1,21 +1,26 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { selectBaseToken, selectBaseTokenId, selectPool, selectPoolID } from '../store/pool';
 import styles from '../styles/modules/StrategyBacktest.module.css'
-import { getPoolHourData } from '../api/thegraph/uniPoolHourDatas';
-import { selectProtocolId } from '../store/protocol';
+
 import { liquidityForStrategy, tokensForStrategy } from '../helpers/uniswap/liquidity';
-import { selectSelectedEditableStrategyRanges, selectSelectedStrategyRanges } from '../store/strategyRanges';
-import { selectInvestment } from '../store/investment';
 import { maxInArray, parsePrice } from '../helpers/numbers';
+import { calcFees, pivotFeeData, backtestIndicators } from '../helpers/uniswap/backtest';
+
+import { getPoolHourData } from '../api/thegraph/uniPoolHourDatas';
+
+import { selectBaseToken, selectBaseTokenId, selectPool, selectPoolID } from '../store/pool';
+import { selectProtocolId } from '../store/protocol';
+import {  selectSelectedStrategyRanges } from '../store/strategyRanges';
+import { selectInvestment } from '../store/investment';
+import { selectEditableStrategyRanges } from '../store/strategyRanges';
+import { selectTokenRatios } from '../store/tokenRatios'
+
 import { BarChartGrouped } from '../components/charts/BarChart';
 import { MouseOverText } from '../components/charts/MouseOverMarker';
-import { calcFees, pivotFeeData, backtestIndicators } from '../helpers/uniswap/backtest';
-import { selectEditableStrategyRanges } from '../store/strategyRanges';
 import { ToggleButtonsFlex } from '../components/ButtonList';
 import BacktestIndicators from '../components/uniswap/BacktestIndicators';
 import { BacktestTotalReturn, BacktestTotalReturnPercent } from '../components/uniswap/BacktestTotalReturn';
-import { selectTokenRatios } from '../store/tokenRatios'
+import RangeSlider from '../components/RangeSlider';
 
 const fromDateForHourlyData = (days) => {
   const date = new Date();
@@ -85,6 +90,10 @@ const StrategyBacktest = (props) => {
   const [chartDomain, setChartDomain] = useState();
   const [mouseOverText, setMouseOverText] = useState();
   const [strategyToggled, setStrategyToggled] = useState({id: 'S1', label: 'Strategy 1'});
+
+  const handleDaysChange = (days) => {
+    setDays(days);
+  }
 
 
   const genChartData = (strategyRanges, pool, investment, price, hourlyPoolData, baseTokenId, customFeeDivisor) => {
@@ -213,7 +222,12 @@ const StrategyBacktest = (props) => {
 
   return (
     <div className={`dashboard-section outer-glow ${styles['strategy-backtest-container']}`}>
-      <div className={`title ${styles['strategy-backtest-title']}`}>Strategy Backtest</div>
+      <div className={`title ${styles['strategy-backtest-title']}`}>
+        <span>Strategy Backtest</span>
+        <RangeSlider className={styles['range-slider-backtest-days']} handleInputChange={handleDaysChange} min={5} max={30} value={days} step={1}></RangeSlider>
+        <span>Last {days} days</span>
+      </div>
+      
       <BarChartGrouped className={`inner-glow ${styles['strategy-backtest-chart']}`}
         domain={chartDomain} chartProps={chartProps} loading={dataLoading}
         data={selectedChartData}

@@ -16,6 +16,13 @@
 .strategy-backtest-title {
   grid-row: 1 / span var(--strategy-backtest-title-span);
   grid-column: 1 / span 25;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start
+}
+
+.strategy-backtest-title span, .strategy-backtest-title div {
+  margin-right: 1em;
 }
 
 .strategy-backtest-chart {
