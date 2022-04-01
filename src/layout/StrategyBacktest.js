@@ -69,7 +69,7 @@ const StrategyBacktest = (props) => {
   const baseToken = useSelector(selectBaseToken)
   const investment = useSelector(selectInvestment);
   const strategyRanges = useSelector(selectSelectedStrategyRanges);
-  const editableStrategyRanges = useSelector(selectSelectedEditableStrategyRanges);
+  const editableStrategyRanges = useSelector(selectEditableStrategyRanges);
   const tokenRatios = useSelector(selectTokenRatios);
   const [strategies, setStrategies] = useState();
   const [dataLoading, setDataLoading] = useState(true)

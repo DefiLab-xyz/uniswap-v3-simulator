@@ -7,14 +7,13 @@ import { ButtonListToggle } from "../ButtonList"
 
 const DropdownSelect = (props) => {
 
-  const strategies = useSelector(selectStrategies)
+  const strategies = useSelector(selectStrategies);
   const [buttonList, setButtonList] = useState();
   const [selected, setSelected] = useState(strategies.find( d => d.id === "hodl5050"));
   const [visibility, setVisibility] = useState("hidden");
 
   useEffect(() => {
     if (strategies && props.selectedStrategy) {
-     
       const buttonListTemp = strategies.filter(d => {
         return d.id !== props.selectedStrategy.id && d.id !== selected.id
       });
