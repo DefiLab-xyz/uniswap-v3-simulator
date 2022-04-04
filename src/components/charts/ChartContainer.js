@@ -136,8 +136,8 @@ const ChartContainer = forwardRef((props, ref) => {
           </AxesLabels>
           {props.children}
           <MouseOverMarker mouseOverMarker={props.mouseOverMarker} mouseOverMarkerPos={props.mouseOverMarkerPos}
-            mouseOverMarkerPosX={props.mouseOverMarkerPosX || 0}  mouseOverMarkerPosY={ props.mouseOverMarkerPosY || height + 20}
-            width={width} height={height} scale={scale} 
+            mouseOverMarkerPosX={props.mouseOverMarkerPosX || 0}  mouseOverMarkerPosY={ height + props.mouseOverMarkerPosY || height + 20}
+            width={width} height={height} scale={scale} mouseOverTextExtended={props.mouseOverTextExtended}
             mouseOverText={props.mouseOverText || []} handleMouseOver={props.handleMouseOver}
           ></MouseOverMarker>
           <CurrentPriceLine domain={props.domain} scale={scale} currentPriceLine={props.currentPriceLine}></CurrentPriceLine>

@@ -1,17 +1,35 @@
 import { useEffect, useState, useContext} from 'react'
 import { ChartContext } from './ChartContainer';
 
+
+// This is really ugly -- works, but needs refactor  //
 export const MouseOverText = (props) => {
+
   if (props.text && props.text.length) {
-    
-    const text = props.text.map((d, i) => {
-      return ( <text className={`mouse-over-text mouse-over-text-${i}`}
-        x={props.textPosition.x}
-        y={props.textPosition.y + (17 * (i + 1))}
-        textAnchor={props.textAnchor}
-      >{d}</text>);
-    });
-  
+
+    let text;
+
+    if (props.mouseOverTextExtended) {
+      text = props.text.map((t1, i1) => {
+        return t1.map((t2, i2) => {
+          return ( <text className={`mouse-over-text mouse-over-text-${i1}-${i2}`}
+            x={props.textPosition.x + (240 * i1)}
+            y={props.textPosition.y + (17 * (i2 + 1))}
+            textAnchor={props.textAnchor}
+          >{t2}</text>);
+        });
+      });
+    }
+    else {
+      text = props.text.map((d, i) => {
+        return ( <text className={`mouse-over-text mouse-over-text-${i}`}
+          x={props.textPosition.x}
+          y={props.textPosition.y + (17 * (i + 1))}
+          textAnchor={props.textAnchor}
+        >{d}</text>);
+      });
+    }
+
     return (
       <g className="mouse-over-marker-text-container"
         style={{display: props.visibility}}>{text}</g>
@@ -58,13 +76,15 @@ export const MouseOverMarker = (props) => {
   }
 
   const mouseLeave = () => {
+    console.log("mouseleft")
     setVisibility('none');
     if (props.handleHoverMouseOut) props.handleHoverMouseOut();
   }
 
   useEffect(() => {
     if ( props.mouseOverMarkerPos === 'fixed') {
-      setTextPosition({x: props.mouseOverMarkerPosX || 0, y: props.mouseOverMarkerPosY || 0});
+      const y = props.mouseOverTextExtended ? chartContextData.chartHeight + 100 : props.mouseOverMarkerPosY || 0
+      setTextPosition({x: props.mouseOverMarkerPosX || 0, y: y});
     }
   }, [props.mouseOverMarkerPosY, props.mouseOverMarkerPosX, props.mouseOverMarkerPos])
 
@@ -77,7 +97,7 @@ export const MouseOverMarker = (props) => {
         y1={linePosition.y1} y2={linePosition.y2}>
       </line>
       <MouseOverText textPosition={textPosition} text={props.mouseOverText} 
-        textAnchor={textAnchor} visibility={visibility}>
+        textAnchor={textAnchor} visibility={visibility}  mouseOverTextExtended={props.mouseOverTextExtended}>
       </MouseOverText>
       <rect className={`mouseover-container`} x={0} y={0} 
         width={props.width || 0} height={props.height || 0 }

@@ -105,9 +105,10 @@ export const LineChart = (props) => {
 
   return (
    <ChartContainer className={props.className} ref={containerRef} data={props.data}
-    domain={props.domain} margin={props.margin} mouseOverMarkerPos={props.mouseOverMarkerPos}
+    domain={props.domain} margin={props.margin} mouseOverMarkerPos={props.mouseOverMarkerPos} mouseOverTextExtended={props.mouseOverTextExtended}
     chartProps={props.chartProps} handleScale={handleScale} currentPriceLine={props.currentPriceLine}
-    mouseOverMarker={props.mouseOverMarker} mouseOverText={props.mouseOverText || []} handleMouseOver={props.handleMouseOver}>
+    mouseOverMarker={props.mouseOverMarker} mouseOverText={props.mouseOverText || []} handleMouseOver={props.handleMouseOver}
+    mouseOverMarkerPosX={props.mouseOverMarkerPosX}  mouseOverMarkerPosY={ props.mouseOverMarkerPosY}>
       <Lines colors={props.colors} data={props.data} dash={props.dash}
         scale={scale} domain={props.domain}
         margin={props.margin || {top: 20, right: 30, bottom: 30, left: 70}} lineType={props.lineType}

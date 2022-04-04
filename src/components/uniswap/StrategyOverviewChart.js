@@ -10,7 +10,7 @@ import { parsePrice } from "../../helpers/numbers";
 
 // Data
 import { selectStrategies } from "../../store/strategies";
-import { selectBaseToken } from "../../store/pool";
+import { selectBaseToken, selectCurrentPrice, selectQuoteToken } from "../../store/pool";
 
 // Components //
 import { Line } from "../charts/Line";
@@ -18,6 +18,7 @@ import { LineChart } from "../charts/LineChart";
 import StrategyDrag from "../charts/StrategyDrag";
 import { MouseOverText } from "../charts/MouseOverMarker";
 import { ChartContext } from "../charts/ChartContainer";
+import { selectSelectedEditableStrategyRanges } from "../../store/strategyRanges";
 
 const ZeroLine = (props) => {
 
@@ -63,7 +64,10 @@ const StrategyOverviewChart = (props) => {
 
   const strategies = useSelector(selectStrategies);
   const baseToken = useSelector(selectBaseToken);
+  const quoteToken = useSelector(selectQuoteToken);
+  const currentPrice = useSelector(selectCurrentPrice);
   const [chartData, setChartData] = useState([]);
+  const [hoverData, setHoverData] = useState([]);
   const [v3StrategyData, setV3StrategyData] = useState([]);
   const [mouseOverText, setMouseOverText] = useState();
 
@@ -75,19 +79,32 @@ const StrategyOverviewChart = (props) => {
   const handleMouseOver = (xEvent, scale) => {
 
     const mouseOverText = [];
-    
-    if (scale && chartData && chartData.chartDataForHover) {
+    const mouseOverTextExtended = [];
 
-      const hoverData = chartData.chartDataForHover;
+    if (scale &&hoverData && hoverData.length) {
+
       const idx = bisect.left(hoverData[0].data, parseFloat(scale.x.invert(xEvent)));
+      if (props.extendedHoverData) {
 
-      mouseOverText.push(`Price: ${parsePrice(hoverData[0].data[idx].x)} ${baseToken.symbol}`);
-
-      hoverData.forEach(hd => {
-        mouseOverText.push(`${hd.label}: ${parsePrice(hd.data[idx].y)} ${baseToken.symbol}`)
-      });
-
-      setMouseOverText(mouseOverText);
+        const longShort = currentPrice < hoverData[0].data[idx].x ? "LONG" : "SHORT";
+        console.log(longShort)
+        hoverData.forEach(hd => {
+            mouseOverTextExtended.push([`${hd.label}:`, 
+            `Price: ${parsePrice(hoverData[0].data[idx].x)} ${baseToken.symbol}`,
+            `Impermanant Loss: ${parsePrice(hoverData[0].data[idx].impLoss)} USD`,
+            `Impermanant Position: ${parsePrice(hoverData[0].data[idx].impPos)} ${quoteToken.symbol} ${longShort}`,
+            `Notional Size: ${parsePrice(hoverData[0].data[idx].notionalSize)}`,
+            `Margin: ${parsePrice(hoverData[0].data[idx].margin, true)}%`]);
+        });
+        setMouseOverText(mouseOverTextExtended);
+      }
+      else {
+        mouseOverText.push(`Price: ${parsePrice(hoverData[0].data[idx].x)} ${baseToken.symbol}`);
+        hoverData.forEach(hd => {
+          mouseOverText.push(`${hd.label}: ${parsePrice(hd.data[idx].y)} ${baseToken.symbol}`);
+        });
+        setMouseOverText(mouseOverText);
+      }
     }
   }
 
@@ -107,19 +124,22 @@ const StrategyOverviewChart = (props) => {
     }
   }, [strategies, props.chartData, props.chartDataOverride]);
 
+  useEffect(() => {
+    if (chartData && chartData.chartDataForHover) setHoverData(chartData.chartDataForHover.reverse())
+  }, [chartData]);
+
   return (    
   <LineChart
     className={`${styles['chart']} ${styles['strategy-chart']} ${ props.extendedHoverData ? styles['strategy-chart-extended'] : ""} inner-glow`}
     data={chartData.data} domain={props.chartDomain}
     avgLine={true} mouseOverMarker={true} mouseOverText={mouseOverText} handleMouseOver={handleMouseOver}
-    chartProps={chartProps} colors={chartData.colors}
+    chartProps={chartProps} colors={chartData.colors} mouseOverTextExtended={ props.extendedHoverData ? true : false } mouseOverMarkerPos={ props.extendedHoverData ? "fixed" : null }
     currentPriceLine={true} margin={margin} dash={chartData.dash}>
     <ZeroLine zeroLine={props.zeroLine}
       xMin={props.chartDomain && props.chartDomain.x ? props.chartDomain.x[0] : 0} 
       xMax={props.chartDomain && props.chartDomain.x ? props.chartDomain.x[1] : 0}>
     </ZeroLine> 
     <StrategyDrag data={v3StrategyData.data} colors={v3StrategyData.colors} ids={v3StrategyData.ids} domain={props.chartDomain}></StrategyDrag>
-    <ExtendedHoverData data={chartData} extendedHoverData={props.extendedHoverData} domain={props.chartDomain}></ExtendedHoverData>
   </LineChart>
   )
 }
