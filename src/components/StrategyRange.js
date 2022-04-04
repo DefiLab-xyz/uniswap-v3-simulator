@@ -1,8 +1,8 @@
-import { useState, Fragment } from 'react'
+import { useState, useRef, useEffect, Fragment } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import {selectBaseToken, selectFeeTier} from '../store/pool'
 import { selectInvestment } from '../store/investment';
-import { selectSelectedStrategyRanges, crementStrategyRangeInputVal, setStrategyRangeInputVal, setStrategyLeverage } from '../store/strategyRanges'
+import { selectSelectedStrategyRanges, updateStrategyRangeInputVal, setStrategyRangeInputVal, setStrategyLeverage, selectStrategyRangeById, selectStrategyRanges } from '../store/strategyRanges'
 import { CrementButton } from '../components/Button'
 import styles from '../styles/modules/SideBar.module.css'
 // import sliderStyles
@@ -37,15 +37,41 @@ const Leverage = (props) => {
 const StrategyInput = (props) => {
 
   const dispatch = useDispatch();
+  const strategyRanges = useSelector(selectStrategyRanges);
+  const strategyRange = selectStrategyRangeById(strategyRanges, props.id);
+  const inputRef = useRef();
+  const [inputVal, setInputVal] = useState(parsePrice(props.inputVals.value));
+  const [oldInputVal, setOldInputVal] = useState()
   const feeTier = useSelector(selectFeeTier);
   const tick = props.inputVals.value * ((feeTier / 1000000) * 2);
 
+  useEffect(() => {
+    setInputVal(props.inputVals.value)
+  }, [props.inputVals.value]);
+
+  useEffect(() => {
+    setOldInputVal(parsePrice(props.inputVals.value));
+  }, [])
+
   const handleCrement = (crement) => {
-    dispatch(crementStrategyRangeInputVal({id: props.id, key: props.keyId, crement: (tick * crement)}));
+    dispatch(updateStrategyRangeInputVal({id: props.id, key: props.keyId, value: (parseFloat(inputRef.current.value) + (tick * crement)) }));
   }
 
   const handleInputChange = (e) => {
-    dispatch(setStrategyRangeInputVal({id: props.id, key: props.keyId, value: e.target.value}));
+    dispatch(setStrategyRangeInputVal({id: props.id, key: props.keyId, value: e.target.value }));
+  }
+
+  const handleBlur = (e) => {
+    const maxVal = strategyRange.inputs.max.value;
+    const minVal = strategyRange.inputs.min.value;
+
+    if ( (props.keyId === 'max' && maxVal < minVal)  ||  (props.keyId === 'min' && minVal > maxVal)) {
+      dispatch(updateStrategyRangeInputVal({id: props.id, key: props.keyId, value: oldInputVal }));
+    }
+    else {
+      dispatch(updateStrategyRangeInputVal({id: props.id, key: props.keyId, value: e.target.value }));
+      setOldInputVal(e.target.value);
+    }
   }
 
   return (
@@ -53,12 +79,13 @@ const StrategyInput = (props) => {
       <CrementButton type="decrement" onCrement={handleCrement}></CrementButton>
       <label className={styles["input-label"]} style={{marginLeft: 20, marginRight: 20}}>{props.inputVals.name}</label>
       <CrementButton type="incremement" onCrement={handleCrement}></CrementButton><br></br>
-      <input 
+      <input ref={inputRef}
         type="number" 
         className={styles["default-input"]} 
         label={props.inputVals.label} 
-        value={parsePrice(props.inputVals.value)} 
-        onChange={(e) => handleInputChange(e)}>
+        value={inputVal} 
+        onChange={(e) => handleInputChange(e)}
+        onBlur={(e) => handleBlur(e)}>
       </input><br></br>
     </Fragment>)
 }

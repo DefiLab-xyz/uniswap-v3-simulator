@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
 import { roundToNearestTick } from "../helpers/uniswap/liquidity";
 import { chartColors } from "../data/colorsUniswap";
+import { parsePrice } from "../helpers/numbers";
 
 const initialState = [
 {id: "S1", name: "Strategy 1", color: chartColors.blue, 
@@ -37,6 +38,7 @@ export const updateStrategyRangeInputVal = (range) => {
     const baseDecimal = getState().pool.value.baseToken.decimals;
     const quoteDecimal = getState().pool.value.quoteToken.decimals;
     const feeTier = getState().pool.value.feeTier;
+    console.log(range)
     dispatch(setStrategyRangeInputVal({key: range.key, id: range.id, value: roundToNearestTick(range.value, feeTier, baseDecimal, quoteDecimal)}));
   }
 }
@@ -53,7 +55,6 @@ export const strategyRanges = createSlice({
         const newValue = parseFloat(state[index].inputs[key].value) + parseFloat(crement);
 
         if (validateStrategyRangeValue(state[index], key, newValue)) {
-          state[index].inputs[key].value = newValue;
           state[index].liquidityMultiplier = calcContrentratedLiquidityMultiplier(state[index].inputs['min'].value, state[index].inputs['max'].value);
         }
         
@@ -73,10 +74,10 @@ export const strategyRanges = createSlice({
         const max2 = 1 / state[1].inputs["min"].value;
         const min2 = 1 / state[1].inputs["max"].value;
 
-        state[0].inputs["min"].value = roundToNearestTick(min1, feeTier, baseDecimal, quoteDecimal);
-        state[0].inputs["max"].value = roundToNearestTick(max1, feeTier, baseDecimal, quoteDecimal);
-        state[1].inputs["min"].value = roundToNearestTick(min2, feeTier, baseDecimal, quoteDecimal);
-        state[1].inputs["max"].value = roundToNearestTick(max2, feeTier, baseDecimal, quoteDecimal);
+        state[0].inputs["min"].value = parsePrice(roundToNearestTick(min1, feeTier, baseDecimal, quoteDecimal));
+        state[0].inputs["max"].value = parsePrice(roundToNearestTick(max1, feeTier, baseDecimal, quoteDecimal));
+        state[1].inputs["min"].value = parsePrice(roundToNearestTick(min2, feeTier, baseDecimal, quoteDecimal));
+        state[1].inputs["max"].value = parsePrice(roundToNearestTick(max2, feeTier, baseDecimal, quoteDecimal));
 
 
         state[0].liquidityMultiplier = calcContrentratedLiquidityMultiplier(state[0].inputs['min'].value, state[0].inputs['max'].value);
@@ -95,19 +96,19 @@ export const strategyRanges = createSlice({
         const feeTier = action.payload.feeTier;
 
         if (!isNaN(std) && std === 1) { 
-          state[0].inputs["min"].value = roundToNearestTick(currentPrice * 0.9, feeTier, baseDecimal, quoteDecimal);
-          state[0].inputs["max"].value = roundToNearestTick(currentPrice * 1.1, feeTier, baseDecimal, quoteDecimal);
-          state[1].inputs["min"].value = roundToNearestTick(currentPrice * 1.1, feeTier, baseDecimal, quoteDecimal);
-          state[1].inputs["max"].value = roundToNearestTick(currentPrice * 1.2, feeTier, baseDecimal, quoteDecimal);
+          state[0].inputs["min"].value = parsePrice(roundToNearestTick(currentPrice * 0.9, feeTier, baseDecimal, quoteDecimal));
+          state[0].inputs["max"].value = parsePrice(roundToNearestTick(currentPrice * 1.1, feeTier, baseDecimal, quoteDecimal));
+          state[1].inputs["min"].value = parsePrice(roundToNearestTick(currentPrice * 1.1, feeTier, baseDecimal, quoteDecimal));
+          state[1].inputs["max"].value = parsePrice(roundToNearestTick(currentPrice * 1.2, feeTier, baseDecimal, quoteDecimal));
         }
         else {
           const stdP = (std / currentPrice) * 100;
           const multiplier = stdP < 2 ? 8 : 1;
      
-          state[0].inputs["min"].value = roundToNearestTick(currentPrice - (multiplier * std), feeTier, baseDecimal, quoteDecimal);
-          state[0].inputs["max"].value = roundToNearestTick(currentPrice + (multiplier * std), feeTier, baseDecimal, quoteDecimal);
-          state[1].inputs["min"].value = roundToNearestTick(currentPrice - ((multiplier * 2) * std), feeTier, baseDecimal, quoteDecimal);
-          state[1].inputs["max"].value = roundToNearestTick(currentPrice + ((multiplier * 2)  * std), feeTier, baseDecimal, quoteDecimal);
+          state[0].inputs["min"].value = parsePrice(roundToNearestTick(currentPrice - (multiplier * std), feeTier, baseDecimal, quoteDecimal));
+          state[0].inputs["max"].value = parsePrice(roundToNearestTick(currentPrice + (multiplier * std), feeTier, baseDecimal, quoteDecimal));
+          state[1].inputs["min"].value = parsePrice(roundToNearestTick(currentPrice - ((multiplier * 2) * std), feeTier, baseDecimal, quoteDecimal));
+          state[1].inputs["max"].value = parsePrice(roundToNearestTick(currentPrice + ((multiplier * 2)  * std), feeTier, baseDecimal, quoteDecimal));
         }
 
         state[0].liquidityMultiplier = calcContrentratedLiquidityMultiplier(state[0].inputs['min'].value, state[0].inputs['max'].value);
@@ -120,12 +121,8 @@ export const strategyRanges = createSlice({
       if (index >= 0) {
         const key = action.payload.key;
         const value = parseFloat(action.payload.value);
-
-        if (validateStrategyRangeValue(state[index], key, value)) { 
-          state[index].inputs[key].value = parseFloat(value);
-          state[index].liquidityMultiplier = calcContrentratedLiquidityMultiplier(state[index].inputs['min'].value, state[index].inputs['max'].value);
-        }
-        
+        state[index].inputs[key].value = parsePrice(parseFloat(value));
+        state[index].liquidityMultiplier = calcContrentratedLiquidityMultiplier(state[index].inputs['min'].value, state[index].inputs['max'].value);
       }
       
     },

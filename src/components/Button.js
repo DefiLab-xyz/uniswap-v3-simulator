@@ -52,13 +52,11 @@ export const CrementButton = (props) => {
   let buttonLongPress;
 
   const handleOnMouseDown = () => {
-    console.log("mousedown")
     holding.current = true;
     handleButtonHold();
   }
 
   const handleOnMouseUp = () => {
-    console.log("mouseup")
     holding.current = false;
   }
 

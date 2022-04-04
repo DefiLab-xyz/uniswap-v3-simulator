@@ -181,7 +181,6 @@ export const BacktestTotalReturnPercent = (props) => {
 
     if (props.data && props.data.length) {
       const compareChartData = genChartData(props.data[0].data, compareStrategies, "feeUnb");
-      console.log(props.data)
       const strategy1 = genChartData(props.data[0].data, props.data.filter(d => d.id === 'S1'), "feeV");
       const strategy2 = genChartData(props.data[1].data, props.data.filter(d => d.id === 'S2'), "feeV");
       setChartData([...compareChartData, ...strategy1, ...strategy2]);
@@ -209,7 +208,7 @@ export const BacktestTotalReturnPercent = (props) => {
     if (chartData && chartData.length) {
       const compare = chartData.find(d => d.id === selectedCompareStrategy.id);
       const strategy = chartData.find(d => d.id === selectedStrategy.id);
-      console.log()
+
       setSelectedChartData([compare.data, strategy.data]);
       setSelectedChartColors([compare.color, strategy.color]);
     }
