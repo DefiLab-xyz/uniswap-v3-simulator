@@ -64,7 +64,7 @@ const StrategyOverlays = (props) => {
 
         return <StrategyRangeOverlay 
           line={{ x: chartContextData.scale.x(min), y: 0,  
-            height: chartContextData.chartHeight , width: chartContextData.scale.x(max) }}
+            height: chartContextData.chartHeight , width: chartContextData.scale.x(max) - chartContextData.scale.x(min) }}
           color={d.color}>
           </StrategyRangeOverlay>
       })
