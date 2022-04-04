@@ -71,6 +71,7 @@ const ThemeToggle = (props) => {
   const [isEnabled, setIsEnabled] = useState(false);
 
   useEffect(() => {
+    if (props.handleToggle) props.handleToggle(!isEnabled);
     const theme = isEnabled ? 'dark' : 'light';
     updateTheme(theme);
   }, [isEnabled]);
@@ -79,7 +80,7 @@ const ThemeToggle = (props) => {
     const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
     if (prefersDarkScheme) {
       updateTheme('dark');
-      setIsEnabled(true)
+      setIsEnabled(true);
     }
   }, []);
 

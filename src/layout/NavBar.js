@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from "react-router-dom";
 import Grid from '../components/Grid'
 import ToolTip from '../components/ToolTip'
@@ -6,6 +6,8 @@ import { ReactComponent as  Twitter } from '../assets/twitter.svg'
 import { ReactComponent as Telegram } from '../assets/telegram.svg'
 import { ReactComponent as Medium } from '../assets/medium.svg'
 import { ReactComponent as Gitcoin } from '../assets/gitcoin.svg'
+import GitHub from '../assets/GitHub.png'
+import GitHubLight from '../assets/GitHub-light.png'
 import QrCode from '../assets/qrcode.png'
 import { ReactComponent as Donate } from '../assets/heart.svg'
 import { ReactComponent as Hamburger } from '../assets/menu.svg'
@@ -127,6 +129,24 @@ const GitCoin = (props) => {
   )
 }
 
+const GitHubRepo = (props) => {
+  const [img, setImg] = useState(props.darkMode  ? GitHub : GitHubLight);
+
+  useEffect(() => {
+    console.log(props.darkMode)
+    setImg(props.darkMode  ? GitHub : GitHubLight)
+  }, [props.darkMode]);
+
+  return (
+    <ToolTip text={"GitHub Open Source Code Repo"} 
+    >
+      <a href="https://github.com/DefiLab-xyz/uniswap-v3-simulator" target="_blank" rel="noreferrer">
+        <img alt="GitHub Open Source Code DefiLab" src={img} className="nav-icon"></img>
+      </a>
+    </ToolTip>
+  )
+}
+
 const SocialLinks = (props) => {
 
   const linkData = [{key:"twitter", src: <Twitter className="nav-icon"></Twitter>, alt: "Twitter profile DefiLab", text: "Check us out on Twitter", href: "https://twitter.com/DefiLab_xyz"},
@@ -147,6 +167,11 @@ const SocialLinks = (props) => {
 const NavBar = (props) => {
 
   const styles = genStyles(props);
+  const [darkModeEnabled, setDarkModeEnabled] = useState(false);
+
+  const handleToggle = (toggleVal) => {
+    setDarkModeEnabled(toggleVal)
+  }
 
   return (
     <Grid
@@ -158,11 +183,12 @@ const NavBar = (props) => {
     minWidth={props.minWidth}
     >
       <h1 style={styles.title}>{props.title}</h1>
-      <ThemeToggle style={styles.themeToggle}></ThemeToggle>
+      <ThemeToggle style={styles.themeToggle} handleToggle={handleToggle}></ThemeToggle>
       <div style={styles.links}>
         <GitCoin></GitCoin>
         <SocialLinks></SocialLinks>
         <ERC20Donation></ERC20Donation>
+        <GitHubRepo darkMode={darkModeEnabled}></GitHubRepo>
         <NavMenu></NavMenu>
       </div>   
    </Grid>
@@ -186,7 +212,7 @@ const genStyles = (props) => {
       ...props.linkStyle 
     },
     themeToggle: {
-      gridColumn: "44 / span 4",
+      gridColumn: "40 / span 4",
       gridRow: "2 / span 1"
     }
   };
