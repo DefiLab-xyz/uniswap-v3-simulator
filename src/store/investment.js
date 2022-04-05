@@ -2,9 +2,15 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export const setDefaultInvestment = currentPrice => {
   return (dispatch, getState) => {
-    const price = currentPrice ? currentPrice : getState().pool.value.baseToken.currentPrice;
-    const factor = String(parseInt(price)).length - 1;
-    dispatch(setInvestment(Math.pow(10, factor)));
+    if (getState().pool.value.baseToken.symbol === "vUSD") {
+      dispatch(setInvestment(1000));
+    }
+    else {
+      const price = currentPrice ? currentPrice : getState().pool.value.baseToken.currentPrice;
+      const factor = String(parseInt(price)).length - 1;
+      dispatch(setInvestment(Math.pow(10, factor)));
+    }
+  
   }
 }
 
