@@ -1,5 +1,5 @@
 import { createSlice, createSelector } from "@reduxjs/toolkit";
-import { chartColors } from "../data/colorsUniswap";
+import chartColors from "../data/colorsUniswap.json";
 import { strategyV3, hodlToken1, hodlToken2, hodl5050, V2Unbounded } from "../helpers/uniswap/strategies"
 import { setStrategyRangeSelected } from './strategyRanges'
 
