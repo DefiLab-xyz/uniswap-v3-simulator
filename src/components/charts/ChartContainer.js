@@ -130,7 +130,7 @@ const ChartContainer = forwardRef((props, ref) => {
                 width={width} height={height} supressTickText={chartProps && chartProps.supressTickText ? chartProps.supressTickText : false }
                 margin={margin} chartProps={chartProps}>
           </Axes>
-          <AxesLabels ylabel={chartProps.ylabel} xlabel={chartProps.xlabel} ylabelRight={chartProps.ylabelRight}
+          <AxesLabels ylabel={chartProps && chartProps.ylabel ? chartProps.ylabel : ""} xlabel={chartProps && chartProps.xlabel ? chartProps.xlabel : ""} ylabelRight={chartProps && chartProps.ylabelRight ? chartProps.ylabelRight : ""}
                 margin={margin} height={height} 
                 width={width}>
           </AxesLabels>
