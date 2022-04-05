@@ -131,8 +131,8 @@ export const BarChartGrouped = (props) => {
 
   return (
     <ChartContainer className={props.className} ref={containerRef} data={props.data} loading={props.loading}
-    domain={props.domain} margin={props.margin} chartProps={props.chartProps} barPadding={0.3}
-    handleScale={handleScale} handleHeight={handleHeight} handleWidth={handleWidth}
+    domain={props.domain} margin={props.margin} chartProps={props.chartProps} barPadding={0.3} onMouseLeave={props.onMouseLeave}
+    handleScale={handleScale} handleHeight={handleHeight} handleWidth={handleWidth} handleHoverMouseIn={props.handleHoverMouseIn} handleHoverMouseOut={props.handleHoverMouseOut}
     mouseOverMarker={props.mouseOverMarker} mouseOverText={props.mouseOverText || []} handleMouseOver={props.handleMouseOver}>
       {
         props.data && scale && scale.x ? 

@@ -221,7 +221,7 @@ const StrategyBacktest = (props) => {
   }
 
   return (
-    <div className={`dashboard-section outer-glow ${styles['strategy-backtest-container']}`}>
+    <div className={`dashboard-section outer-glow ${styles['strategy-backtest-container']}`} onMouseLeave={() => { setMouseOverText([])}}>
       <div className={`title ${styles['strategy-backtest-title']}`}>
         <span>Strategy Backtest</span>
         <RangeSlider className={styles['range-slider-backtest-days']} handleInputChange={handleDaysChange} min={5} max={30} value={days} step={1}></RangeSlider>
@@ -229,13 +229,15 @@ const StrategyBacktest = (props) => {
       </div>
       
       <BarChartGrouped className={`inner-glow ${styles['strategy-backtest-chart']}`}
+        onMouseLeave={() => { setMouseOverText([]) } }
         domain={chartDomain} chartProps={chartProps} loading={dataLoading}
         data={selectedChartData}
         barGroups={selectedBarGroups}
         colors={selectedChartColors}
         mouseOverClass={styles['bar-mouseover']}
-        handleMouseOver={handleMouseOver}>
-        <MouseOverText text={mouseOverText} textPosition={{x: 10, y: 10}} visibility={null}></MouseOverText>  
+        handleMouseOver={handleMouseOver}
+       >
+      <MouseOverText text={mouseOverText} textPosition={{x: 10, y: 10}} visibility={null}></MouseOverText>  
       </BarChartGrouped>
       <div className={`${styles["backtest-indicators-container"]}`}>
         <BacktestIndicators className={styles["backtest-indicators"]} data={selectedIndicatorsData} loading={dataLoading} supressFields={props.supressIndicatorFields}></BacktestIndicators>

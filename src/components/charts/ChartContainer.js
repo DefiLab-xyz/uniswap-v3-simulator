@@ -121,7 +121,7 @@ const ChartContainer = forwardRef((props, ref) => {
 
   return (
     <ChartContext.Provider value={{ scale: scale, chartContainer: chartContainerRef.current, chartWidth: width, chartHeight: height}}>
-      <div className={`chart-container ${props.className}`} ref={ref}>
+      <div className={`chart-container ${props.className}`} ref={ref} onMouseLeave={props.onMouseLeave}>
         <svg className={"chart-container-svg"}>
           <rect className={`mouseover-container`} x={margin.left} y={margin.top} 
             width={width} height={height} ref={chartContainerRef}></rect>
@@ -138,7 +138,7 @@ const ChartContainer = forwardRef((props, ref) => {
           <MouseOverMarker mouseOverMarker={props.mouseOverMarker} mouseOverMarkerPos={props.mouseOverMarkerPos}
             mouseOverMarkerPosX={props.mouseOverMarkerPosX || 0}  mouseOverMarkerPosY={ height + props.mouseOverMarkerPosY || height + 20}
             width={width} height={height} scale={scale} mouseOverTextExtended={props.mouseOverTextExtended}
-            mouseOverText={props.mouseOverText || []} handleMouseOver={props.handleMouseOver}
+            mouseOverText={props.mouseOverText || []} handleMouseOver={props.handleMouseOver} handleHoverMouseIn={props.handleHoverMouseIn} handleHoverMouseOut={props.handleHoverMouseOut}
           ></MouseOverMarker>
           <CurrentPriceLine domain={props.domain} scale={scale} currentPriceLine={props.currentPriceLine}></CurrentPriceLine>
           <Loader cx={"50%"} cy={"50%"} loading={props.loading || loading}></Loader>

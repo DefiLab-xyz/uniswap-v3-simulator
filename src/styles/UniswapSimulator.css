@@ -38,8 +38,11 @@
 
   --input-border-light: var(--inner-glow-light);
   --input-background-light: rgba(255,255,255, 1);
+  --button-selected-background-light : var(--input-background-light);
+
   --button-border-light:  1px 1px 2px #BABECC, -1px -1px 2px #f7f5fe;
-  --button-border-hover-light: 0.5px 0.5px 0.5px #fff, -0.5px -0.5px 0.5px #babecc;
+  --button-border-selected-light: inset 1px 1px 2px #babecc, inset -1px -1px 2px #f7f5fe;
+  --button-border-hover-light: 1px 1px 1px #fff, -1px -1px 1px #babecc;
 
 }
 
@@ -49,6 +52,7 @@
   --darker: rgb(19, 28, 31);
   /* --dark: var(--darkest-grey); */
   --semi-transparent-dark: rgba(0, 0, 0, 0.08);
+  --semi-transparent-medium-dark: rgba(39, 39, 41, 0.038);
 
   --radial-gradient-dark: radial-gradient(at top right, rgba(48, 42, 49, 0.2), transparent),
   radial-gradient(rgba(53, 50, 56, 0.4), transparent),
@@ -71,15 +75,16 @@
 
   --input-border-dark: inset 1px 1px 1px rgba(13, 14, 15, 0.4), inset -1px -1px 1px rgba(49, 54, 58, 0.4);
   --input-background-dark: var(--semi-transparent-dark);
+  --button-selected-background-dark : var(--semi-transparent-medium-dark);
   --button-border-dark: 1px 1px 2px rgba(0, 0, 0, 0.4), -1px -1px 2px rgba(49, 54, 58, 0.4);
-  --button-border-hover-light: 0.5px 0.5px 0.5px var(--light-grey), -0.5px -0.5px 0.5px #babecc;
+  --button-border-selected-dark: inset 1px 1px 2px rgba(0, 0, 0, 0.4), inset -1px -1px 2px rgba(49, 54, 58, 0.4);
+  --button-border-hover-dark: 0.5px 0.5px 0.5px var(--light-grey), -0.5px -0.5px 0.5px #babecc;
 
 }
 
 :root {
 
   /* Variables that can be changed using Theme Toggle component, default = lightmode */
-
   --background: var(--light);
   --background-radial: var(--radial-gradient-light);
   --background-linear: var(--linear-gradient-light);
@@ -98,7 +103,9 @@
   --input-border: var(--input-border-light);
   --button-border: var(--button-border);
   --input-background: var(--input-background-light);
-
+  --button-selected-background : var(--button-selected-background-light);
+  --button-border-selected: var(--button-border-selected-light);
+  --button-border-hover: var(--button-border-hover-light);
 }
 
 #root {
@@ -199,12 +206,12 @@ button:active {
 }
 
 button.selected {
-  box-shadow: var(--input-border);
-  background-color: var(--input-background);
+  box-shadow: var(--button-border-selected);
+  background-color: var(--button-selected-background);
 }
 
 button.selected:hover {
-  box-shadow: 1px 1px 1px #fff, -1px -1px 1px #babecc;
+  box-shadow: var(--button-border-hover);
 }
 
 div.parent-container {

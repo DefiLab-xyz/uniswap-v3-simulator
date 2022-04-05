@@ -27,6 +27,9 @@ const themeProperties = (mode) => {
       { setProperty: "--border-color", getProperty: "--border-color-dark"},
       { setProperty: "--input-border", getProperty: "--input-border-dark"},
       { setProperty: "--button-border", getProperty: "--button-border-dark"},
+      { setProperty: "--button-border-selected", getProperty: "--button-border-selected-dark"},
+      { setProperty: "--button-selected-background", getProperty: "--button-selected-background-dark"},
+      { setProperty: "--button-border-hover", getProperty: "--button-border-hover-dark"},
       { setProperty: "--input-background", getProperty: "--input-background-dark"},
     ],
     light: [
@@ -44,7 +47,10 @@ const themeProperties = (mode) => {
       { setProperty: "--border-color", getProperty: "--border-color-light"},
       { setProperty: "--input-border", getProperty: "--input-border-light"},
       { setProperty: "--button-border", getProperty: "--button-border-light"},
+      { setProperty: "--button-border-selected", getProperty: "--button-border-selected-light"},
+      { setProperty: "--button-border-hover", getProperty: "--button-border-hover-light"},
       { setProperty: "--input-background", getProperty: "--input-background-light"},
+      { setProperty: "--button-selected-background", getProperty: "--button-selected-background-light"},
     ]
   }
 

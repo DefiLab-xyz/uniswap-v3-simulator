@@ -5,6 +5,7 @@ import {setDefaultStrategyRangeInputVals, toggleStrategyRangeInputVals} from "./
 import { stdSample } from "../helpers/std";
 import { sumArray } from "../helpers/numbers";
 import { tokensForStrategy, liquidityForStrategy } from "../helpers/uniswap/liquidity";
+import { updatePoolStrategyNames } from "./strategies";
 
 import {liquidityByPoolId} from '../api/thegraph/uniTicks'
 import {getPoolDayData} from '../api/thegraph/uniPoolDayDatas'
@@ -109,6 +110,8 @@ export const fetchPoolData = pool => {
     payload.poolDayData = dailyPrices;
     dispatch(setPool(payload));
     dispatch(setDefaultStrategyRangeInputVals(payload));
+    dispatch(updatePoolStrategyNames({base: payload.baseToken.symbol, quote: payload.quoteToken.symbol}));
+    
 
     if (payload.toggleBase === true) {
       dispatch(toggleBaseToken());

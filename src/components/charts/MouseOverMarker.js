@@ -76,7 +76,6 @@ export const MouseOverMarker = (props) => {
   }
 
   const mouseLeave = () => {
-    console.log("mouseleft")
     setVisibility('none');
     if (props.handleHoverMouseOut) props.handleHoverMouseOut();
   }
@@ -88,7 +87,13 @@ export const MouseOverMarker = (props) => {
     }
   }, [props.mouseOverMarkerPosY, props.mouseOverMarkerPosX, props.mouseOverMarkerPos])
 
-  if (!props.mouseOverMarker) return (<></>);
+  if (!props.mouseOverMarker) return (    
+  <g className={`mouse-over-marker-empty ${props.className}`}>
+     {/* <rect className={`mouseover-container`} x={0} y={0} 
+        width={props.width || 0} height={props.height || 0 }
+        style={{strokeWidth: 0, stroke: "none"}}
+        onMouseEnter={mouseEnter} onMouseLeave={mouseLeave}></rect> */}
+      </g>);
 
   return (
     <g className={`mouse-over-marker ${props.className}`}>
@@ -97,7 +102,7 @@ export const MouseOverMarker = (props) => {
         y1={linePosition.y1} y2={linePosition.y2}>
       </line>
       <MouseOverText textPosition={textPosition} text={props.mouseOverText} 
-        textAnchor={textAnchor} visibility={visibility}  mouseOverTextExtended={props.mouseOverTextExtended}>
+        textAnchor={textAnchor} visibility={visibility} mouseOverTextExtended={props.mouseOverTextExtended}>
       </MouseOverText>
       <rect className={`mouseover-container`} x={0} y={0} 
         width={props.width || 0} height={props.height || 0 }
