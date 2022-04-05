@@ -127,7 +127,7 @@ const ChartContainer = forwardRef((props, ref) => {
             width={width} height={height} ref={chartContainerRef}></rect>
           <g className={"chart-container-g"} transform={translate}>
           <Axes scale={scale} scaleRight={scale && scale.yRight && scale.x ? {x: scale.x, y: scale.yRight} : null}
-                width={width} height={height} supressTickText={chartProps.supressTickText}
+                width={width} height={height} supressTickText={chartProps && chartProps.supressTickText ? chartProps.supressTickText : false }
                 margin={margin} chartProps={chartProps}>
           </Axes>
           <AxesLabels ylabel={chartProps.ylabel} xlabel={chartProps.xlabel} ylabelRight={chartProps.ylabelRight}
