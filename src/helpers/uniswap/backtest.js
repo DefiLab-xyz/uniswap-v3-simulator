@@ -133,6 +133,7 @@ export const pivotFeeData = (data, baseID, investment, leverage, tokenRatio) => 
       }
     }
   });
+  console.log(pivot);
   return pivot;
 }
 

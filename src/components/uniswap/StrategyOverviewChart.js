@@ -81,20 +81,21 @@ const StrategyOverviewChart = (props) => {
     const mouseOverText = [];
     const mouseOverTextExtended = [];
 
-    if (scale &&hoverData && hoverData.length) {
+    if (scale && hoverData && hoverData.length) {
 
       const idx = bisect.left(hoverData[0].data, parseFloat(scale.x.invert(xEvent)));
       if (props.extendedHoverData) {
 
-        const longShort = currentPrice < hoverData[0].data[idx].x ? "LONG" : "SHORT";
-        console.log(longShort)
+        
+
         hoverData.forEach(hd => {
-            mouseOverTextExtended.push([`${hd.label}:`, 
-            `Price: ${parsePrice(hoverData[0].data[idx].x)} ${baseToken.symbol}`,
-            `Impermanant Loss: ${parsePrice(hoverData[0].data[idx].impLoss)} USD`,
-            `Impermanant Position: ${parsePrice(hoverData[0].data[idx].impPos)} ${quoteToken.symbol} ${longShort}`,
-            `Notional Size: ${parsePrice(hoverData[0].data[idx].notionalSize)}`,
-            `Margin: ${parsePrice(hoverData[0].data[idx].margin, true)}%`]);
+          const longShort = currentPrice < hd.data[idx].x ? "LONG" : "SHORT";
+          mouseOverTextExtended.push([`${hd.label}:`, 
+          `Price: ${parsePrice(hd.data[idx].x)} ${baseToken.symbol}`,
+          `Impermanant Loss: ${parsePrice(hd.data[idx].impLoss)} USD`,
+          `Impermanant Position: ${parsePrice(hd.data[idx].impPos)} ${quoteToken.symbol} ${longShort}`,
+          `Notional Size: ${parsePrice(hd.data[idx].notionalSize)}`,
+          `Margin: ${parsePrice(hd.data[idx].margin, true)}%`]);
         });
         setMouseOverText(mouseOverTextExtended);
       }

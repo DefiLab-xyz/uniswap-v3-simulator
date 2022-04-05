@@ -132,7 +132,7 @@ export const genSelectedChartData = (data, strategies, dataName) => {
           chartData.push(tempdata[dataName]);
           chartColors.push(d.style.color);
           chartDash.push(false);
-          chartDataForHover.push({label: d.name, data:tempdata[dataName]});
+          chartDataForHover.push({label: d.name, data: tempdata[dataName]});
         }        
       }
     });

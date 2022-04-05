@@ -64,6 +64,7 @@ export const BacktestTotalReturn = (props) => {
   //-------------------------------------------------------------------------------------------------------------
   // Generate chartdata and chart domain
   //-------------------------------------------------------------------------------------------------------------
+
   useEffect(() => {
     if (props.data && props.data.length && props.strategy) {
 
@@ -75,7 +76,8 @@ export const BacktestTotalReturn = (props) => {
         return {...d, feeAcc: sum}
       })
 
-      if (chartDataTemp && chartDataTemp.data) setChartData(chartDataTemp.data); 
+      if (chartDataTemp && chartDataTemp.data) {setChartData(chartDataTemp.data); 
+      console.log(chartDataTemp.data)}
     }  
   }, [props.data, props.strategy]);
 
