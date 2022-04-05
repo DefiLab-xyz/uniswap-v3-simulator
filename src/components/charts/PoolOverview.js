@@ -105,7 +105,8 @@ export const DailyVolume = (props) => {
 
   return (
     <BarChart
-      className={`${styles['chart']} ${styles['volume-chart']} inner-glow`} classNames={{bar: styles['bar']}}
+      pageStyle={props.pageStyle}
+      className={`${styles['chart']} ${styles['volume-chart']} ${props.pageStyle["inner-glow"]}`} classNames={{bar: styles['bar']}}
       data={chartData} domain={chartDomain}
       avgLine={true} chartProps={chartProps}
       mouseOverMarker={true} mouseOverText={mouseOverText}

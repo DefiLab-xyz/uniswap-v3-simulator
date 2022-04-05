@@ -7,6 +7,7 @@ import { Axis } from "./Axis";
 import Loader from './Loader'
 import { MouseOverMarker } from './MouseOverMarker'
 import CurrentPriceLine from "./CurrentPriceLine";
+import styles from '../../styles/modules/charts/Chart.module.css'
 
 const Axes = (props) => {
 
@@ -121,11 +122,11 @@ const ChartContainer = forwardRef((props, ref) => {
 
   return (
     <ChartContext.Provider value={{ scale: scale, chartContainer: chartContainerRef.current, chartWidth: width, chartHeight: height}}>
-      <div className={`chart-container ${props.className}`} ref={ref} onMouseLeave={props.onMouseLeave}>
-        <svg className={"chart-container-svg"}>
-          <rect className={`mouseover-container`} x={margin.left} y={margin.top} 
+      <div className={`${styles["chart-container"]} ${props.className}`} ref={ref} onMouseLeave={props.onMouseLeave}>
+        <svg>
+          <rect className={styles[`mouseover-container`]} x={margin.left} y={margin.top} 
             width={width} height={height} ref={chartContainerRef}></rect>
-          <g className={"chart-container-g"} transform={translate}>
+          <g transform={translate}>
           <Axes scale={scale} scaleRight={scale && scale.yRight && scale.x ? {x: scale.x, y: scale.yRight} : null}
                 width={width} height={height} supressTickText={chartProps.supressTickText}
                 margin={margin} chartProps={chartProps}>

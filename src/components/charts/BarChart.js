@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, Fragment } from 'react'
 import chartscale from '../../helpers/chartscale'
 import ChartContainer from './ChartContainer';
 import AverageLine from './AverageLine'
+import styles from '../../styles/modules/charts/BarChart.module.css'
 
 const Bars = (props) => {
 

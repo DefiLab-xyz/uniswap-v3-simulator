@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
 import { roundToNearestTick } from "../helpers/uniswap/liquidity";
-import { chartColors } from "../data/colorsUniswap";
+import chartColors from "../data/colorsUniswap.json";
 import { parsePrice } from "../helpers/numbers";
 
 const initialState = [

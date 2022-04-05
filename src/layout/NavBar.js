@@ -1,18 +1,23 @@
 import { useState, useEffect } from 'react'
 import { Link } from "react-router-dom";
-import Grid from '../components/Grid'
-import ToolTip from '../components/ToolTip'
+
+import NavData from '../data/NavBar.json'
+
+import styles from '../styles/modules/NavBar.module.css'
+
 import { ReactComponent as  Twitter } from '../assets/twitter.svg'
 import { ReactComponent as Telegram } from '../assets/telegram.svg'
 import { ReactComponent as Medium } from '../assets/medium.svg'
 import { ReactComponent as Gitcoin } from '../assets/gitcoin.svg'
+import { ReactComponent as Donate } from '../assets/heart.svg'
+import { ReactComponent as Hamburger } from '../assets/menu.svg'
 import GitHub from '../assets/GitHub.png'
 import GitHubLight from '../assets/GitHub-light.png'
 import QrCode from '../assets/qrcode.png'
-import { ReactComponent as Donate } from '../assets/heart.svg'
-import { ReactComponent as Hamburger } from '../assets/menu.svg'
-import NavData from '../data/NavBar.json'
+
 import ThemeToggle from '../components/ThemeToggle';
+import Grid from '../components/Grid'
+import ToolTip from '../components/ToolTip'
 
 const NavMenu = (props) => {
 
@@ -67,7 +72,7 @@ const NavMenu = (props) => {
     textStyle={navMenuStyle}
     onClick={() => navMenuVis === null ? setNavMenuVis('hidden') : setNavMenuVis(null)}
     onBlur={() => setNavMenuVis('hidden')}>
-      <Hamburger alt="Site Menu navigation" className="nav-icon"></Hamburger>
+      <Hamburger alt="Site Menu navigation" className={styles["nav-icon"]}></Hamburger>
     </ToolTip>
   )
 }
@@ -109,7 +114,7 @@ const ERC20Donation = (props) => {
     onClick={() => donationVis === null ? setDonationVis('hidden') : setDonationVis(null)}
     onBlur={() => setDonationVis('hidden')}
     >
-      <Donate alt="ERC20 QR code donation to DefiLab" className="nav-icon nav-icon-heart"></Donate>
+      <Donate alt="ERC20 QR code donation to DefiLab" className={`${styles["nav-icon"]} ${styles["nav-icon-heart"]}`}></Donate>
       {/* <img src={donate} alt="ERC20 QR code donation to DefiLab" style={props.imageStyle}></img> */}
     </ToolTip>
   )
@@ -120,7 +125,6 @@ const GitCoin = (props) => {
   return (
     <ToolTip text={"Donate on GitCoin"} 
     buttonStyle={{backgroundColor: "rgba(128, 232, 221, 0.7)"}} 
-    // textStyle={{backgroundColor:"#e5faf8"}}
     >
       <a href="https://gitcoin.co/grants/2575/defilab_xyz " target="_blank" rel="noreferrer">
         <Gitcoin alt="GitCoin link" className="nav-icon" style={{width: 15, height: 15, paddingBottom: 4}}></Gitcoin>
@@ -141,7 +145,7 @@ const GitHubRepo = (props) => {
     <ToolTip text={"GitHub Open Source Code Repo"} 
     >
       <a href="https://github.com/DefiLab-xyz/uniswap-v3-simulator" target="_blank" rel="noreferrer">
-        <img alt="GitHub Open Source Code DefiLab" src={img} className="nav-icon"></img>
+        <img alt="GitHub Open Source Code DefiLab" src={img} className={styles["nav-icon"]}></img>
       </a>
     </ToolTip>
   )
@@ -149,9 +153,9 @@ const GitHubRepo = (props) => {
 
 const SocialLinks = (props) => {
 
-  const linkData = [{key:"twitter", src: <Twitter className="nav-icon"></Twitter>, alt: "Twitter profile DefiLab", text: "Check us out on Twitter", href: "https://twitter.com/DefiLab_xyz"},
-    {key:"telegram", src: <Telegram className="nav-icon"></Telegram>, alt: "Telegram channel DefiLab", text: "Reach out on Telegram", href: "https://t.me/joinchat/uOY1GOFvnH43NzA0"},
-    {key:"medium", src: <Medium className="nav-icon"></Medium>, alt: "Medium profile DefiLab", text: "Learn more on Medium", href: "https://defi-lab.medium.com"}];
+  const linkData = [{key:"twitter", src: <Twitter className={styles["nav-icon"]}></Twitter>, alt: "Twitter profile DefiLab", text: "Check us out on Twitter", href: "https://twitter.com/DefiLab_xyz"},
+    {key:"telegram", src: <Telegram className={styles["nav-icon"]}></Telegram>, alt: "Telegram channel DefiLab", text: "Reach out on Telegram", href: "https://t.me/joinchat/uOY1GOFvnH43NzA0"},
+    {key:"medium", src: <Medium className={styles["nav-icon"]}></Medium>, alt: "Medium profile DefiLab", text: "Learn more on Medium", href: "https://defi-lab.medium.com"}];
 
   const links = linkData.map((link) => 
     <ToolTip key={link.key} text={link.text}>
@@ -183,7 +187,7 @@ const NavBar = (props) => {
     minWidth={props.minWidth}
     >
       <h1 style={styles.title}>{props.title}</h1>
-      <ThemeToggle style={styles.themeToggle} handleToggle={handleToggle}></ThemeToggle>
+      <ThemeToggle style={styles.themeToggle} handleToggle={handleToggle} themeProps={props.themeProps}></ThemeToggle>
       <div style={styles.links}>
         <GitCoin></GitCoin>
         <SocialLinks></SocialLinks>

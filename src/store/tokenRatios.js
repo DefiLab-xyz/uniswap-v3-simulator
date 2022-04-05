@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { chartColors } from "../data/colorsUniswap";
+import chartColors from "../data/colorsUniswap.json";
 
 const initialState = [
   {id: "S1", name: "Strategy 1", color: chartColors.blue, token0: "", token1: ""}, 

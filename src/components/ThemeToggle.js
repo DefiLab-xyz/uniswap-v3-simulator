@@ -1,8 +1,3 @@
-/*
-   * Credit for toggle component goes to Ryan Finni:
-   * https://letsbuildui.dev/articles/building-a-dark-mode-theme-toggle
-*/
-
 import { useState, useEffect } from "react";
 import { ReactComponent as MoonIcon } from '../assets/moon.svg'
 import { ReactComponent as SunIcon } from '../assets/sun.svg'
@@ -74,49 +69,47 @@ const updateTheme = (theme) => {
 
 const ThemeToggle = (props) => {
 
-  const [isEnabled, setIsEnabled] = useState(false);
+  const [darkIsEnabled, setDarkIsEnabled] = useState(false);
 
   useEffect(() => {
-    if (props.handleToggle) props.handleToggle(!isEnabled);
-    const theme = isEnabled ? 'dark' : 'light';
+    if (props.handleToggle) props.handleToggle(!darkIsEnabled);
+    const theme = darkIsEnabled ? 'dark' : 'light';
     updateTheme(theme);
-  }, [isEnabled]);
+  }, [darkIsEnabled]);
 
   useEffect(() => {
     const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
     if (prefersDarkScheme) {
       updateTheme('dark');
-      setIsEnabled(true);
+      setDarkIsEnabled(true);
     }
   }, []);
 
   const toggleState = () => {
-    setIsEnabled((prevState) => !prevState);
+    setDarkIsEnabled((prevState) => !prevState);
   };
 
   return (
     <div className={props.className} style={props.style}>
       <label className={styles["toggle-wrapper"]} htmlFor="toggle">
-      <div className={`${styles["toggle"]} ${isEnabled ? styles["enabled"] : styles["disabled"]}`}>
+      <div className={`${styles["toggle"]} ${setDarkIsEnabled ? styles["enabled"] : styles["disabled"]}`}>
         <span className={styles["hidden"]}>
-          {isEnabled ? "Enable Light Mode" : "Enable Dark Mode"}
+          {setDarkIsEnabled ? "Enable Light Mode" : "Enable Dark Mode"}
         </span>
         <input
           id="toggle"
           name="toggle"
           type="checkbox"
-          checked={isEnabled}
+          checked={setDarkIsEnabled}
           onClick={toggleState}
         />
         <div className={styles["icons"]}>
           <MoonIcon></MoonIcon>
           <SunIcon></SunIcon>
         </div>
-       
       </div>
     </label>
     </div>
-    
   );
 
 }

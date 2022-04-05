@@ -1,0 +1,44 @@
+{
+  "uniswap": {
+    "dark": [
+      { "setProperty": "--background", "getProperty": "--dark"},
+      { "setProperty": "--foreground", "getProperty": "--light"},
+      { "setProperty": "--semi-transparent-background", "getProperty": "--semi-transparent-dark"},
+      { "setProperty": "--background-radial", "getProperty": "--radial-gradient-dark"},
+      { "setProperty": "--background-linear", "getProperty": "--linear-gradient-dark"},
+      { "setProperty": "--background-linear-2", "getProperty": "--linear-gradient-dark-2"},
+      { "setProperty": "--font-color-bold", "getProperty": "--font-color-bold-dark"},
+      { "setProperty": "--font-color", "getProperty": "--font-color-dark"},
+      { "setProperty": "--outer-glow", "getProperty": "--outer-glow-dark"},
+      { "setProperty": "--outer-glow-intense", "getProperty": "--outer-glow-intense-dark"},
+      { "setProperty": "--inner-glow", "getProperty": "--inner-glow-dark"},
+      { "setProperty": "--border-color", "getProperty": "--border-color-dark"},
+      { "setProperty": "--input-border", "getProperty": "--input-border-dark"},
+      { "setProperty": "--button-border", "getProperty": "--button-border-dark"},
+      { "setProperty": "--button-border-selected", "getProperty": "--button-border-selected-dark"},
+      { "setProperty": "--button-selected-background", "getProperty": "--button-selected-background-dark"},
+      { "setProperty": "--button-border-hover", "getProperty": "--button-border-hover-dark"},
+      { "setProperty": "--input-background", "getProperty": "--input-background-dark"}
+    ],
+    "light": [
+      { "setProperty": "--background", "getProperty": "--light"},
+      { "setProperty": "--foreground", "getProperty": "--dark"},
+      { "setProperty": "--semi-transparent-background", "getProperty": "--semi-transparent-ligh"},
+      { "setProperty": "--background-radial", "getProperty": "--radial-gradient-light"},
+      { "setProperty": "--background-linear", "getProperty": "--linear-gradient-light"},
+      { "setProperty": "--background-linear-2", "getProperty": "--linear-gradient-light-2"},
+      { "setProperty": "--font-color-bold", "getProperty": "--font-color-bold-light"},
+      { "setProperty": "--font-color", "getProperty": "--font-color-light"},
+      { "setProperty": "--outer-glow", "getProperty": "--outer-glow-light"},
+      { "setProperty": "--outer-glow-intense", "getProperty": "--outer-glow-intense-light"},
+      { "setProperty": "--inner-glow", "getProperty": "--inner-glow-light"},
+      { "setProperty": "--border-color", "getProperty": "--border-color-light"},
+      { "setProperty": "--input-border", "getProperty": "--input-border-light"},
+      { "setProperty": "--button-border", "getProperty": "--button-border-light"},
+      { "setProperty": "--button-border-selected", "getProperty": "--button-border-selected-light"},
+      { "setProperty": "--button-border-hover", "getProperty": "--button-border-hover-light"},
+      { "setProperty": "--input-background", "getProperty": "--input-background-light"},
+      { "setProperty": "--button-selected-background", "getProperty": "--button-selected-background-light"}
+    ]
+  }
+}

@@ -2,7 +2,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from "react";
 
 // Styles //
-import '../styles/UniswapSimulator.css';
+import styles from '../styles/modules/containers/UniswapSimulator.module.css';
+import themeProps from '../data/themeProperties.json'
 import SideBarStyles from '../styles/modules/SideBar.module.css';
 import PoolOverviewStyles from '../styles/modules/PoolOverview.module.css';
 import PoolPriceLiquidityStyles from '../styles/modules/PoolPriceLiquidity.module.css';
@@ -80,17 +81,18 @@ useEffect(() => {
 //-----------------------------------------------------------------------------------------------
 
   return (
-    <div className="App">
-      <div className="parent-container">
+    <div className={styles["App"]}>
+      <div className={styles["parent-container"]}>
         <NavBar
           width={windowDim.width} minWidth={pageMinWidth}
-          title="Uniswap V3 Strategy Simulator">
+          title="Uniswap V3 Strategy Simulator"
+          themeProps={themeProps.uniswap}>
         </NavBar>
-        <Grid className="dashboard-container"
+        <Grid className={styles["dashboard-container"]}
           rows={150} columns={62}
           cellAspectRatio={0.82} gridGap={5}
           gridWidth={windowDim.width} minWidth={pageMinWidth}>
-          <PoolOverview></PoolOverview>
+          <PoolOverview pageStyle={styles}></PoolOverview>
           <StrategyOverview></StrategyOverview>
           <PoolPriceLiquidity></PoolPriceLiquidity>
           <StrategyBacktest></StrategyBacktest>

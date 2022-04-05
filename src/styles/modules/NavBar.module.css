@@ -9,9 +9,16 @@
   text-align: center; 
   background-color: #e5faf8; 
   fill: #4d5458;
-  padding: 15px
+  padding: 15px;
 }
 
-.menu-item {
+.nav-icon {
+  fill: var(--font-color);
+  stroke-width: 0;
+  width: 12px;
+  height: 12px;
+}
 
+.nav-icon-heart {
+  fill: var(--pink-icon);
 }

@@ -1,7 +1,8 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect } from "react";
 
-import '../styles/UniswapSimulator.css';
+import styles from '../styles/modules/containers/PerpetualSimulator.module.css';
+import themeProps from '../data/themeProperties.json'
 
 // Layout //
 import NavBar from "../layout/NavBar";
@@ -21,7 +22,6 @@ import { perpMarkets } from '../api/thegraph/uniPerpMarkets'
 import { fetchPoolData } from '../store/pool';
 import { setWindowDimensions, selectWindowDimensions } from '../store/window';
 import { setProtocol } from '../store/protocol';
-
 
 
 const PerpetualSimulator = (props) => {
@@ -134,18 +134,19 @@ const handleSearch = (searchTerm) => {
 //-----------------------------------------------------------------------------------------------
 
   return (
-    <div className="App">
-      <div className="parent-container">
+    <div className={styles["App"]}>
+      <div className={styles["parent-container"]}>
         <NavBar
           width={windowDim.width} minWidth={pageMinWidth}
-          title="Perpetual Liquidity Provider Strategy Simulator ">
+          title="Perpetual Liquidity Strategy Simulator"
+          themeProps={themeProps.uniswap}>
         </NavBar>
-        <Grid className="dashboard-container"
+        <Grid className={styles["dashboard-container"]}
           rows={150} columns={62}
           cellAspectRatio={0.82} gridGap={5}
           gridWidth={windowDim.width} minWidth={pageMinWidth}>
           <PoolOverview poolStatsHidden={true}></PoolOverview>
-          <StrategyOverview  chartDataOverride="leveraged" strategies={['S1', 'S2']}
+          <StrategyOverview chartDataOverride="leveraged" strategies={['S1', 'S2']}
             impLossHidden={true} zeroLine={true} extendedHoverData={true}> 
           </StrategyOverview>
           <PoolPriceLiquidity></PoolPriceLiquidity>
