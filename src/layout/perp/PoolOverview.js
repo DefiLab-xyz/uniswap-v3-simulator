@@ -18,6 +18,7 @@ const PoolOverview = (props) => {
       <div className={styles["chart-container"]}>
         <DailyVolume chartDataY="volumeToken1"></DailyVolume>
         <DailyVolume chartDataY="txCount" chartProps={{ylabel: "Transaction Count"}}></DailyVolume>
+        <PoolStats poolStatsHidden={props.poolStatsHidden}></PoolStats>
       </div>
       
     </div>

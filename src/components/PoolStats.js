@@ -35,8 +35,11 @@ const PoolStats = (props) => {
   return (
     <div className={styles["pool-stats-container"]}>
       <Stat row={1} stat={round(normStd, 2) + '%'} label="Volatility"></Stat>
-      <Stat row={2} stat={round(fee24Hr, 2) + '%'} label="Active Liquidity 24h Fee"></Stat>
-      <Stat row={3} stat={round(CLI, 2) + '%'} label="Concentrated Liquidity Index"></Stat>
+      {
+        props.poolStatsHidden ? <></> : 
+        <Stat row={2} stat={round(fee24Hr, 2) + '%'} label="Active Liquidity 24h Fee"></Stat>
+      }
+      <Stat row={props.poolStatsHidden ? 2 : 3} stat={round(CLI, 2) + '%'} label="Concentrated Liquidity Index"></Stat>
     </div>
   )
 }
