@@ -53,7 +53,7 @@ export const genChartData = (currentPrice, investment, strategyRanges, strategie
         const impLoss = d.y - perpDebtVal;
         const impPos = x0 - d.token;
         const notionalSize = Math.abs(impPos * d.x);
-        const margin = notionalSize !== 0 ? (parseFloat(investment) + parseFloat(impLoss)) / notionalSize : 0;
+        const margin = (notionalSize === 0) || (impLoss > 0 && impLoss < 0.00001) ?  9999999999999 : (parseFloat(investment) + parseFloat(impLoss)) / notionalSize;
 
         return {...d, investment: investment, test: test, perpDebtVal: perpDebtVal, impLoss: impLoss, impPos: impPos, notionalSize: notionalSize, margin: margin * 100, y: impLoss}
       });
