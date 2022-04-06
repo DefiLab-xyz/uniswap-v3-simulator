@@ -29,7 +29,7 @@ const ZeroLine = (props) => {
 
   if (props.zeroLine) {
     return (
-      <Line className="zero-line" useParentScale={true} data={lineData} stroke={props.strategy && props.strategy.color ? props.strategy.color : "grey"}></Line>
+      <Line className="zero-line" useParentScale={true} data={lineData} stroke={ props.strategy && props.strategy.color ? props.strategy.color : "rgb(128, 232, 221)"}></Line>
     )
   }
 
