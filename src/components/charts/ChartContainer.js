@@ -15,19 +15,19 @@ const Axes = (props) => {
         scale={props.scaleBottom || props.scale} 
         width={props.width} height={props.height} 
         margin={props.margin} supressTickText={props.supressTickText}
-        axisType="bottom" scaleType={props.chartProps.scaleTypeX || "linear"} dataType={props.chartProps.dataTypeX || "number"}>
+        axisType="bottom" scaleType={props.chartProps.scaleTypeX ? props.chartProps.scaleTypeX : "linear"} dataType={props.chartProps.scaleTypeX ? props.chartProps.dataTypeX : "number"}>
       </Axis>
       <Axis 
         scale={props.scaleLeft || props.scale} 
         width={props.width} height={props.height} 
         margin={props.margin} supressTickText={props.supressTickText}
-        axisType="left" scaleType={props.chartProps.scaleTypeY || "linear"} dataType={props.chartProps.dataTypeY || "number"} textAnchor="end">
+        axisType="left" scaleType={props.chartProps.scaleTypeY ? props.chartProps.scaleTypeY : "linear"} dataType={ props.chartProps.scaleTypeY ? props.chartProps.dataTypeY : "number"} textAnchor="end">
        </Axis>
        <Axis 
         scale={props.scaleRight} 
         width={props.width} height={props.height} 
         margin={props.margin} supressTickText={props.supressTickText}
-        axisType="right" scaleType={props.chartProps.scaleTypeYRight || "linear"} dataType={props.chartProps.dataTypeYRight || "number"} 
+        axisType="right" scaleType={props.chartProps.scaleTypeYRight ? props.chartProps.scaleTypeYRight : "linear"} dataType={props.chartProps.scaleTypeYRight ? props.chartProps.dataTypeYRight : "number"} 
         >
        </Axis>
     </Fragment>);
