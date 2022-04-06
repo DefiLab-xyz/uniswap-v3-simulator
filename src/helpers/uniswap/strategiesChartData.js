@@ -147,9 +147,8 @@ export const genSelectedChartData = (data, strategies, dataName) => {
         const tempdata = data.find(strat => strat.id === d.id);
 
         if (tempdata && tempdata.hasOwnProperty(dataName)) {
-          console.log(tempdata)
+
           const idx = tempdata[dataName].findIndex( cd => cd.margin >= 6.25 || cd.margin === "∞");
-          console.log(idx)
           const notLiquidatedTemp = tempdata[dataName].slice(idx);
           const idx2 = notLiquidatedTemp.findIndex( cd => cd.margin < 6.25); 
 

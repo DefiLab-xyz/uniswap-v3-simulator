@@ -87,7 +87,7 @@ export const BacktestTotalReturn = (props) => {
       const yMax = chartData.map( cD =>  {
         return sumArray(selectedKeys.map(s => cD[s]));
       });
-      console.log(chartData)
+
       const yMin = minInArray([chartData], selectedKeys[0]);
       
       setChartDomain({x: chartData.map(d => d.date), y: [Math.min(0, yMin), Math.max(...yMax)]});
@@ -212,7 +212,7 @@ export const BacktestTotalReturnPercent = (props) => {
 
   useEffect(() => {
     if (chartData && chartData.length) {
-      console.log(chartData)
+
       const compare = chartData.find(d => d.id === selectedCompareStrategy.id);
       const strategy = chartData.find(d => d.id === selectedStrategy.id);
 

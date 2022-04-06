@@ -11,6 +11,7 @@ export const minTvl = (protocol) => {
 }
 
 export const requestBody = (request) => {
+  
   if(!request.query) return;
 
   const body = {

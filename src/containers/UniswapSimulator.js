@@ -60,9 +60,6 @@ useEffect(() => {
 const protocol = useSelector(selectProtocolId);
 const poolS = useSelector(selectPool);
 
-useEffect(() => {
-  console.log(poolS)
-}, [ poolS])
 
 useEffect(() => {
   const abortController = new AbortController();

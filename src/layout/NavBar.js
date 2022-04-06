@@ -133,7 +133,6 @@ const GitHubRepo = (props) => {
   const [img, setImg] = useState(props.darkMode  ? GitHub : GitHubLight);
 
   useEffect(() => {
-    console.log(props.darkMode)
     setImg(props.darkMode  ? GitHub : GitHubLight)
   }, [props.darkMode]);
 

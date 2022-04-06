@@ -21,6 +21,7 @@ import { perpMarkets } from '../api/thegraph/uniPerpMarkets'
 import { fetchPoolData } from '../store/pool';
 import { setWindowDimensions, selectWindowDimensions } from '../store/window';
 import { setProtocol } from '../store/protocol';
+import { perpStats } from '../api/perpStats';
 
 
 
@@ -129,6 +130,10 @@ const handleSearch = (searchTerm) => {
 
   return searchData;
 }
+
+useEffect(() => {
+  perpStats().then(d => console.log(d))
+}, [])
 
 //-----------------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------

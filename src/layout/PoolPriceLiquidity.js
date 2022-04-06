@@ -16,7 +16,6 @@ const PoolPriceLiquidity = (props) => {
 
   const handleLiquidityZoom = (zoom) => {
     const newZoom = liquidityZoom + (zoom / 10 * -1)
-    console.log(newZoom)
     if (newZoom >= 0.001) setLiquidityZoom(newZoom);
   }
 

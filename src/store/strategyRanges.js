@@ -38,7 +38,6 @@ export const updateStrategyRangeInputVal = (range) => {
     const baseDecimal = getState().pool.value.baseToken.decimals;
     const quoteDecimal = getState().pool.value.quoteToken.decimals;
     const feeTier = getState().pool.value.feeTier;
-    console.log(range)
     dispatch(setStrategyRangeInputVal({key: range.key, id: range.id, value: roundToNearestTick(range.value, feeTier, baseDecimal, quoteDecimal)}));
   }
 }
@@ -141,7 +140,6 @@ export const strategyRanges = createSlice({
     setTokenRatio: (state, action) => {
       const index = state.findIndex(i => i.id === action.payload.id);
       if (index >=0) {
-        console.log(action.payload.tokenratio)
         state[index].tokenratio = action.payload.tokenratio;
       }
     }

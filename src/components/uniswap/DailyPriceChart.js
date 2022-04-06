@@ -126,7 +126,7 @@ const StrategyOverlays = (props) => {
       const idx = dates.findIndex(d => d === scale.x.invert(xEvent));
 
       if (idx >= 0) {
-        const date = new Date(chartData[idx].date * 1000);
+        const date = new Date(chartData[idx].date);
         const formattedDate = date.getUTCDate() + '/' + (date.getUTCMonth() + 1) + '/' + date.getUTCFullYear();
   
         const x = `Date: ${formattedDate}`

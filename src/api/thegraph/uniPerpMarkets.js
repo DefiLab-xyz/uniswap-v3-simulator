@@ -16,7 +16,6 @@ export const perpMarkets = async (signal) => {
     const response = await fetch(url, requestBody({query: query, signal: signal}));
     const data = await response.json();
 
-    console.log(data);
     if (data && data.data && data.data.markets ) {
       return data.data.markets;
     }
