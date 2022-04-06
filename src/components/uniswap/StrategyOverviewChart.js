@@ -68,8 +68,7 @@ const StrategyOverviewChart = (props) => {
 
         hoverData.forEach(hd => {
           const longShort = currentPrice < hd.data[idx].x ? "LONG" : "SHORT";
-          const margin = hd.data[idx].margin > 9999999999999 ? "∞" : hd.data[idx].margin < 6.25 ? "LIQUIDATION" : `${parsePrice(hd.data[idx].margin, true)}%`;
-          console.log(hd.data[idx].margin)
+          const margin = hd.data[idx].margin === "∞" ? hd.data[idx].margin : hd.data[idx].margin < 6.25 ? "LIQUIDATION" : `${parsePrice(hd.data[idx].margin, true)}%`;
           mouseOverTextExtended.push([`${hd.label}:`,
           `Price: ${parsePrice(hd.data[idx].x)} ${baseToken.symbol}`,
           `Impermanant Loss: ${parsePrice(hd.data[idx].impLoss)} USD`,
