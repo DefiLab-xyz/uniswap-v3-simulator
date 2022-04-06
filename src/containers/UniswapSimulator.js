@@ -27,8 +27,6 @@ import { fetchPoolData, selectPool } from '../store/pool';
 import { setWindowDimensions, selectWindowDimensions } from '../store/window';
 import { selectProtocolId } from '../store/protocol';
 
-
-
 const UniswapSimulator = (props) => {
 
 //-----------------------------------------------------------------------------------------------
@@ -86,18 +84,19 @@ useEffect(() => {
         <NavBar
           width={windowDim.width} minWidth={pageMinWidth}
           title="Uniswap V3 Strategy Simulator"
-          themeProps={themeProps.uniswap}>
+          themeProps={themeProps.uniswap}
+          pageStyle={styles}>
         </NavBar>
         <Grid className={styles["dashboard-container"]}
           rows={150} columns={62}
           cellAspectRatio={0.82} gridGap={5}
           gridWidth={windowDim.width} minWidth={pageMinWidth}>
           <PoolOverview pageStyle={styles}></PoolOverview>
-          <StrategyOverview></StrategyOverview>
-          <PoolPriceLiquidity></PoolPriceLiquidity>
-          <StrategyBacktest></StrategyBacktest>
-          <SideBar width={windowDim.width} minWidth={pageMinWidth} protocols={[0, 1, 2, 3]} leverageHidden={true}></SideBar>
-          <DashBoard></DashBoard>
+          <StrategyOverview pageStyle={styles}></StrategyOverview>
+          <PoolPriceLiquidity pageStyle={styles}></PoolPriceLiquidity>
+          <StrategyBacktest pageStyle={styles}></StrategyBacktest>
+          <SideBar width={windowDim.width} minWidth={pageMinWidth} protocols={[0, 1, 2, 3]} leverageHidden={true} pageStyle={styles}></SideBar>
+          <DashBoard pageStyle={styles}></DashBoard>
         </Grid>
       </div>
     </div>

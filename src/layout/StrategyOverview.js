@@ -41,9 +41,9 @@ const StrategyOverviewIndicators = (props) => {
 
   return (
     <div className={`${styles['strategy-indicators']}`}>
-      <ConcentratedLiquidityMultiplier strategies={selectedStrategies}></ConcentratedLiquidityMultiplier>
-      <StrategyRangeSize strategies={selectedStrategies}></StrategyRangeSize>
-      <StrategyTokenRatio chartData={props.chartData}></StrategyTokenRatio>
+      <ConcentratedLiquidityMultiplier pageStyle={props.pageStyle} strategies={selectedStrategies}></ConcentratedLiquidityMultiplier>
+      <StrategyRangeSize pageStyle={props.pageStyle} strategies={selectedStrategies}></StrategyRangeSize>
+      <StrategyTokenRatio pageStyle={props.pageStyle} chartData={props.chartData}></StrategyTokenRatio>
     </div>
   )
 }
@@ -61,7 +61,7 @@ const StrategyToggle = (props) => {
   }
 
   return (
-   <ToggleButtonsFlex buttons={buttons} className={styles["strategy-buttons"]} handleToggle={handleStrategyChange}></ToggleButtonsFlex>
+   <ToggleButtonsFlex pageStyle={props.pageStyle} buttons={buttons} className={styles["strategy-buttons"]} handleToggle={handleStrategyChange}></ToggleButtonsFlex>
   )
 }
 
@@ -88,7 +88,7 @@ const PositionBreakdown = (props) => {
     const buttons = [{id: "token", label: "Token", style: {width: 50}}, {id: "value", label: "Value", style: {width: 50}}];
   
     return (
-      <div class={`sub-title ${styles['position-breakdown-title']}`}>
+      <div class={`${props.pageStyle ? props.pageStyle["sub-title"] : "sub-title"} ${styles['position-breakdown-title']}`}>
         <span>{`Position Breakdown By`}</span>&nbsp;&nbsp;&nbsp;
         <ToggleButtonsFlex buttons={buttons} className={styles["strategy-buttons"]} handleToggle={handleBreakdownToggle}></ToggleButtonsFlex>
       </div>
@@ -103,10 +103,10 @@ const PositionBreakdown = (props) => {
 
   return (
     <Fragment>
-      <Title></Title>
-      <div className={`${styles["position-breakdown-container"]} inner-glow`}>
-        <TokenRatioChart className={`${styles["token-ratio-chart"]} ${styles[`token-ratio-${tokenRatioClass}`]} inner-glow`} chartData={props.chartData} strategy={props.selectedStrategy} strategyLimits={strategyLimits}></TokenRatioChart>
-        <TokenValueSplitChart className={`${styles["token-ratio-chart"]} ${styles[`token-value-${valueSplitClass}`]} inner-glow`} chartData={props.chartData} strategy={props.selectedStrategy} strategyLimits={strategyLimits}></TokenValueSplitChart>
+      <Title pageStyle={props.pageStyle}></Title>
+      <div className={`${styles["position-breakdown-container"]} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`}>
+        <TokenRatioChart pageStyle={props.pageStyle} className={`${styles["token-ratio-chart"]} ${styles[`token-ratio-${tokenRatioClass}`]} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`} chartData={props.chartData} strategy={props.selectedStrategy} strategyLimits={strategyLimits}></TokenRatioChart>
+        <TokenValueSplitChart pageStyle={props.pageStyle} className={`${styles["token-ratio-chart"]} ${styles[`token-value-${valueSplitClass}`]} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`} chartData={props.chartData} strategy={props.selectedStrategy} strategyLimits={strategyLimits}></TokenValueSplitChart>
       </div>
     </Fragment>
   )
@@ -213,24 +213,26 @@ const StrategyOverview = (props) => {
   }, [props.extendedHoverData]);
 
   return (
-    <div className={`${styles['strategy-overview-container']} dashboard-section outer-glow`}>
-      <Title></Title>
-      <StrategyOverviewChart chartData={chartData} v3StrategyData={v3StrategyData} chartDomain={chartDomain} 
+    <div className={`${styles['strategy-overview-container']} 
+    ${props.pageStyle ? props.pageStyle["outer-glow"] : "outer-glow"}
+    ${props.pageStyle ? props.pageStyle["dashboard-section"] : "dashboard-section"}`}>
+      <Title pageStyle={props.pageStyle}></Title>
+      <StrategyOverviewChart pageStyle={props.pageStyle} chartData={chartData} v3StrategyData={v3StrategyData} chartDomain={chartDomain} 
         chartDataOverride={props.chartDataOverride} zeroLine={props.zeroLine} extendedHoverData={props.extendedHoverData}>
       </StrategyOverviewChart>
-      <StrategyOverviewIndicators chartData={chartData}></StrategyOverviewIndicators>
-      <StrategyToggle handleStrategyChange={updateSelectedStrategyToggle}></StrategyToggle>
+      <StrategyOverviewIndicators pageStyle={props.pageStyle} chartData={chartData}></StrategyOverviewIndicators>
+      <StrategyToggle pageStyle={props.pageStyle} handleStrategyChange={updateSelectedStrategyToggle}></StrategyToggle>
       
       { props.impLossHidden ? 
       <Fragment>
          <div class={`sub-title ${styles['position-breakdown-token-ratio-title']}`}>Position Breakdown By Token Ratio</div>
-        <TokenRatioChart className={`${styles["position-breakdown-token-ratio-container"]} inner-glow`} chartData={selectedStrategyChartData} strategy={selectedStrategyToggle} strategyLimits={strategyLimits}></TokenRatioChart>
+        <TokenRatioChart pageStyle={props.pageStyle} className={`${styles["position-breakdown-token-ratio-container"]} inner-glow`} chartData={selectedStrategyChartData} strategy={selectedStrategyToggle} strategyLimits={strategyLimits}></TokenRatioChart>
         <div class={`sub-title ${styles['position-breakdown-value-title']}`}>Position Breakdown By Token Value</div>
-        <TokenValueSplitChart className={`${styles["position-breakdown-value-container"]} inner-glow`} chartData={selectedStrategyChartData} strategy={selectedStrategyToggle} strategyLimits={strategyLimits}></TokenValueSplitChart>
+        <TokenValueSplitChart pageStyle={props.pageStyle} className={`${styles["position-breakdown-value-container"]} inner-glow`} chartData={selectedStrategyChartData} strategy={selectedStrategyToggle} strategyLimits={strategyLimits}></TokenValueSplitChart>
       </Fragment> :
       <Fragment>
-        <PositionBreakdown selectedStrategy={selectedStrategyToggle} chartData={selectedStrategyChartData}></PositionBreakdown>
-        <ImpermanentLossChart className={styles['imp-loss-chart-container']} 
+        <PositionBreakdown pageStyle={props.pageStyle} selectedStrategy={selectedStrategyToggle} chartData={selectedStrategyChartData}></PositionBreakdown>
+        <ImpermanentLossChart pageStyle={props.pageStyle} className={styles['imp-loss-chart-container']} 
         classNameTitle={styles['imp-loss-chart-title']}
         classNameDropdown={styles['imp-loss-chart-dropdown']}
         selectedStrategy={selectedStrategyToggle} data={chartData}>

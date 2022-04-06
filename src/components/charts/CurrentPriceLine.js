@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux"
 import { selectCurrentPrice } from "../../store/pool"
 import { selectInvestment } from "../../store/investment";
+import styles from '../../styles/modules/charts/CurrentPriceLine.module.css'
 
 const CurrentPriceLine = (props) => {
 
@@ -22,11 +23,11 @@ const CurrentPriceLine = (props) => {
 
   if (props.currentPriceLine) {
     return (
-      <g className="current-price-line">
+      <g className={styles["current-price-line"]}>
         <line x1={lineCoords.x1} x2={lineCoords.x2}
           y1={lineCoords.y1} y2={lineCoords.y2}>
         </line>
-        <circle cx={lineCoords.x1} cy={lineCoords.cy} className="current-price-circle" r={2}></circle>
+        <circle cx={lineCoords.x1} cy={lineCoords.cy} className={styles["current-price-circle"]} r={2}></circle>
       </g>
     )
   }

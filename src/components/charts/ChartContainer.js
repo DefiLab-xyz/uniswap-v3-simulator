@@ -42,12 +42,12 @@ const AxesLabels = (props) => {
   return (
     <g>
       <text 
-        className={"y-axis-label"}
+        className={styles["y-axis-label"]}
         x={-props.height + (props.height / 2)} y={-props.margin.left / 1.5}
         textAnchor="middle" transform="rotate(-90)">{yLabel}
       </text>
       <text 
-        className={"y-axis-label y-axis-label-right"}
+        className={`${styles["y-axis-label"]} ${styles["y-axis-label-right"]}`}
         x={-props.height + props.height / 2} y={ props.width + props.margin.left - (10)}
         textAnchor="middle" transform="rotate(-90)">{yLabelRight}
       </text>
@@ -114,7 +114,7 @@ const ChartContainer = forwardRef((props, ref) => {
     return (
       <div className={`${props.className}`} ref={ref}>
         <svg className={"chart-container-svg"}>
-          <Loader cx={"50%"} cy={"50%"} loading={props.loading || loading}></Loader>
+          <Loader cx={"50%"} cy={"50%"} loading={props.loading || loading} pageStyle={props.pageStyle}></Loader>
         </svg>
       </div>
     )
@@ -124,7 +124,7 @@ const ChartContainer = forwardRef((props, ref) => {
     <ChartContext.Provider value={{ scale: scale, chartContainer: chartContainerRef.current, chartWidth: width, chartHeight: height}}>
       <div className={`${styles["chart-container"]} ${props.className}`} ref={ref} onMouseLeave={props.onMouseLeave}>
         <svg>
-          <rect className={styles[`mouseover-container`]} x={margin.left} y={margin.top} 
+          <rect className={styles[`mouse-over-container`]} x={margin.left} y={margin.top} 
             width={width} height={height} ref={chartContainerRef}></rect>
           <g transform={translate}>
           <Axes scale={scale} scaleRight={scale && scale.yRight && scale.x ? {x: scale.x, y: scale.yRight} : null}
@@ -137,11 +137,11 @@ const ChartContainer = forwardRef((props, ref) => {
           </AxesLabels>
           {props.children}
           <MouseOverMarker mouseOverMarker={props.mouseOverMarker} mouseOverMarkerPos={props.mouseOverMarkerPos}
-            mouseOverMarkerPosX={props.mouseOverMarkerPosX || 0}  mouseOverMarkerPosY={ height + props.mouseOverMarkerPosY || height + 20}
+            mouseOverMarkerPosX={props.mouseOverMarkerPosX || 0}  mouseOverMarkerPosY={ height + props.mouseOverMarkerPosY || height +20} pageStyle={props.pageStyle}
             width={width} height={height} scale={scale} mouseOverTextExtended={props.mouseOverTextExtended}
             mouseOverText={props.mouseOverText || []} handleMouseOver={props.handleMouseOver} handleHoverMouseIn={props.handleHoverMouseIn} handleHoverMouseOut={props.handleHoverMouseOut}
           ></MouseOverMarker>
-          <CurrentPriceLine domain={props.domain} scale={scale} currentPriceLine={props.currentPriceLine}></CurrentPriceLine>
+          <CurrentPriceLine domain={props.domain} scale={scale} currentPriceLine={props.currentPriceLine} pageStyle={props.pageStyle}></CurrentPriceLine>
           <Loader cx={"50%"} cy={"50%"} loading={props.loading || loading}></Loader>
           </g>
         </svg>

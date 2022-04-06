@@ -131,7 +131,7 @@ const StrategyOverviewChart = (props) => {
 
   return (    
   <LineChart
-    className={`${styles['chart']} ${styles['strategy-chart']} ${ props.extendedHoverData ? styles['strategy-chart-extended'] : ""} inner-glow`}
+    className={`${styles['chart']} ${styles['strategy-chart']} ${ props.extendedHoverData ? styles['strategy-chart-extended'] : ""} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`}
     data={chartData.data} domain={props.chartDomain}
     avgLine={true} mouseOverMarker={true} mouseOverText={mouseOverText} handleMouseOver={handleMouseOver}
     chartProps={chartProps} colors={chartData.colors} mouseOverTextExtended={ props.extendedHoverData ? true : false } mouseOverMarkerPos={ props.extendedHoverData ? "fixed" : null }

@@ -1,6 +1,5 @@
 import {scaleQuantize} from 'd3-scale'
-import {axisBottom} from 'd3-axis'
-
+import styles from '../../styles/modules/charts/Axis.module.css'
 
 const round = (number, decimalPlaces) => {
   const factorOfTen = Math.pow(10, decimalPlaces)
@@ -200,7 +199,7 @@ const Ticks = (props) => {
     const tickText = props.supressTickText ? "" : axisTickText(props, translateCoords);
 
     return <g 
-      className="chart-axis-ticks"
+      className={styles["chart-axis-ticks"]}
       transform={"translate(" + translateCoords.x + ", " + translateCoords.y + ")"}
       key={`tick-${i}`}>
         <line 
@@ -208,7 +207,7 @@ const Ticks = (props) => {
         x2={tickCoords.x2} 
         y2={tickCoords.y2} 
         stroke="#5f696f"/>
-        <text className="tick-text"
+        <text className={styles["tick-text"]}
         textAnchor={props.textAnchor || "start"}
           dx={tickCoords.dx}
           dy={tickCoords.dy}
@@ -231,7 +230,7 @@ export const Axis = (props) => {
     const lineCoords = axisLineCoords(props);   
     
     return (
-      <g className={`chart-axis ${props.axisType}-axis-${props.className}`} >
+      <g className={`${styles["chart-axis"]} ${props.axisType}-axis-${props.className}`} >
         <line 
         x1={lineCoords.x1} 
         y1={lineCoords.y1} 
@@ -266,7 +265,7 @@ export const AxisLabelY = (props) => {
     return (
       <g>
       <text 
-      className={`y-label-${props.uniqueName}`}
+      className={`${styles["y-label"]} y-label-${props.uniqueName}`}
       x={props.x}
       y={props.y}
       style={{fontSize: "12px", fill: "rgb(95, 105, 111)", stroke:"none", fontWeight:400, ...props.style}}

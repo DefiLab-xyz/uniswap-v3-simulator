@@ -120,7 +120,7 @@ export const BacktestTotalReturn = (props) => {
       <span>LP Total Return&nbsp;&nbsp;&nbsp;</span>
       <BacktestTotalReturnSelect buttons={chartKeys} handleSelected={handleKeySelect}></BacktestTotalReturnSelect>
     </div>
-    <LineChartStacked className={`${props.className ? props.className : ""} inner-glow`}
+    <LineChartStacked className={`${props.className ? props.className : ""} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`}
       data={chartData} domain={chartDomain} lineType="area" keys={selectedKeys}
       chartProps={chartProps} colors={selectedKeyColors}
       currentPriceLine={false} mouseOverMarker={true} xScaleKey={'date'}
@@ -255,7 +255,7 @@ export const BacktestTotalReturnPercent = (props) => {
   return (
     <>
      <StrategyDropdown className={props.strategyDropdownClass} selectedStrategy={selectedStrategy} handleSelected={handleSelectedCompareStrategy}></StrategyDropdown>
-     <LineChart className={`${props.className ? props.className : ""} inner-glow`}
+     <LineChart className={`${props.className ? props.className : ""} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`}
      chartProps={chartProps} data={selectedChartData} colors={selectedChartColors} domain={chartDomain}
      mouseOverText={mouseOverText} handleMouseOver={handleMouseOver} mouseOverMarker={true}></LineChart>
     </>

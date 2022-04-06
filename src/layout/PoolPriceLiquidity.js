@@ -21,16 +21,18 @@ const PoolPriceLiquidity = (props) => {
   }
 
   return (
-    <div className={`${styles['pool-price-liquidity-container'] } outer-glow dashboard-section`}>
-      <Title className={`title ${styles['daily-prices-title']}`} title="Daily Prices"></Title>
-      <DailyPriceChart className={`${styles['chart-container']} ${styles['daily-price-chart-container']} `}></DailyPriceChart>
-      <Title className={`title ${styles['liquidity-density-title']}`} title="Liquidity Density">
+    <div className={`${styles['pool-price-liquidity-container'] } 
+    ${props.pageStyle ? props.pageStyle["outer-glow"] : "outer-glow"}
+    ${props.pageStyle ? props.pageStyle["dashboard-section"] : "dashboard-section"}`}>
+      <Title pageStyle={props.pageStyle} className={`${props.pageStyle ? props.pageStyle["title"] : "title"} ${styles['daily-prices-title']}`} title="Daily Prices"></Title>
+      <DailyPriceChart pageStyle={props.pageStyle} className={`${styles['chart-container']} ${styles['daily-price-chart-container']} `}></DailyPriceChart>
+      <Title className={`${props.pageStyle ? props.pageStyle["title"] : "title"} ${styles['liquidity-density-title']}`} title="Liquidity Density">
       <div className={`${styles['liquidity-density-zoom']}`}>
         <CrementButton type='decrement' onCrement={handleLiquidityZoom}></CrementButton>
         <CrementButton type='increment' onCrement={handleLiquidityZoom}></CrementButton>
       </div>
       </Title>
-      <LiquidityDensityChart className={`${styles['chart-container']} ${styles['liquidity-density-chart-container']}`}
+      <LiquidityDensityChart pageStyle={props.pageStyle} className={`${styles['chart-container']} ${styles['liquidity-density-chart-container']}`}
         zoomLevel={liquidityZoom}>
       </LiquidityDensityChart>
     </div>

@@ -52,12 +52,12 @@ const StrategyBreakdown = (props) => {
 
   return (
     <div className={props.className}>
-      <BacktestTotalReturn className={`${styles['strategy-breakdown-chart']} ${styles['strategy-breakdown-chart-left']} inner-glow`} 
+      <BacktestTotalReturn className={`${styles['strategy-breakdown-chart']} ${styles['strategy-breakdown-chart-left']} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`} 
         classNameTitle={`${styles['strategy-breakdown-total-return-title']} sub-title`}
         data={props.data} strategy={props.strategy} totalReturnKeys={props.totalReturnKeys}>
       </BacktestTotalReturn>
       <div className={`${styles['strategy-breakdown-total-return-perc-title']} sub-title`}>LP Total Return %</div>
-      <BacktestTotalReturnPercent className={`${styles['strategy-breakdown-chart']} ${styles['strategy-breakdown-chart-right']} inner-glow`}
+      <BacktestTotalReturnPercent className={`${styles['strategy-breakdown-chart']} ${styles['strategy-breakdown-chart-right']} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`}
         strategyDropdownClass={styles['strategy-dropdown']} strategy={props.strategy} data={props.data} amountKey={props.amountKey}>
       </BacktestTotalReturnPercent>
     </div>
@@ -221,14 +221,17 @@ const StrategyBacktest = (props) => {
   }
 
   return (
-    <div className={`dashboard-section outer-glow ${styles['strategy-backtest-container']}`} onMouseLeave={() => { setMouseOverText([])}}>
+    <div className={`${styles['strategy-backtest-container']}
+      ${props.pageStyle ? props.pageStyle["outer-glow"] : "outer-glow"}
+      ${props.pageStyle ? props.pageStyle["dashboard-section"] : "dashboard-section"}`} 
+      onMouseLeave={() => { setMouseOverText([])}}>
       <div className={`title ${styles['strategy-backtest-title']}`}>
         <span>Strategy Backtest</span>
         <RangeSlider className={styles['range-slider-backtest-days']} handleInputChange={handleDaysChange} min={5} max={30} value={days} step={1}></RangeSlider>
         <span>Last {days} days</span>
       </div>
       
-      <BarChartGrouped className={`inner-glow ${styles['strategy-backtest-chart']}`}
+      <BarChartGrouped className={`${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"} ${styles['strategy-backtest-chart']}`}
         onMouseLeave={() => { setMouseOverText([]) } }
         domain={chartDomain} chartProps={chartProps} loading={dataLoading}
         data={selectedChartData}

@@ -13,7 +13,7 @@ const Bars = (props) => {
 
      const rect = props.data.map((d, i) => {
       return <rect 
-      className={"bar"}
+      className={styles["bar"]}
       key={`bar-${i}`}
       style={props.style}
       x={props.scale.x(d[xProp])}
@@ -23,10 +23,10 @@ const Bars = (props) => {
       rx="0.5" 
       ry="0.5"></rect>});
 
-      return (<g className={"bars"}>{rect}</g>);
+      return (<g className={styles["bars"]}>{rect}</g>);
   }
   else {
-    return (<g className={"bars"} />);
+    return (<g className={styles["bars"]} />);
   }
   
 }
@@ -45,7 +45,7 @@ const BarChart = (props) => {
 
   return (
     <ChartContainer className={props.className} ref={containerRef} data={props.data}
-    domain={props.domain} margin={props.margin} chartProps={props.chartProps} 
+    domain={props.domain} margin={props.margin} chartProps={props.chartProps} pageStyle={props.pageStyle}
     handleScale={handleScale} handleHeight={handleHeight} handleWidth={handleWidth}
     mouseOverMarker={props.mouseOverMarker} mouseOverText={props.mouseOverText || []} handleMouseOver={props.handleMouseOver}>
       <Bars data={props.data} scale={scale} 
@@ -131,7 +131,7 @@ export const BarChartGrouped = (props) => {
   }, [props.barGroups, scale]);
 
   return (
-    <ChartContainer className={props.className} ref={containerRef} data={props.data} loading={props.loading}
+    <ChartContainer className={props.className} ref={containerRef} data={props.data} loading={props.loading} pageStyle={props.pageStyle}
     domain={props.domain} margin={props.margin} chartProps={props.chartProps} barPadding={0.3} onMouseLeave={props.onMouseLeave}
     handleScale={handleScale} handleHeight={handleHeight} handleWidth={handleWidth} handleHoverMouseIn={props.handleHoverMouseIn} handleHoverMouseOut={props.handleHoverMouseOut}
     mouseOverMarker={props.mouseOverMarker} mouseOverText={props.mouseOverText || []} handleMouseOver={props.handleMouseOver}>

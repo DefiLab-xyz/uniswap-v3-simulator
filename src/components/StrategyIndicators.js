@@ -14,7 +14,7 @@ export const ConcentratedLiquidityMultiplier = (props) => {
         <div className={styles['cli-value-container']}>
           {
             props.strategies.map(d => {
-             return <div className={`inner-glow ${styles['cli-value']}`} style={{color: d.color}}>{round(d.liquidityMultiplier * d.leverage, 2)}x</div>
+             return <div className={`${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"} ${styles['cli-value']}`} style={{color: d.color}}>{round(d.liquidityMultiplier * d.leverage, 2)}x</div>
             })
           }
         </div> 
@@ -67,7 +67,7 @@ export const StrategyRangeSize = (props) => {
   return (
     <div className={`${styles['range-sizes-outer-container']} `}>
       <div className={styles['title']}>Range Size</div>
-      <div className={`${styles['range-sizes-outer-container']} inner-glow`}>
+      <div className={`${styles['range-sizes-outer-container']} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`}>
         <MinMaxLabels></MinMaxLabels>
         {
           props.strategies.map(d => {
@@ -130,7 +130,7 @@ export const StrategyTokenRatio = (props) => {
   return (
     <div>
       <div className={styles['title']}>Token Ratio</div>
-      <div className={` ${styles['token-ratio-container']} inner-glow`}>
+      <div className={` ${styles['token-ratio-container']} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`}>
         <div className={styles['token-ratio-base']} >{base.symbol ? base.symbol : ""}</div>
         <div className={styles['token-ratio-quote']}>{quote.symbol ? quote.symbol : ""}</div>
         {

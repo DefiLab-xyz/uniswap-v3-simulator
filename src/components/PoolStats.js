@@ -8,7 +8,7 @@ import { Fragment, useEffect, useState } from "react";
 const Stat = (props) => {
   return (
   <Fragment>
-      <div className={`inner-glow ${styles['stat-container']} ${styles[`stat-${props.row}`]}`}>{props.stat}</div>
+      <div className={`${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"} ${styles['stat-container']} ${styles[`stat-${props.row}`]}`}>{props.stat}</div>
       <div className={`${styles['stat-container']} ${styles['stat-label']} ${styles[`stat-label-${props.row}`]}`}>{props.label}</div>
   </Fragment>);
 }
@@ -34,12 +34,16 @@ const PoolStats = (props) => {
 
   return (
     <div className={styles["pool-stats-container"]}>
-      <Stat row={1} stat={round(normStd, 2) + '%'} label="Volatility"></Stat>
-      {
+      <Stat row={1} stat={round(normStd, 2) + '%'} 
+        label="Volatility" pageStyle={props.pageStyle}>
+      </Stat>
+      { 
         props.poolStatsHidden ? <></> : 
-        <Stat row={2} stat={round(fee24Hr, 2) + '%'} label="Active Liquidity 24h Fee"></Stat>
+        <Stat row={2} stat={round(fee24Hr, 2) + '%'} label="Active Liquidity 24h Fee"  pageStyle={props.pageStyle}></Stat>
       }
-      <Stat row={props.poolStatsHidden ? 2 : 3} stat={round(CLI, 2) + '%'} label="Concentrated Liquidity Index"></Stat>
+      <Stat row={props.poolStatsHidden ? 2 : 3} stat={round(CLI, 2) + '%'} 
+        label="Concentrated Liquidity Index" pageStyle={props.pageStyle}>
+      </Stat>
     </div>
   )
 }

@@ -60,7 +60,7 @@ const ImpermanentLossChart = (props) => {
   const Title = (props) => {
 
     return (
-      <div class={`sub-title ${props.className}`}>
+      <div class={`${props.pageStyle ? props.pageStyle["sub-title"] : "sub-title"} ${props.className}`}>
         <span>{`Price Risk / Impermanent Loss`}</span>
       </div>
     );
@@ -68,9 +68,9 @@ const ImpermanentLossChart = (props) => {
 
   return (
     <Fragment>
-      <Title className={props.classNameTitle}></Title>
+      <Title pageStyle={props.pageStyle} className={props.classNameTitle}></Title>
       <LineChart
-      className={`${props.className} inner-glow`}
+      className={`${props.className} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`}
       data={[chartData]} domain={chartDomain}
       mouseOverMarker={true} mouseOverMarkerPos={"fixed"}
       chartProps={chartProps} colors={[chartColor]}

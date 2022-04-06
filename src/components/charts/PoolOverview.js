@@ -16,7 +16,7 @@ export const Title = (props) => {
   const feeTier = useSelector(selectFeeTier);
   
   return (
-    <div className={`title ${styles['title']}`}>
+    <div className={`${props.pageStyle ? props.pageStyle["title"] : "title"} ${styles['title']}`}>
       <span><img src={protocol.logo} alt={protocol.title} style={{ width: "18px", height: "18px", marginRight: 5}}></img></span>
       <span>{`Pool Overview - ${quoteToken.symbol} / ${baseToken.symbol} ${(feeTier / 10000) + '%' }`}</span>
     </div>
@@ -72,7 +72,7 @@ export const DailyTVL = (props) => {
 
   return (
     <LineChart
-      className={`${styles['chart']} ${styles['tvl-chart']} inner-glow`}
+      className={`${styles['chart']} ${styles['tvl-chart']} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`}
       data={[chartData]} domain={chartDomain}
       avgLine={true} mouseOverMarker={true} 
       mouseOverText={mouseOverText} handleMouseOver={handleMouseOver}
@@ -102,11 +102,16 @@ export const DailyVolume = (props) => {
   const handleMouseOver = (xEvent, scale) => {
     setMouseOverText(genMouseOverText(xEvent, chartData, scale, "Volume"));
   }
+  
+  useEffect(() => {
+    console.log(props.pageStyle)
+  }, [props.pageStyle])
 
   return (
     <BarChart
       pageStyle={props.pageStyle}
-      className={`${styles['chart']} ${styles['volume-chart']} ${props.pageStyle["inner-glow"]}`} classNames={{bar: styles['bar']}}
+      className={`${styles['chart']} ${styles['volume-chart']} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`} 
+      classNames={{bar: styles['bar']}}
       data={chartData} domain={chartDomain}
       avgLine={true} chartProps={chartProps}
       mouseOverMarker={true} mouseOverText={mouseOverText}

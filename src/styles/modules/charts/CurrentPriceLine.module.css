@@ -1,0 +1,11 @@
+.current-price-line {
+  stroke-width: 1px;
+  stroke: rgb(255, 102, 102);
+  stroke-dasharray: 2 2;
+}
+
+.current-price-circle {
+  stroke-width: 1px;
+  stroke-dasharray: none;
+  fill: none;
+}

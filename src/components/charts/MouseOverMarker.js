@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext} from 'react'
 import { ChartContext } from './ChartContainer';
-
+import styles from '../../styles/modules/charts/MouseOverMarker.module.css'
 
 // This is really ugly -- works, but needs refactor  //
 export const MouseOverText = (props) => {
@@ -12,7 +12,7 @@ export const MouseOverText = (props) => {
     if (props.mouseOverTextExtended) {
       text = props.text.map((t1, i1) => {
         return t1.map((t2, i2) => {
-          return ( <text className={`mouse-over-text mouse-over-text-${i1}-${i2}`}
+          return ( <text className={`${styles["mouse-over-text"]} mouse-over-text-${i1}-${i2}`}
             x={props.textPosition.x + (240 * i1)}
             y={props.textPosition.y + (17 * (i2 + 1))}
             textAnchor={props.textAnchor}
@@ -22,7 +22,7 @@ export const MouseOverText = (props) => {
     }
     else {
       text = props.text.map((d, i) => {
-        return ( <text className={`mouse-over-text mouse-over-text-${i}`}
+        return ( <text className={`${styles["mouse-over-text"]} mouse-over-text-${i}`}
           x={props.textPosition.x}
           y={props.textPosition.y + (17 * (i + 1))}
           textAnchor={props.textAnchor}
@@ -31,7 +31,7 @@ export const MouseOverText = (props) => {
     }
 
     return (
-      <g className="mouse-over-marker-text-container"
+      <g className={styles["mouse-over-text-container"]}
         style={{display: props.visibility}}>{text}</g>
     )
   }
@@ -88,23 +88,18 @@ export const MouseOverMarker = (props) => {
   }, [props.mouseOverMarkerPosY, props.mouseOverMarkerPosX, props.mouseOverMarkerPos])
 
   if (!props.mouseOverMarker) return (    
-  <g className={`mouse-over-marker-empty ${props.className}`}>
-     {/* <rect className={`mouseover-container`} x={0} y={0} 
-        width={props.width || 0} height={props.height || 0 }
-        style={{strokeWidth: 0, stroke: "none"}}
-        onMouseEnter={mouseEnter} onMouseLeave={mouseLeave}></rect> */}
-      </g>);
+  <g className={`mouse-over-marker-empty ${props.className}`}></g>);
 
   return (
-    <g className={`mouse-over-marker ${props.className}`}>
-      <line style={{display: visibility}} className={"mouse-over-marker-line"} 
+    <g className={`${styles["mouse-over-marker"]} ${props.className}`}>
+      <line style={{display: visibility}} className={styles["mouse-over-marker-line"]} 
         x1={linePosition.x1} x2={linePosition.x2}
         y1={linePosition.y1} y2={linePosition.y2}>
       </line>
       <MouseOverText textPosition={textPosition} text={props.mouseOverText} 
         textAnchor={textAnchor} visibility={visibility} mouseOverTextExtended={props.mouseOverTextExtended}>
       </MouseOverText>
-      <rect className={`mouseover-container`} x={0} y={0} 
+      <rect className={styles["mouse-over-container"]} x={0} y={0} 
         width={props.width || 0} height={props.height || 0 }
         style={{strokeWidth: 0, stroke: "none"}}
         onMouseMove={ (e) => mouseMove(e) } onMouseEnter={mouseEnter} onMouseLeave={mouseLeave}

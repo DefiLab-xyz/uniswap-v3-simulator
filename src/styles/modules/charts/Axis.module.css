@@ -1,0 +1,11 @@
+g.chart-axis line, g.chart-axis-ticks {
+  stroke: var(--font-color);
+  fill:  var(--font-color);
+  stroke-width: 0.4;
+}
+
+g.chart-axis-ticks {
+  font-size: 8px;
+  stroke: none;
+  font-weight: 400;
+}

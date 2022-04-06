@@ -161,7 +161,7 @@ export default function LiquidityDensityChart (props) {
 
   return (
     <BarChart
-    className={`${props.className} liquidity-density-chart inner-glow`} classNames={{bar: 'bar'}}
+    className={`${props.className} liquidity-density-chart ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`} classNames={{bar: 'bar'}}
     data={chartData} domain={chartDomain}  mouseOverMarker={true} handleMouseOver={handleMouseOver}
     mouseOverText={mouseOverText} chartProps={chartProps} barWidth={calcBarWidth}>
       <Line className="current-price-line" useParentScale={true} data={currentPriceLineData}></Line>

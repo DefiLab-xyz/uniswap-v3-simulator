@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import ChartContainer from './ChartContainer';
 import { scaleBand } from 'd3-scale';
+import styles from '../../styles/modules/charts/CandleChart.module.css'
 
 const heightScale = (height, val, domain) => {
   return (height * val) / (parseFloat(domain[1]) - parseFloat(domain[0]));
@@ -12,7 +13,7 @@ const Candles = (props) => {
 
      const rect = props.data.map((d, i) => {
       return <rect 
-      className={`candle candle-${d.green ? "green" : "red"}`}
+      className={`${styles["candle"]} ${styles[`candle-${d.green ? "green" : "red"}`]}`}
       key={`candle-${i}`}
       style={props.style}
       x={props.scale.x(d[props.xKey])}

@@ -113,7 +113,7 @@ const TokenValueSplitChart = (props) => {
   }, [props.strategyLimits]);
   
   return (
-    <LineChartStacked className={`${props.className ? props.className : ""} inner-glow`}
+    <LineChartStacked className={`${props.className ? props.className : ""} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`}
       data={chartData} domain={chartDomain} lineType="area" keys={["l1", "l2"]}
       chartProps={chartProps} colors={["rgb(238, 175, 246)", "rgb(249, 193, 160)"]}
       currentPriceLine={true} margin={margin} mouseOverMarker={true} mouseOverMarkerPos="fixed"

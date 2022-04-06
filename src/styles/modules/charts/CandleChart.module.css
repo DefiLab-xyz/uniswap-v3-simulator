@@ -1,0 +1,9 @@
+.candle-green { 
+  fill: #9bd8c8;
+  stroke: #9bd8c8
+}
+
+.candle-red {
+  fill: rgb(255, 102, 102);
+  stroke: rgb(255, 102, 102);
+}

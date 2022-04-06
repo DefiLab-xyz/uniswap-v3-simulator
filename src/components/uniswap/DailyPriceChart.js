@@ -158,7 +158,7 @@ const StrategyOverlays = (props) => {
 
   return (
     <CandleChart
-      className={`${props.className} inner-glow`} 
+      className={`${props.className} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`} 
       mouseOverText={mouseOverText} handleMouseOver={handleMouseOver}
       data={chartData} domain={chartDomain}
       avgLine={false} chartProps={chartProps}
