@@ -89,9 +89,9 @@ const ChartContainer = forwardRef((props, ref) => {
       setHeight(height);
       setTranslate("translate("+ margin.left +"," + margin.top + ")");
 
-      const x = chartscale({domain: props.domain.x, range: [0, width], scaleType: chartProps.scaleTypeX, barPadding: chartProps.barPadding || 0});
-      const y = chartscale({domain: props.domain.y, range:[height, 0], scaleType: chartProps.scaleTypeY});
-      const yRight = props.domain.hasOwnProperty('yRight') ? chartscale({domain: props.domain.yRight, range:[height, 0], scaleType: chartProps.scaleTypeYRight}) : null;
+      const x = chartscale({domain: props.domain.x, range: [0, width], scaleType: chartProps.scaleTypeX || "linear", barPadding: chartProps.barPadding || 0});
+      const y = chartscale({domain: props.domain.y, range:[height, 0], scaleType: chartProps.scaleTypeY || "linear"});
+      const yRight = props.domain.hasOwnProperty('yRight') ? chartscale({domain: props.domain.yRight, range:[height, 0], scaleType: chartProps.scaleTypeYRight || "linear"}) : null;
       setScale({x: x, y: y, yRight: yRight });
     }
 
