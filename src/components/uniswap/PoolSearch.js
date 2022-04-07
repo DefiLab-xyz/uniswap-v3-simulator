@@ -207,6 +207,7 @@ const SearchResults = (props) => {
 
   // adding stats for perp to search results data if applicable 
   useEffect(() => {
+    
     if (searchResults && searchResults.length && props.perpStatsData && props.baseTokenHidden === true) {
       const searchResultsTemp = searchResults.map( d => {
         const stats = props.perpStatsData.find( f => f.marketSymbol === `${d.token0.symbol}/${d.token1.symbol}`);
@@ -217,7 +218,7 @@ const SearchResults = (props) => {
           }
       });
 
-      if (setSearchResultsSort === true) {
+      if (searchResultsSort === true) {
         setSearchResults(searchResultsTemp.sort((a, b) => {
           return parseFloat(a["lowerBaseApr"]) > parseFloat(b["lowerBaseApr"]) ? -1 : 1;
         }));
@@ -230,7 +231,6 @@ const SearchResults = (props) => {
   }, [searchResults, props.perpStats, props.baseTokenHidden, props.perpStatsData])
 
   
-
   const handleLabelClick = (label, perp) => {
     if (props.labelOnClick) props.labelOnClick();
     if (perp) {
