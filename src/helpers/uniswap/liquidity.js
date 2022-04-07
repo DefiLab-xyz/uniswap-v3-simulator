@@ -27,46 +27,52 @@ export const calcLiquidity1 =(sqrtA, sqrtB, amount, decimals) => {
 export const calc24HrFee = (priceData, pool) => {
 
 
-  const priceToken0usd = parseFloat(priceData.volumeUSD) / parseFloat(priceData.volumeToken0)
-  const priceToken1usd = parseFloat(priceData.volumeUSD) / parseFloat(priceData.volumeToken1)
-
-  const decimal0 = pool.token0.decimals;
-  const decimal1 = pool.token1.decimals;
-  const decimal = decimal1 - decimal0;
-
-  const sqrtHigh = Math.sqrt(parseFloat(priceData.high));  //SqrtA
-  const sqrtLow = Math.sqrt(parseFloat(priceData.low)); //SQRTB
-  const sqrtClose = Math.sqrt(parseFloat(priceData.close)); // sqrt
-
-  const target = 1;
-  const delta = target / (((sqrtClose - sqrtLow) * priceToken0usd) + (((1 / sqrtClose) - (1 / sqrtHigh)) * priceToken1usd));
-  const amount1 = delta * (sqrtClose - sqrtLow);
-  const amount0 = delta * ((1 / sqrtClose) - (1 / sqrtHigh));
-
-  const sqrtHighDec = Math.sqrt(priceData.high * Math.pow(10, decimal) );
-  const sqrtLowDec = Math.sqrt(priceData.low * Math.pow(10, decimal) );
-  const sqrtCloseDec = Math.sqrt(priceData.close * Math.pow(10, decimal));
-
-  let liquidity;
-  const lowest = Math.min(sqrtHighDec, sqrtLowDec);
-  const highest = Math.max(sqrtHighDec, sqrtLowDec);
-
-  if (sqrtCloseDec <= lowest) {
-
-    liquidity =  calcLiquidity0(lowest, highest, amount0, decimal0);
-
-  } else if (sqrtCloseDec > lowest && sqrtCloseDec < highest) {
-
-    const liquidity0 = calcLiquidity0(sqrtCloseDec, highest, amount0, decimal0);
-    const liquidity1 = calcLiquidity1(lowest, sqrtCloseDec, amount1, decimal1);
-    liquidity = liquidity0 < liquidity1 ? liquidity0 : liquidity1;
-
-  } else {
-    liquidity =  calcLiquidity1(lowest, highest, amount1, decimal1);
+  if (priceData && pool) {
+    const priceToken0usd = parseFloat(priceData.volumeUSD) / parseFloat(priceData.volumeToken0)
+    const priceToken1usd = parseFloat(priceData.volumeUSD) / parseFloat(priceData.volumeToken1)
+  
+    const decimal0 = pool.token0.decimals;
+    const decimal1 = pool.token1.decimals;
+    const decimal = decimal1 - decimal0;
+  
+    const sqrtHigh = Math.sqrt(parseFloat(priceData.high));  //SqrtA
+    const sqrtLow = Math.sqrt(parseFloat(priceData.low)); //SQRTB
+    const sqrtClose = Math.sqrt(parseFloat(priceData.close)); // sqrt
+  
+    const target = 1;
+    const delta = target / (((sqrtClose - sqrtLow) * priceToken0usd) + (((1 / sqrtClose) - (1 / sqrtHigh)) * priceToken1usd));
+    const amount1 = delta * (sqrtClose - sqrtLow);
+    const amount0 = delta * ((1 / sqrtClose) - (1 / sqrtHigh));
+  
+    const sqrtHighDec = Math.sqrt(priceData.high * Math.pow(10, decimal) );
+    const sqrtLowDec = Math.sqrt(priceData.low * Math.pow(10, decimal) );
+    const sqrtCloseDec = Math.sqrt(priceData.close * Math.pow(10, decimal));
+  
+    let liquidity;
+    const lowest = Math.min(sqrtHighDec, sqrtLowDec);
+    const highest = Math.max(sqrtHighDec, sqrtLowDec);
+  
+    if (sqrtCloseDec <= lowest) {
+  
+      liquidity =  calcLiquidity0(lowest, highest, amount0, decimal0);
+  
+    } else if (sqrtCloseDec > lowest && sqrtCloseDec < highest) {
+  
+      const liquidity0 = calcLiquidity0(sqrtCloseDec, highest, amount0, decimal0);
+      const liquidity1 = calcLiquidity1(lowest, sqrtCloseDec, amount1, decimal1);
+      liquidity = liquidity0 < liquidity1 ? liquidity0 : liquidity1;
+  
+    } else {
+      liquidity =  calcLiquidity1(lowest, highest, amount1, decimal1);
+    }
+  
+    const fee = (parseFloat(priceData.feesUSD) * (liquidity / (liquidity + parseFloat(priceData.liquidity)))) * 100;
+    return isNaN(fee) ? 0 : fee;
+  }
+  else {
+    return 0;
   }
 
-  const fee = (parseFloat(priceData.feesUSD) * (liquidity / (liquidity + parseFloat(priceData.liquidity)))) * 100;
-  return isNaN(fee) ? 0 : fee;
 
 }
 

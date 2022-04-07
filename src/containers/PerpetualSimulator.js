@@ -114,7 +114,6 @@ useEffect(() => {
 useEffect(() => {
 
   perpStats().then( pS => {
-    console.log(pS)
     setPerpStatsData(pS);
   });
 

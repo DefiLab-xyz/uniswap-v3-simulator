@@ -6,8 +6,6 @@ export const perpStats = async (signal) => {
    "variables": {limit: 100, nextToken: ""},
    "query": "query ListMarketAprs($limit: Int!, $nextToken: String!) {\n  listMarketAprs(limit: $limit, nextToken: $nextToken) {\n    nextToken\n    items {\n      baseSymbol\n      quoteSymbol\n      marketSymbol\n      lowerBaseApr\n      upperBaseApr\n      lowerRewardApr\n      upperRewardApr\n      __typename\n    }\n    __typename\n  }\n}\n"
   });
-  
-  console.log(process.env)
 
   try {
     const response = await fetch(url, 
@@ -21,9 +19,7 @@ export const perpStats = async (signal) => {
     });
 
     const data = await response.json();
-    console.log(data)
     if (data && data.data && data.data.listMarketAprs && data.data.listMarketAprs.items) {
-      console.log(data.data.listMarketAprs.items);
       return data.data.listMarketAprs.items;
     }
     else {
