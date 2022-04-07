@@ -213,6 +213,11 @@ img.protocol {
   color: rgb(249, 193, 160);
 }
 
+.search-label-base-apr, .search-item-base-apr, .search-label-reward-apr, .search-item-reward-apr {
+  width: 220px;
+  text-align: left;
+} 
+
 
 /* .search-item-volume-usd {
 

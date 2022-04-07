@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, Fragment } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {fetchPoolData, selectPoolName, toggleBaseToken} from '../../store/pool'
 import {selectAllProtocols, selectProtocolId, selectProtocolsByIds, setProtocol} from '../../store/protocol'
@@ -7,13 +7,71 @@ import styles from '../../styles/modules/PoolSearch.module.css'
 import cat from '../../assets/cat.svg'
 import {tokensBySymbol} from '../../api/thegraph/uniTokens'
 import {top50PoolsByTvl, poolsByTokenId, poolsByTokenIds} from '../../api/thegraph/uniPools'
-import {formatLargeNumber} from '../../helpers/numbers'
+import {formatLargeNumber, parsePrice} from '../../helpers/numbers'
+import { perpStats } from '../../api/perpStats'
+
+const SearchItemsStatsPerp = (props) => {
+
+  const [stat, setStat] = useState( { lowerBaseApr: 0, lowerRewardApr: 0, upperBaseApr: 0, upperRewardApr: 0} );
+
+  useEffect(() => {
+    if (props.perpStatsData && props.perpStatsData.length) {
+      const statTemp = props.perpStatsData.find( f => f.marketSymbol === `${props.item.token0.symbol}/${props.item.token1.symbol}`);
+      if (statTemp) setStat(statTemp);
+    }
+  }, [props.item.token0.symbol, props.item.token1.symbol, props.perpStatsData]);
+
+    const item = props.item;
+
+      return (
+        <Fragment>
+          <div className={styles['search-item-symbol']} >{props.item.token0.symbol} / {item.token1.symbol}</div>&nbsp;
+          {/* <div><div className={styles['search-item-fee-tier']}>{`${(props.item.feeTier / 10000)}%`}</div></div>&nbsp; */}
+          <div className={styles['search-item-base-apr']}>{`${parsePrice(stat.lowerBaseApr, true)}% - ${parsePrice(stat.upperBaseApr, true)}%`}</div>&nbsp;
+          <div className={styles['search-item-reward-usd']}>{`${parsePrice(stat.lowerRewardApr, true)}% - ${parsePrice(stat.upperRewardApr, true)}%`}</div>&nbsp;
+          {/* <div className={styles['search-item-fee-usd']}>{`$${formatLargeNumber(item.poolDayData[0].feesUSD)}`}</div>&nbsp; */}
+        </Fragment>
+      );
+}
+
+const SearchItemsStats = (props) => {
+
+  const item = props.item;
+      return (
+        <Fragment>
+          <div className={styles['search-item-symbol']} >{item.token0.symbol} / {item.token1.symbol}</div>&nbsp;
+          <div><div className={styles['search-item-fee-tier']}>{`${(item.feeTier / 10000)}%`}</div></div>&nbsp;
+          <div className={styles['search-item-tvl']}>{`$${formatLargeNumber(item.totalValueLockedUSD)}`}</div>&nbsp;
+          <div className={styles['search-item-volume-usd']}>{`$${formatLargeNumber(item.poolDayData[0].volumeUSD)}`}</div>&nbsp;
+          <div className={styles['search-item-fee-usd']}>{`$${formatLargeNumber(item.poolDayData[0].feesUSD)}`}</div>&nbsp;
+        </Fragment>
+      );
+}
+
+
+const SearchItemsStatsContainer = (props) => {
+
+  const list = props.items.map((item) => 
+    <li 
+    className={styles['search-item']} 
+    key={item.id} 
+    onMouseDown={() => props.handleOnMouseDown(item)}>
+    {
+      props.baseTokenHidden ? <SearchItemsStatsPerp item={item} perpStatsData={props.perpStatsData}></SearchItemsStatsPerp> : <SearchItemsStats item={item}></SearchItemsStats>
+    }
+    </li>
+  );
+
+  return list
+}
+
+
 
 const SearchItems = (props) => {
 
   const dispatch = useDispatch();
-  const handleOnMouseDown = (item) => {
-    
+
+  const handleOnMouseDown = (item) => {  
     if (props.baseTokenHidden) {
       dispatch(setDefaultInvestment(item.token1Price));
       dispatch(fetchPoolData({...item, toggleBase: true}));
@@ -22,24 +80,12 @@ const SearchItems = (props) => {
       dispatch(fetchPoolData(item));
       dispatch(setDefaultInvestment(item.token0Price));
     }
-
     if (props.onClick) props.onClick(item);
   }
 
-  const list = props.items.map((item) => 
-    <li 
-    className={styles['search-item']} 
-    key={item.id} 
-    onMouseDown={() => handleOnMouseDown(item)}>
-        <div className={styles['search-item-symbol']} >{item.token0.symbol} / {item.token1.symbol}</div>&nbsp;
-        <div><div className={styles['search-item-fee-tier']}>{`${(item.feeTier / 10000)}%`}</div></div>&nbsp;
-        <div className={styles['search-item-tvl']}>{`$${formatLargeNumber(item.totalValueLockedUSD)}`}</div>&nbsp;
-        <div className={styles['search-item-volume-usd']}>{`$${formatLargeNumber(item.poolDayData[0].volumeUSD)}`}</div>&nbsp;
-        <div className={styles['search-item-fee-usd']}>{`$${formatLargeNumber(item.poolDayData[0].feesUSD)}`}</div>&nbsp;
-    </li>
-  );
-
-  return (<ul className={`${styles['search-results']}`} style={{display: props.visibility}}>{list}</ul>);
+  return (<ul className={`${styles['search-results']}`} style={{display: props.visibility}}>
+    <SearchItemsStatsContainer items={props.items} handleOnMouseDown={handleOnMouseDown} baseTokenHidden={props.baseTokenHidden} perpStatsData={props.perpStatsData}></SearchItemsStatsContainer>
+  </ul>);
 }
 
 const EmptySearchItems = (props) => {
@@ -66,14 +112,21 @@ const LoadingSearchItems = (props) => {
 
 const SearchLabels = (props) => {
 
-  const [labels, setLabels] = useState([{name: "Pool", sortable: false, sortClass: 'sort-icon-disabled', labelClass: 'search-label-symbol'}, 
+  const [labelsDef, setLabelsDef] = useState([{name: "Pool", sortable: false, sortClass: 'sort-icon-disabled', labelClass: 'search-label-symbol'}, 
   {name: "Fee Tier", sortable: false, sortClass: 'sort-icon-disabled', labelClass: 'search-label-fee-tier'}, 
   {name: "TVL", sortable: true, sortClass: 'sort-icon-show', labelClass: 'search-label-tvl', field: "totalValueLockedUSD"},
   {name: "Volume 24h", sortable: true, sortClass: 'sort-icon-hide', labelClass: 'search-label-volume-usd', field: "volumeUSD"},
   {name: "Fees 24h", sortable: true, sortClass: 'sort-icon-hide', labelClass: 'search-label-fee-usd', field: "feesUSD"}]);
+  
+  const [labelsPerp, setLabelsPerp] = useState([{name: "Pool", sortable: false, sortClass: 'sort-icon-disabled', labelClass: 'search-label-symbol'}, 
+  {name: "Base APR%", sortable: true, sortClass: 'sort-icon-show', labelClass: 'search-label-base-apr', field: "lowerBaseApr"},
+  {name: "Reward APR%", sortable: true, sortClass: 'sort-icon-hide', labelClass: 'search-label-reward-apr', field: "lowerRewardApr"}]);
+
+  const [labels, setLabels] = useState([]);
 
   const handleLabelSort = (label) => {
-    if (props.onClick) props.onClick(label);
+    const perp = props.baseTokenHidden ? true : false;
+    if (props.onClick) props.onClick(label, perp);
 
     labels.forEach(d => {
       if (d.sortable) {
@@ -81,6 +134,11 @@ const SearchLabels = (props) => {
       }
     });
   }
+
+  useEffect(() => {
+    setLabels(props.baseTokenHidden ? labelsPerp : labelsDef);
+  }, [labelsDef, labelsPerp, props.baseTokenHidden])
+  
 
   const searchLabels = labels.map(d => {
     return (
@@ -98,6 +156,7 @@ const SearchLabels = (props) => {
 const SearchResults = (props) => {
 
   const [searchResults, setSearchResults] = useState(null);
+  const [searchResultsSort, setSearchResultsSort] = useState(true);
   const searchStringController = useRef(new AbortController());
   const protocolID = useSelector(selectProtocolId);
 
@@ -106,6 +165,7 @@ const SearchResults = (props) => {
 
   const handleTop50Pools = async (abortController, protocol) => {
     const top50Pools = await top50PoolsByTvl(abortController.signal, protocol);
+    setSearchResultsSort(true);
     setSearchResults(top50Pools);
   }
 
@@ -118,12 +178,9 @@ const SearchResults = (props) => {
     return tokenPairs && tokenPairs.length && tokenPairs.length > 0 ? await poolsByTokenIds(tokenPairs.map(d => d.id), abortController.signal, props.protocol) : "empty";
   }
 
-  const defaultSearch = () => {
-
-  }
 
   useEffect(() => {
-
+    setSearchResultsSort(true);
     setSearchResults(null);  
 
     if (props.visibility !== 'none') {
@@ -147,15 +204,50 @@ const SearchResults = (props) => {
 
   }, [props.searchString, protocolID]);
 
+
+  // adding stats for perp to search results data if applicable 
+  useEffect(() => {
+    if (searchResults && searchResults.length && props.perpStatsData && props.baseTokenHidden === true) {
+      const searchResultsTemp = searchResults.map( d => {
+        const stats = props.perpStatsData.find( f => f.marketSymbol === `${d.token0.symbol}/${d.token1.symbol}`);
+          if (stats) {
+            return {...d, lowerBaseApr: stats.lowerBaseApr, lowerRewardApr: stats.lowerRewardApr, upperBaseApr: stats.upperBaseApr, upperRewardApr: stats.upperRewardApr};
+          } else {
+            return {...d, lowerBaseApr: 0, lowerRewardApr: 0, upperBaseApr: 0, upperRewardApr: 0};
+          }
+      });
+
+      if (setSearchResultsSort === true) {
+        setSearchResults(searchResultsTemp.sort((a, b) => {
+          return parseFloat(a["lowerBaseApr"]) > parseFloat(b["lowerBaseApr"]) ? -1 : 1;
+        }));
+      } 
+      else {
+        setSearchResults(searchResultsTemp);
+      }
+
+    }
+  }, [searchResults, props.perpStats, props.baseTokenHidden, props.perpStatsData])
+
   
 
-  const handleLabelClick = (label) => {
+  const handleLabelClick = (label, perp) => {
     if (props.labelOnClick) props.labelOnClick();
-    const sortBy = label.field;
-    const tempResults = searchResults.sort((a, b) => {
-      return parseFloat(a["poolDayData"][0][sortBy]) > parseFloat(b["poolDayData"][0][sortBy]) ? -1 : 1;
-    });
-    setSearchResults(tempResults);
+    if (perp) {
+      const sortBy = label.field;
+      const tempResults = searchResults.sort((a, b) => {
+        return parseFloat(a[sortBy]) > parseFloat(b[sortBy]) ? -1 : 1;
+      });
+      setSearchResultsSort(false);
+      setSearchResults(tempResults);
+    }
+    else {
+      const sortBy = label.field;
+      const tempResults = searchResults.sort((a, b) => {
+        return parseFloat(a["poolDayData"][0][sortBy]) > parseFloat(b["poolDayData"][0][sortBy]) ? -1 : 1;
+      });
+      setSearchResults(tempResults);
+    }
   }
 
   if (searchResults === "empty") {
@@ -164,8 +256,8 @@ const SearchResults = (props) => {
   if (searchResults !== 'empty' && searchResults && searchResults.length && searchResults.length > 0) {
     return (
       <React.Fragment>
-        <SearchLabels visibility={props.visibility} onClick={handleLabelClick}></SearchLabels>
-        <SearchItems baseTokenHidden={props.baseTokenHidden} visibility={props.visibility} items={searchResults} onClick={props.itemOnClick}></SearchItems>
+        <SearchLabels visibility={props.visibility} onClick={handleLabelClick} baseTokenHidden={props.baseTokenHidden}></SearchLabels>
+        <SearchItems baseTokenHidden={props.baseTokenHidden} visibility={props.visibility} items={searchResults} onClick={props.itemOnClick} perpStatsData={props.perpStatsData}></SearchItems>
       </React.Fragment>
     );
   }
@@ -283,7 +375,6 @@ const PoolSearch = (props) => {
 
   const handlePoolSelected = (item) => {
     if (props.handlePoolSelected) props.handlePoolSelected(item);
-    // setSelected(item.token0.symbol + " / " + item.token1.symbol);
     setInputValue(item.token0.symbol + " / " + item.token1.symbol);
     setVisibility('none');
   }
@@ -309,7 +400,8 @@ const PoolSearch = (props) => {
           visibility={visibility} 
           baseTokenHidden={props.baseTokenHidden}
           labelOnClick={handleDisableBlur}
-          itemOnClick={handlePoolSelected}>
+          itemOnClick={handlePoolSelected}
+          perpStatsData={props.perpStatsData}>
         </SearchResults>
       </div>
     </div>

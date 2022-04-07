@@ -76,6 +76,7 @@ useEffect(() => {
 // --------------------------------------------------------------------------------------------
 
 const [searchData, setSearchData] = useState();
+const [perpStatsData, setPerpStatsData] = useState();
 
 useEffect(() => {
 
@@ -110,6 +111,15 @@ useEffect(() => {
 
 }, []);
 
+useEffect(() => {
+
+  perpStats().then( pS => {
+    console.log(pS)
+    setPerpStatsData(pS);
+  });
+
+}, [])
+
 //---------------------------------------------------------
 // Custom search for perp
 //---------------------------------------------------------
@@ -123,7 +133,7 @@ const handleSearch = (searchTerm) => {
     return searchData.find( sd => sd.id === searchTerm);
   }
 
-  if (searchStringIsValid(searchTerm)) {
+  if (searchStringIsValid(searchTerm) && searchData && searchData.length) {
     const results = searchData.filter( sd => sd.token0.symbol.toUpperCase().includes(searchTerm.toUpperCase()) || sd.token1.symbol.toUpperCase().includes(searchTerm.toUpperCase()));
     return results && results.length && results.length > 0 ? results : "empty"
   }
@@ -158,7 +168,8 @@ useEffect(() => {
           totalReturnKeys={[{ key: 'amountTR', name: "Amount", selected: true, color: "rgb(238, 175, 246)" }, {key: 'feeAcc', name: "Fee", selected: true, color: "rgb(249, 193, 160)"}]}></StrategyBacktest>
           <SideBar width={windowDim.width} minWidth={pageMinWidth} baseTokenHidden={true} protocols={[4]}
            strategies={['S1', 'S2']}
-           customSearch={handleSearch}>
+           customSearch={handleSearch}
+           perpStatsData={perpStatsData}>
           </SideBar>
           <DashBoard></DashBoard>
         </Grid>
