@@ -18,7 +18,7 @@ export const Title = (props) => {
   return (
     <div className={`${props.pageStyle ? props.pageStyle["title"] : "title"} ${styles['title']}`}>
       <span><img src={protocol.logo} alt={protocol.title} style={{ width: "18px", height: "18px", marginRight: 5}}></img></span>
-      <span>{`Pool Overview - ${quoteToken.symbol} / ${baseToken.symbol} ${(feeTier / 10000) + '%' }`}</span>
+      <span>{props.text || `Pool Overview - ${quoteToken.symbol} / ${baseToken.symbol} ${(feeTier / 10000) + '%' }`}</span>
     </div>
   );
 }

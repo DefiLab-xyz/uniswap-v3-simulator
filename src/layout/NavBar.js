@@ -57,7 +57,7 @@ const NavMenu = (props) => {
 
   const NavItems = () => {
     return (navItemData.map((item) => 
-      <Link to={item.link}>
+      <Link to={item.link} onClick={() => this.forceUpdate}>
         <button className="list-item"
           key={item.id}
           style={navItemStyle}><span>{item.name}</span>
@@ -137,7 +137,6 @@ const GitHubRepo = (props) => {
   const [img, setImg] = useState(props.darkMode  ? GitHub : GitHubLight);
 
   useEffect(() => {
-    console.log(props.darkMode)
     setImg(props.darkMode  ? GitHub : GitHubLight)
   }, [props.darkMode]);
 

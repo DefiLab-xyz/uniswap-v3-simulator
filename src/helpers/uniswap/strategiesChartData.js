@@ -53,9 +53,9 @@ export const genChartData = (currentPrice, investment, strategyRanges, strategie
         const impLoss = d.y - perpDebtVal;
         const impPos = x0 - d.token;
         const notionalSize = Math.abs(impPos * d.x);
-        const margin = notionalSize !== 0 ? (parseFloat(investment) + parseFloat(impLoss)) / notionalSize : 0;
+        const margin = (impLoss >= 0 && impLoss < 0.00001) ?  "∞" : ((parseFloat(investment) + parseFloat(impLoss)) / notionalSize) * 100;
 
-        return {...d, investment: investment, test: test, perpDebtVal: perpDebtVal, impLoss: impLoss, impPos: impPos, notionalSize: notionalSize, margin: margin * 100, y: impLoss}
+        return {...d, investment: investment, test: test, perpDebtVal: perpDebtVal, impLoss: impLoss, impPos: impPos, notionalSize: notionalSize, margin: margin, y: impLoss}
       });
 
       cd[chartDataOverride] = newData;
@@ -148,7 +148,7 @@ export const genSelectedChartData = (data, strategies, dataName) => {
 
         if (tempdata && tempdata.hasOwnProperty(dataName)) {
 
-          const idx = tempdata[dataName].findIndex( cd => cd.margin >= 6.25);
+          const idx = tempdata[dataName].findIndex( cd => cd.margin >= 6.25 || cd.margin === "∞");
           const notLiquidatedTemp = tempdata[dataName].slice(idx);
           const idx2 = notLiquidatedTemp.findIndex( cd => cd.margin < 6.25); 
 

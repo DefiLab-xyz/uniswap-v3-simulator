@@ -86,7 +86,7 @@ const SideBar = (props) => {
   return (
     <div className={`${styles["sidebar"]} outer-glow`}>
       <div className={styles['sub-container']}>
-        <PoolSearch protocols={props.protocols} customSearch={props.customSearch} baseTokenHidden={props.baseTokenHidden}></PoolSearch>
+        <PoolSearch protocols={props.protocols} customSearch={props.customSearch} baseTokenHidden={props.baseTokenHidden} perpStatsData={props.perpStatsData}></PoolSearch>
         {baseToken}
       </div>
       <div className={styles['sub-container']}>

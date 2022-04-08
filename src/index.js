@@ -20,8 +20,8 @@ render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<PerpetualSimulator/>}/>
-          <Route path="/uniswapv3simulator" element={<UniswapSimulator/>}/>
-          <Route path="/perpetualsimulator" element={<PerpetualSimulator/>}/>
+          <Route path="/uniswapv3simulator" element={<UniswapSimulator page="uniswap"/>}/>
+          <Route path="/perpetualsimulator" element={<PerpetualSimulator page="perpetual"/>}/>
           <Route path="/home" element={<Home/>}/>
           <Route path="/polygonnow" element={<PolygonNow/>}/>
         </Routes> 

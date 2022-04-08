@@ -11,7 +11,7 @@ const initialState = [
 }, 
 {id: "S2", name: "Strategy 2", color: chartColors.purple, 
   inputs:  { min: { value: 1, name: "Min", label: "Min Range S1" }, max: {value: 1, name: "Max", label: "Max Range S2" } },
-  liquidityMultiplier: 1, selected: true, leverage: 1, rangesEditable: true, tokenratio: {token0: 0.5, token1: 0.5}
+  liquidityMultiplier: 1, selected: false, leverage: 1, rangesEditable: true, tokenratio: {token0: 0.5, token1: 0.5}
 },
 {id: "v2", name: "Unbounded", color: chartColors.green, 
   inputs:  { min: { value: Math.pow(1.0001, -887220), name: "Min", label: "Min Range V2" }, max: {value: Math.pow(1.0001, 887220), name: "Max", label: "Max Range V2" } },
@@ -38,7 +38,6 @@ export const updateStrategyRangeInputVal = (range) => {
     const baseDecimal = getState().pool.value.baseToken.decimals;
     const quoteDecimal = getState().pool.value.quoteToken.decimals;
     const feeTier = getState().pool.value.feeTier;
-    console.log(range)
     dispatch(setStrategyRangeInputVal({key: range.key, id: range.id, value: roundToNearestTick(range.value, feeTier, baseDecimal, quoteDecimal)}));
   }
 }
@@ -141,7 +140,6 @@ export const strategyRanges = createSlice({
     setTokenRatio: (state, action) => {
       const index = state.findIndex(i => i.id === action.payload.id);
       if (index >=0) {
-        console.log(action.payload.tokenratio)
         state[index].tokenratio = action.payload.tokenratio;
       }
     }

@@ -18,7 +18,6 @@ import { LineChart } from "../charts/LineChart";
 import StrategyDrag from "../charts/StrategyDrag";
 import { MouseOverText } from "../charts/MouseOverMarker";
 import { ChartContext } from "../charts/ChartContainer";
-import { selectSelectedEditableStrategyRanges } from "../../store/strategyRanges";
 
 const ZeroLine = (props) => {
 
@@ -30,7 +29,7 @@ const ZeroLine = (props) => {
 
   if (props.zeroLine) {
     return (
-      <Line className="zero-line" useParentScale={true} data={lineData} stroke={props.strategy && props.strategy.color ? props.strategy.color : "grey"}></Line>
+      <Line className="zero-line" useParentScale={true} data={lineData} stroke={ props.strategy && props.strategy.color ? props.strategy.color : "rgb(128, 232, 221)"}></Line>
     )
   }
 
@@ -38,27 +37,6 @@ const ZeroLine = (props) => {
   
 }
 
-const ExtendedHoverData = (props) => {
-
-  const chartContextData = useContext(ChartContext);
-  const [textPosition, setTextPosition] = useState({x:0, y:0});
-
-  useEffect(() => {
-    if (chartContextData.scale &&  chartContextData.scale.y && props.domain && props.domain.y) {
-
-      setTextPosition({x:0, y:chartContextData.scale.y(props.domain.y[0])})
-      // props.domain.y[0]
-    }
-  }, [props.chartDomain])
-
-  if (props.extendedHoverData) {
-    return (
-      <MouseOverText textPosition={textPosition} text={[]}></MouseOverText>
-    )
-  }
-
-  return (<></>);
-}
 
 const StrategyOverviewChart = (props) => {
 
@@ -90,12 +68,13 @@ const StrategyOverviewChart = (props) => {
 
         hoverData.forEach(hd => {
           const longShort = currentPrice < hd.data[idx].x ? "LONG" : "SHORT";
-          mouseOverTextExtended.push([`${hd.label}:`, 
+          const margin = hd.data[idx].margin === "∞" ? hd.data[idx].margin : hd.data[idx].margin < 6.25 ? "LIQUIDATION" : `${parsePrice(hd.data[idx].margin, true)}%`;
+          mouseOverTextExtended.push([`${hd.label}:`,
           `Price: ${parsePrice(hd.data[idx].x)} ${baseToken.symbol}`,
           `Impermanant Loss: ${parsePrice(hd.data[idx].impLoss)} USD`,
           `Impermanant Position: ${parsePrice(hd.data[idx].impPos)} ${quoteToken.symbol} ${longShort}`,
           `Notional Size: ${parsePrice(hd.data[idx].notionalSize)}`,
-          `Margin: ${parsePrice(hd.data[idx].margin, true)}%`]);
+          `Margin: ${margin}`]);
         });
         setMouseOverText(mouseOverTextExtended);
       }

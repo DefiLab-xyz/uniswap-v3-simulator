@@ -59,16 +59,12 @@ useEffect(() => {
 const protocol = useSelector(selectProtocolId);
 const poolS = useSelector(selectPool);
 
-useEffect(() => {
-  console.log(poolS)
-}, [ poolS])
 
 useEffect(() => {
   const abortController = new AbortController();
 
   poolById("0x8ad599c3a0ff1de082011efddc58f1908eb6e6d8", abortController.signal, protocol).then( pool => {
     if (pool) dispatch(fetchPoolData(pool));
-   
   });
 
   return () => abortController.abort();

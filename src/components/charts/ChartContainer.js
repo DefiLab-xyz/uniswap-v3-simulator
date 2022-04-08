@@ -16,19 +16,19 @@ const Axes = (props) => {
         scale={props.scaleBottom || props.scale} 
         width={props.width} height={props.height} 
         margin={props.margin} supressTickText={props.supressTickText}
-        axisType="bottom" scaleType={props.chartProps.scaleTypeX || "linear"} dataType={props.chartProps.dataTypeX || "number"}>
+        axisType="bottom" scaleType={props.scaleTypeX || "linear"} dataType={props.dataTypeX ||  "number"}>
       </Axis>
       <Axis 
         scale={props.scaleLeft || props.scale} 
         width={props.width} height={props.height} 
         margin={props.margin} supressTickText={props.supressTickText}
-        axisType="left" scaleType={props.chartProps.scaleTypeY || "linear"} dataType={props.chartProps.dataTypeY || "number"} textAnchor="end">
+        axisType="left" scaleType={props.scaleTypeY || "linear"} dataType={props.dataTypeY ||  "number"} textAnchor="end">
        </Axis>
        <Axis 
         scale={props.scaleRight} 
         width={props.width} height={props.height} 
         margin={props.margin} supressTickText={props.supressTickText}
-        axisType="right" scaleType={props.chartProps.scaleTypeYRight || "linear"} dataType={props.chartProps.dataTypeYRight || "number"} 
+        axisType="right" scaleType={props.scaleTypeYRight || "linear"} dataType={props.dataTypeYRight ||  "number"} 
         >
        </Axis>
     </Fragment>);
@@ -90,9 +90,9 @@ const ChartContainer = forwardRef((props, ref) => {
       setHeight(height);
       setTranslate("translate("+ margin.left +"," + margin.top + ")");
 
-      const x = chartscale({domain: props.domain.x, range: [0, width], scaleType: chartProps.scaleTypeX, barPadding: chartProps.barPadding || 0});
-      const y = chartscale({domain: props.domain.y, range:[height, 0], scaleType: chartProps.scaleTypeY});
-      const yRight = props.domain.hasOwnProperty('yRight') ? chartscale({domain: props.domain.yRight, range:[height, 0], scaleType: chartProps.scaleTypeYRight}) : null;
+      const x = chartscale({domain: props.domain.x, range: [0, width], scaleType: chartProps.scaleTypeX || "linear", barPadding: chartProps.barPadding || 0});
+      const y = chartscale({domain: props.domain.y, range:[height, 0], scaleType: chartProps.scaleTypeY || "linear"});
+      const yRight = props.domain.hasOwnProperty('yRight') ? chartscale({domain: props.domain.yRight, range:[height, 0], scaleType: chartProps.scaleTypeYRight || "linear"}) : null;
       setScale({x: x, y: y, yRight: yRight });
     }
 
@@ -128,10 +128,15 @@ const ChartContainer = forwardRef((props, ref) => {
             width={width} height={height} ref={chartContainerRef}></rect>
           <g transform={translate}>
           <Axes scale={scale} scaleRight={scale && scale.yRight && scale.x ? {x: scale.x, y: scale.yRight} : null}
-                width={width} height={height} supressTickText={chartProps.supressTickText}
-                margin={margin} chartProps={chartProps}>
+                width={width} height={height} supressTickText={chartProps && chartProps.supressTickText ? chartProps.supressTickText : false }
+                margin={margin} chartProps={chartProps} scaleTypeX={chartProps && chartProps.scaleTypeX ? chartProps.scaleTypeX : "linear"}
+                scaleTypeY={chartProps && chartProps.scaleTypeY ? chartProps.scaleTypeY : "linear"}
+                dataTypeX={chartProps && chartProps.dataTypeX ? chartProps.dataTypeX : "number"}
+                dataTypeY={chartProps && chartProps.dataTypeY ? chartProps.dataTypeY : "number"}
+                scaleTypeYRight={chartProps && chartProps.scaleTypeYRight ? chartProps.scaleTypeYRight : "linear"}
+                dataTypeYRight={chartProps && chartProps.dataTypeYRight ? chartProps.dataTypeYRight : "number"}>
           </Axes>
-          <AxesLabels ylabel={chartProps.ylabel} xlabel={chartProps.xlabel} ylabelRight={chartProps.ylabelRight}
+          <AxesLabels ylabel={chartProps && chartProps.ylabel ? chartProps.ylabel : ""} xlabel={chartProps && chartProps.xlabel ? chartProps.xlabel : ""} ylabelRight={chartProps && chartProps.ylabelRight ? chartProps.ylabelRight : ""}
                 margin={margin} height={height} 
                 width={width}>
           </AxesLabels>

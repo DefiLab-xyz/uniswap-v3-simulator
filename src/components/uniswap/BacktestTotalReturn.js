@@ -71,22 +71,26 @@ export const BacktestTotalReturn = (props) => {
       const chartDataTemp = props.data.find( d => d.id === props.strategy.id);
       let sum = 0;
 
-      chartDataTemp.data = chartDataTemp.data.map(d => {
-        sum += d.feeV;
-        return {...d, feeAcc: sum}
-      })
-
-      if (chartDataTemp && chartDataTemp.data) {setChartData(chartDataTemp.data); 
-      console.log(chartDataTemp.data)}
+      if (chartDataTemp && chartDataTemp.data) {
+        chartDataTemp.data = chartDataTemp.data.map(d => {
+          sum += d.feeV;
+          return {...d, feeAcc: sum}
+        })
+        setChartData(chartDataTemp.data);
+      }
     }  
   }, [props.data, props.strategy]);
 
   useEffect(() => {
     if (chartData && chartData.length) {
+
       const yMax = chartData.map( cD =>  {
         return sumArray(selectedKeys.map(s => cD[s]));
       });
-      setChartDomain({x: chartData.map(d => d.date), y: [0, Math.max(...yMax)]});
+
+      const yMin = minInArray([chartData], selectedKeys[0]);
+      
+      setChartDomain({x: chartData.map(d => d.date), y: [Math.min(0, yMin), Math.max(...yMax)]});
     }
   }, [chartData, selectedKeys]);
 
@@ -183,8 +187,8 @@ export const BacktestTotalReturnPercent = (props) => {
 
     if (props.data && props.data.length) {
       const compareChartData = genChartData(props.data[0].data, compareStrategies, "feeUnb");
-      const strategy1 = genChartData(props.data[0].data, props.data.filter(d => d.id === 'S1'), "feeV");
-      const strategy2 = genChartData(props.data[1].data, props.data.filter(d => d.id === 'S2'), "feeV");
+      const strategy1 = props.data[0] ? genChartData(props.data[0].data, props.data.filter(d => d.id === 'S1'), "feeV") : [];
+      const strategy2 = props.data[1] ? genChartData(props.data[1].data, props.data.filter(d => d.id === 'S2'), "feeV") : [];
       setChartData([...compareChartData, ...strategy1, ...strategy2]);
     }
   }, [baseID, compareStrategies, investment, props.amountKey, props.data]);
@@ -208,11 +212,15 @@ export const BacktestTotalReturnPercent = (props) => {
 
   useEffect(() => {
     if (chartData && chartData.length) {
+
       const compare = chartData.find(d => d.id === selectedCompareStrategy.id);
       const strategy = chartData.find(d => d.id === selectedStrategy.id);
 
-      setSelectedChartData([compare.data, strategy.data]);
-      setSelectedChartColors([compare.color, strategy.color]);
+      if (compare && compare.data && strategy && strategy.data) {
+        setSelectedChartData([compare.data, strategy.data]);
+        setSelectedChartColors([compare.color, strategy.color]);
+      }
+      
     }
   }, [selectedCompareStrategy, selectedStrategy, chartData]);
 
