@@ -178,12 +178,13 @@ const SearchResults = (props) => {
 
 
   useEffect(() => {
-    // setSearchResultsSort(true);
+
     setSearchResults(null);
 
     if (props.visibility !== 'none') {
       if (props.customSearch) {
-        setSearchResults(props.customSearch(props.searchString));
+        const results = props.customSearch(props.searchString);
+        setSearchResults(results);
       }
       else {
         searchStringController.current = new AbortController();
@@ -201,31 +202,6 @@ const SearchResults = (props) => {
     return () => searchStringController.current.abort();
 
   }, [props.searchString, protocolID]);
-
-
-  // adding stats for perp to search results data if applicable 
-  useEffect(() => {
-    if (searchResults && searchResults.length && props.perpStatsData && props.baseTokenHidden === true) {
-      const searchResultsTemp = searchResults.map( d => {
-        const stats = props.perpStatsData.find( f => f.marketSymbol === `${d.token0.symbol}/${d.token1.symbol}`);
-          if (stats) {
-            return {...d, lowerBaseApr: stats.lowerBaseApr, lowerRewardApr: stats.lowerRewardApr, upperBaseApr: stats.upperBaseApr, upperRewardApr: stats.upperRewardApr};
-          } else {
-            return {...d, lowerBaseApr: 0, lowerRewardApr: 0, upperBaseApr: 0, upperRewardApr: 0};
-          }
-      });
-
-      if (searchResultsSort === true) {
-        setSearchResults(searchResultsTemp.sort((a, b) => {
-          return parseFloat(a["lowerBaseApr"]) > parseFloat(b["lowerBaseApr"]) ? -1 : 1;
-        }));
-      } 
-      else {
-        setSearchResults(searchResultsTemp);
-      }
-
-    }
-  }, [searchResults, props.perpStats, props.baseTokenHidden, props.perpStatsData])
 
   
   const handleLabelClick = (label, perp) => {

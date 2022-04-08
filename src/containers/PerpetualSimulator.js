@@ -76,6 +76,7 @@ useEffect(() => {
 // --------------------------------------------------------------------------------------------
 
 const [searchData, setSearchData] = useState();
+const [enrichedSearchData, setEnrichedSearchData] = useState();
 const [perpMarketData, setPerpMarketData] = useState();
 const [perpStatsData, setPerpStatsData] = useState();
 const [perpAddressList, setPerpAddressList] = useState();
@@ -114,6 +115,24 @@ useEffect(() => {
 
 }, []);
 
+const enrichSearchData = (searchData, perpStatsData) => {
+
+  if (searchData && searchData.length && perpStatsData && perpStatsData.length) {
+
+    return searchData.map( d => {
+
+      const stats = perpStatsData.find( f => f.marketSymbol === `${d.token0.symbol}/${d.token1.symbol}`);
+
+      return stats ? {...d, lowerBaseApr: stats.lowerBaseApr, lowerRewardApr: stats.lowerRewardApr, upperBaseApr: stats.upperBaseApr, upperRewardApr: stats.upperRewardApr} :
+      {...d, lowerBaseApr: 0, lowerRewardApr: 0, upperBaseApr: 0, upperRewardApr: 0}
+
+    }).sort((a, b) => { return parseFloat(a["lowerBaseApr"]) > parseFloat(b["lowerBaseApr"]) ? -1 : 1; });
+          
+  } else {
+    return searchData;
+  }
+}
+
 useEffect(() => {
 
   perpMarketStats().then( pS => {
@@ -124,7 +143,14 @@ useEffect(() => {
     setPerpAddressList(pA);
   });
 
-}, [])
+}, []);
+
+useEffect(() => {
+  if (searchData && searchData.length) {
+    setEnrichedSearchData(enrichSearchData(searchData, perpStatsData));
+  }
+  
+}, [perpStatsData, searchData])
 
 //---------------------------------------------------------
 // Custom search for perp
@@ -136,15 +162,21 @@ const handleSearch = (searchTerm) => {
   const searchStringIsValid = (searchString) => searchString.trim() && typeof(searchString) === 'string' && searchString.trim().length > 0;
 
   if (searchStringIsAnId(searchTerm)) {
-    return searchData.find( sd => sd.id === searchTerm);
+
+    return enrichedSearchData.find( sd => sd.id === searchTerm);
+  }
+  if (searchStringIsValid(searchTerm) && enrichedSearchData && enrichedSearchData.length) {
+
+    const results = enrichedSearchData.filter( sd => sd.token0.symbol.toUpperCase().includes(searchTerm.toUpperCase()) || sd.token1.symbol.toUpperCase().includes(searchTerm.toUpperCase()));
+    
+    return results && results.length && results.length > 0 ? results : "empty";
+  }
+  
+  if (searchTerm === "") {
+    return enrichedSearchData;
   }
 
-  if (searchStringIsValid(searchTerm) && searchData && searchData.length) {
-    const results = searchData.filter( sd => sd.token0.symbol.toUpperCase().includes(searchTerm.toUpperCase()) || sd.token1.symbol.toUpperCase().includes(searchTerm.toUpperCase()));
-    return results && results.length && results.length > 0 ? results : "empty"
-  }
-
-  return searchData;
+  return null;
 }
 
 //-----------------------------------------------------------------------------------------------
