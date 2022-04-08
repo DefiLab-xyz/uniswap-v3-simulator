@@ -79,7 +79,7 @@ const PoolOverview = (props) => {
 
   useEffect(() => {
     const docEl = document.documentElement;
-    docEl.style.setProperty("--strategy-container-row-start", 14);
+    docEl.style.setProperty("--strategy-container-row-start", 12);
   }, [])
 
 
