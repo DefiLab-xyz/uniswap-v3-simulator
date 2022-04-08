@@ -8,7 +8,7 @@ export const perpMarkets = async (signal) => {
   query {
        markets {
          pool
-        
+         id
        }
      }
   `

@@ -21,7 +21,7 @@ import { perpMarkets } from '../api/thegraph/uniPerpMarkets'
 import { fetchPoolData } from '../store/pool';
 import { setWindowDimensions, selectWindowDimensions } from '../store/window';
 import { setProtocol } from '../store/protocol';
-import { perpStats } from '../api/perpStats';
+import { perpMarketStats, perpAddresses } from '../api/perpStats';
 
 
 
@@ -76,17 +76,20 @@ useEffect(() => {
 // --------------------------------------------------------------------------------------------
 
 const [searchData, setSearchData] = useState();
+const [perpMarketData, setPerpMarketData] = useState();
 const [perpStatsData, setPerpStatsData] = useState();
+const [perpAddressList, setPerpAddressList] = useState();
 
 useEffect(() => {
 
   const abortController = new AbortController();
 
   perpMarkets(abortController.signal).then( markets => {
+
     if (markets && markets[0] && markets[0].pool) {
-
-      const pools = markets.map( d => d.pool);
-
+      setPerpMarketData(markets);
+      const pools = markets.map( d => d.pool );
+      
       poolByIds(pools, abortController.signal, 1).then( pools => {
 
         if (pools && pools.length && pools.length > 0) {
@@ -113,8 +116,12 @@ useEffect(() => {
 
 useEffect(() => {
 
-  perpStats().then( pS => {
+  perpMarketStats().then( pS => {
     setPerpStatsData(pS);
+  });
+
+  perpAddresses().then( pA => {
+    setPerpAddressList(pA);
   });
 
 }, [])
@@ -140,10 +147,6 @@ const handleSearch = (searchTerm) => {
   return searchData;
 }
 
-useEffect(() => {
-  perpStats().then(d => console.log(d))
-}, [])
-
 //-----------------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------
 
@@ -158,7 +161,7 @@ useEffect(() => {
           rows={150} columns={62}
           cellAspectRatio={0.82} gridGap={5}
           gridWidth={windowDim.width} minWidth={pageMinWidth}>
-          <PoolOverview poolStatsHidden={true}></PoolOverview>
+          <PoolOverview poolStatsHidden={true} markets={perpMarketData} addresses={perpAddressList} stats={perpStatsData}></PoolOverview>
           <StrategyOverview  chartDataOverride="leveraged" strategies={['S1', 'S2']}
             impLossHidden={true} zeroLine={true} extendedHoverData={true}> 
           </StrategyOverview>
