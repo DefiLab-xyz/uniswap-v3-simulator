@@ -168,18 +168,18 @@ const SearchResults = (props) => {
   }
 
   const searchForPool = async (abortController, searchString, protocol) => {
+    
     if (searchStringIsAnId(searchString)) return await poolsByTokenId(searchString, abortController.signal, protocol); 
 
     const tokenPairs = await tokensBySymbol(searchString, abortController.signal, protocol);
     if (tokenPairs && tokenPairs.hasOwnProperty("error")) return null;
-
-    return tokenPairs && tokenPairs.length && tokenPairs.length > 0 ? await poolsByTokenIds(tokenPairs.map(d => d.id), abortController.signal, props.protocol) : "empty";
+    return tokenPairs && tokenPairs.length && tokenPairs.length > 0 ? await poolsByTokenIds(tokenPairs.map(d => d.id), abortController.signal, protocolID) : "empty";
   }
 
 
   useEffect(() => {
-    setSearchResultsSort(true);
-    setSearchResults(null);  
+    // setSearchResultsSort(true);
+    setSearchResults(null);
 
     if (props.visibility !== 'none') {
       if (props.customSearch) {
@@ -205,7 +205,6 @@ const SearchResults = (props) => {
 
   // adding stats for perp to search results data if applicable 
   useEffect(() => {
-    
     if (searchResults && searchResults.length && props.perpStatsData && props.baseTokenHidden === true) {
       const searchResultsTemp = searchResults.map( d => {
         const stats = props.perpStatsData.find( f => f.marketSymbol === `${d.token0.symbol}/${d.token1.symbol}`);
