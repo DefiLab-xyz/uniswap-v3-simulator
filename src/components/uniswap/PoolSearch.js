@@ -26,10 +26,8 @@ const SearchItemsStatsPerp = (props) => {
       return (
         <Fragment>
           <div className={styles['search-item-symbol']} >{props.item.token0.symbol} / {item.token1.symbol}</div>&nbsp;
-          {/* <div><div className={styles['search-item-fee-tier']}>{`${(props.item.feeTier / 10000)}%`}</div></div>&nbsp; */}
           <div className={styles['search-item-base-apr']}>{`${parsePrice(stat.lowerBaseApr, true)}% - ${parsePrice(stat.upperBaseApr, true)}%`}</div>&nbsp;
           <div className={styles['search-item-reward-usd']}>{`${parsePrice(stat.lowerRewardApr, true)}% - ${parsePrice(stat.upperRewardApr, true)}%`}</div>&nbsp;
-          {/* <div className={styles['search-item-fee-usd']}>{`$${formatLargeNumber(item.poolDayData[0].feesUSD)}`}</div>&nbsp; */}
         </Fragment>
       );
 }

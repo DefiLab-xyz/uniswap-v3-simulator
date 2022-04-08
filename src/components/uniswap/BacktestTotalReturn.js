@@ -216,8 +216,11 @@ export const BacktestTotalReturnPercent = (props) => {
       const compare = chartData.find(d => d.id === selectedCompareStrategy.id);
       const strategy = chartData.find(d => d.id === selectedStrategy.id);
 
-      setSelectedChartData([compare.data, strategy.data]);
-      setSelectedChartColors([compare.color, strategy.color]);
+      if (compare && compare.data && strategy && strategy.data) {
+        setSelectedChartData([compare.data, strategy.data]);
+        setSelectedChartColors([compare.color, strategy.color]);
+      }
+      
     }
   }, [selectedCompareStrategy, selectedStrategy, chartData]);
 
