@@ -1,0 +1,10 @@
+{
+  "uniswap": {
+    "S1": "#7CC2F6", "S2": "#AF81E4", "v2":"#80E8DD", "hodl5050": "#F9C1A0", "hodl2": "#E784BA", "hodl1": "#eeaff6", 
+    "tokenratio": ["rgb(238, 175, 246)", "rgb(249, 193, 160)"]
+  },
+  "perpetual": {
+    "S1": "#8C94FC", "S2": "#FCF48C", "v2":"#80E8DD", "hodl5050": "#F9C1A0", "hodl2": "#E784BA", "hodl1": "#eeaff6", 
+    "tokenratio": ["#FCD4D4", "#FCF48C"]
+  }
+}

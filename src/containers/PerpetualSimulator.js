@@ -23,7 +23,10 @@ import { fetchPoolData } from '../store/pool';
 import { setWindowDimensions, selectWindowDimensions } from '../store/window';
 import { setProtocol } from '../store/protocol';
 import { perpMarketStats, perpAddresses } from '../api/perpStats';
-
+import { setStrategyColors } from '../store/strategies';
+import { setStrategyRangeColors } from '../store/strategyRanges';
+import { setTokenRatioColors } from '../store/tokenRatios';
+import colors from '../data/colors.json';
 
 const PerpetualSimulator = (props) => {
 
@@ -49,6 +52,19 @@ useEffect(() => {
   window.addEventListener('resize', handleResize);
   return () => window.removeEventListener('resize', handleResize);
 }, );
+
+//-----------------------------------------------------------------------------------------------
+// Set CHART COLORS ON LOAD //
+//-----------------------------------------------------------------------------------------------
+
+useEffect(() => {
+  dispatch(setStrategyColors("perpetual"));
+  dispatch(setStrategyRangeColors("perpetual"));
+  dispatch(setTokenRatioColors("perpetual"));
+  
+  const docEl = document.documentElement;
+  docEl.style.setProperty("--font-color", "#0E1415");
+}, []);
 
 
 //-----------------------------------------------------------------------------------------------
@@ -187,26 +203,29 @@ const handleSearch = (searchTerm) => {
       <div className={styles["parent-container"]}>
         <NavBar
           width={windowDim.width} minWidth={pageMinWidth}
+          themeToggleHidden={true}
           title="Perpetual Liquidity Strategy Simulator"
-          themeProps={themeProps.uniswap}>
+          themeProps={themeProps.uniswap}
+          pageStyle={styles}>
         </NavBar>
         <Grid className={styles["dashboard-container"]}
           rows={150} columns={62}
           cellAspectRatio={0.82} gridGap={5}
-          gridWidth={windowDim.width} minWidth={pageMinWidth}>
-          <PoolOverview poolStatsHidden={true} markets={perpMarketData} addresses={perpAddressList} stats={perpStatsData}></PoolOverview>
-          <StrategyOverview  chartDataOverride="leveraged" strategies={['S1', 'S2']}
+          gridWidth={windowDim.width} minWidth={pageMinWidth}
+          pageStyle={styles}>
+          <PoolOverview page="perpetual" pageStyle={styles} colors={colors["perpetual"]} poolStatsHidden={true} markets={perpMarketData} addresses={perpAddressList} stats={perpStatsData}></PoolOverview>
+          <StrategyOverview page="perpetual" pageStyle={styles} chartDataOverride="leveraged" strategies={['S1', 'S2']}
             impLossHidden={true} zeroLine={true} extendedHoverData={true}> 
           </StrategyOverview>
-          <PoolPriceLiquidity></PoolPriceLiquidity>
-          <StrategyBacktest customFeeDivisor={3} supressIndicatorFields={['assetval', 'total', 'token0Fee', 'token1Fee']} amountKey={"amountTR"}
+          <PoolPriceLiquidity page="perpetual" pageStyle={styles}></PoolPriceLiquidity>
+          <StrategyBacktest page="perpetual" pageStyle={styles} customFeeDivisor={3} supressIndicatorFields={['assetval', 'total', 'token0Fee', 'token1Fee']} amountKey={"amountTR"}
           totalReturnKeys={[{ key: 'amountTR', name: "Amount", selected: true, color: "rgb(238, 175, 246)" }, {key: 'feeAcc', name: "Fee", selected: true, color: "rgb(249, 193, 160)"}]}></StrategyBacktest>
-          <SideBar width={windowDim.width} minWidth={pageMinWidth} baseTokenHidden={true} protocols={[4]}
+          <SideBar page="perpetual" pageStyle={styles} width={windowDim.width} minWidth={pageMinWidth} baseTokenHidden={true} protocols={[4]}
            strategies={['S1', 'S2']}
            customSearch={handleSearch}
            perpStatsData={perpStatsData}>
           </SideBar>
-          <DashBoard></DashBoard>
+          <DashBoard  page="perpetual" pageStyle={styles}></DashBoard>
         </Grid>
       </div>
     </div>

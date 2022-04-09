@@ -84,7 +84,9 @@ const PoolOverview = (props) => {
 
 
   return (
-    <div className={`dashboard-section outer-glow ${styles['pool-overview-container']}`}>
+    <div className={`${ props.pageStyle ? props.pageStyle["dashboard-section"]: "dashboard-section"} 
+    ${props.pageStyle ? props.pageStyle["outer-glow"] : "outer-glow"}  
+    ${styles['pool-overview-container']}`}>
       <Title text={`Pool Stats ${quoteToken.symbol} / ${baseToken.symbol}`}></Title>
       <div className={styles["chart-container"]}>
        

@@ -1,18 +1,17 @@
 .mouse-over-container {
   fill: transparent;
-  opacity: 0.2;
+  opacity: .2;
   stroke-opacity: 0;
 }
 
 .mouse-over-marker {
   fill: transparent;
-  opacity: 0.01;
-  stroke-opacity: 0;
 }
 
 .mouse-over-marker-line {
   stroke-width: 1px;
-  stroke: rgb(175, 129, 228); 
+  stroke: #af81e4; 
+  stroke-opacity: 1;
   stroke-dasharray: 2 2;
 }
 

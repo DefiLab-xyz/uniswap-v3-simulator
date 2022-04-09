@@ -185,8 +185,10 @@ const NavBar = (props) => {
     gridWidth={props.width}
     minWidth={props.minWidth}
     >
-      <h1 style={styles.title}>{props.title}</h1>
-      <ThemeToggle style={styles.themeToggle} handleToggle={handleToggle} themeProps={props.themeProps}></ThemeToggle>
+      <h1 style={styles.title} className={props.pageStyle ? props.pageStyle['header-title'] : 'header-title'}>{props.title}</h1>
+      {
+        props.themeToggleHidden ? <></> : <ThemeToggle style={styles.themeToggle} handleToggle={handleToggle} themeProps={props.themeProps}></ThemeToggle>
+      }
       <div style={styles.links}>
         <GitCoin></GitCoin>
         <SocialLinks></SocialLinks>

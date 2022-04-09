@@ -9,134 +9,145 @@
 }
 
 @font-face {
-  font-family: "Sk-Modernist-Bold", bold;;
+  font-family: "Sk-Modernist-Bold";
   src: local('Sk-Modernist-Bold'), url(../../fonts/Sk-Modernist-Bold.otf) format('opentype');
 }
 
 :root {
-  /* colors */
-  --darkest-grey: #4d5458;
-  --medium-grey: #5f696f;
-  --light-grey: #73818a;
-  --white: rgb(255,255,255);
-  --black: rgb(0,0,0);
-
-  --purple: rgb(213,198,198);
-  --purple-light: rgb(211,213,213);
-  --green: rgb(60,234,234);
-  --orange: rgb(244,131,131);
-  --yellow: rgb(254,230,68);
-
-  --font-family-regular:  "Sk-Modernist";
-  --font-family-bold: "Sk-Modernist-Bold";
-  --font-family-mono: "Sk-Modernist-Mono";
+  --perp-green-1: rgb(29, 191, 131);
+  --perp-green-2: rgb(60, 235, 171);
+  --perp-blue: rgb(0, 181, 216);
+  --perp-purple: rgb(194, 61, 235);
+  --black: rgb(0, 0, 0);
+  --white: rgba(255, 255, 255);
+  --perp-grey: rgb(89, 89, 89);
 }
 
 :root {
   /* LIGHT MODE */
-  --light: rgba(231, 241, 250, 1);
-  --semi-transparent-light: rgba(255,255,255,0.1);
+  --perp-light: rgba(231, 241, 250, 1);
+  --perp-perp-semi-transparent-light: rgba(255,255,255,0.1);
 
-  --radial-gradient-light: radial-gradient(at top right, rgba(246,216,250, 0.2), transparent),
+  --perp-perp-radial-gradient-light: radial-gradient(at top right, rgba(246,216,250, 0.2), transparent),
   radial-gradient(rgba(236,227,251, 0.4), transparent),
   radial-gradient(at top left, rgba(231, 241, 250, 1), transparent),
   radial-gradient(at bottom right, rgba(216,237,250, 0.8), transparent),
   radial-gradient(at bottom left, rgba(250,246,216, 0.8), transparent);
 
-  --linear-gradient-light: linear-gradient(315deg, rgba(255,225,232,0.33) 54%, rgba(255,225,232,0.41) 59%, rgba(255,241,245,0.89) 93%, rgba(255,241,245,1) 100%);
-  --linear-gradient-light-2: linear-gradient(315deg, rgba(255,225,232,0.13) 54%, rgba(255,225,232,0.11) 59%, rgba(255,241,245,0.89) 93%, rgba(255,241,245,1) 100%),
+  --perp-linear-gradient-light: linear-gradient(315deg, rgba(255,225,232,0.33) 54%, rgba(255,225,232,0.41) 59%, rgba(255,241,245,0.89) 93%, rgba(255,241,245,1) 100%);
+  --perp-linear-gradient-light-2: linear-gradient(315deg, rgba(255,225,232,0.13) 54%, rgba(255,225,232,0.11) 59%, rgba(255,241,245,0.89) 93%, rgba(255,241,245,1) 100%),
     linear-gradient(135deg, rgba(139,210,250,0) 15%, rgba(182,221,248,0) 18%, rgba(255,241,245,0.04) 23%, rgba(229,236,247,0.37) 43%, rgba(185,228,252,0.37) 78%);
 
 
-  --font-color-bold-light: var(--darkest-grey);
-  --font-color-light: var(--medium-grey);
+  --perp-font-color-bold-light: var(--perp-darkest-grey);
+  --perp-font-color-light: var(--perp-medium-grey);
 
-  --outer-glow-light:  3px 3px 5px #BABECC, -3px -3px 10px #f7f5fe;
-  --inner-glow-light: inset 1px 1px 1px #babecc, inset -1px -1px 5px #f2f2f2;
-  --outer-glow-intense-light: 3px 3px 5px #BABECC,  
+  --perp-outer-glow-light:  3px 3px 5px #BABECC, -3px -3px 10px #f7f5fe;
+  --perp-inner-glow-light: inset 1px 1px 1px #babecc, inset -1px -1px 5px #f2f2f2;
+  --perp-outer-glow-intense-light: 3px 3px 5px #BABECC,  
   -1px -1px 2px #ffffff,
   -3px -3px 10px #ffffff;
-  --border-color-light: #fff;
+  --perp-border-color-light: #fff;
 
-  --input-border-light: var(--inner-glow-light);
-  --input-background-light: rgba(255,255,255, 1);
-  --button-selected-background-light : var(--input-background-light);
+  --perp-input-border-light: var(--perp-inner-glow-light);
+  --perp-input-background-light: rgba(255,255,255, 1);
+  --perp-button-selected-background-light : var(--perp-input-background-light);
 
-  --button-border-light:  1px 1px 2px #BABECC, -1px -1px 2px #f7f5fe;
-  --button-border-selected-light: inset 1px 1px 2px #babecc, inset -1px -1px 2px #f7f5fe;
-  --button-border-hover-light: 1px 1px 1px #fff, -1px -1px 1px #babecc;
+  --perp-button-border-light:  1px 1px 2px #BABECC, -1px -1px 2px #f7f5fe;
+  --perp-button-border-selected-light: inset 1px 1px 2px #babecc, inset -1px -1px 2px #f7f5fe;
+  --perp-button-border-hover-light: 1px 1px 1px #fff, -1px -1px 1px #babecc;
 
 }
 
 :root {
   /* DARK MODE */ 
-  --dark: rgba(25, 34, 43, 1);
-  --darker: rgb(19, 28, 31);
-  /* --dark: var(--darkest-grey); */
-  --semi-transparent-dark: rgba(0, 0, 0, 0.08);
-  --semi-transparent-medium-dark: rgba(39, 39, 41, 0.038);
+  --perp-dark: rgba(25, 34, 43, 1);
+  --perp-darker: rgb(19, 28, 31);
+  /* --perp-dark: var(--perp-darkest-grey); */
+  --perp-semi-transparent-dark: rgba(0, 0, 0, 0.08);
+  --perp-semi-transparent-medium-dark: rgba(39, 39, 41, 0.038);
 
-  --radial-gradient-dark: radial-gradient(at top right, rgba(48, 42, 49, 0.2), transparent),
+  --perp-radial-gradient-dark: radial-gradient(at top right, rgba(48, 42, 49, 0.2), transparent),
   radial-gradient(rgba(53, 50, 56, 0.4), transparent),
   radial-gradient(at top left, rgb(51, 54, 56), transparent),
   radial-gradient(at bottom right, rgba(44, 47, 49, 0.8), transparent),
   radial-gradient(at bottom left, rgba(56, 55, 49, 0.8), transparent);
 
-  --linear-gradient-dark: linear-gradient(315deg, var(--dark) 54%, var(--dark) 59%, var(--dark) 93%, var(--dark) 100%);
-  --linear-gradient-dark-2: linear-gradient(var(--dark) 0%, var(--dark) 100%);
+  --perp-linear-gradient-dark: linear-gradient(315deg, var(--perp-dark) 54%, var(--perp-dark) 59%, var(--perp-dark) 93%, var(--perp-dark) 100%);
+  --perp-linear-gradient-dark-2: linear-gradient(var(--perp-dark) 0%, var(--perp-dark) 100%);
 
-  --font-color-bold-dark: var(--white);
-  --font-color-dark: var(--white);
+  --perp-font-color-bold-dark: var(--perp-white);
+  --perp-font-color-dark: var(--perp-white);
 
-  --outer-glow-dark:  2px 2px 4px rgba(0, 0, 0, 0.4), -1px -1px 2px rgba(49, 54, 58, 0.4);
-  --inner-glow-dark: inset 1px 1px 2px rgba(49, 54, 58, 0.4), inset -1px -1px 2px rgba(0, 0, 0, 0.4);
-  --outer-glow-intense-dark: 3px 3px 5px rgba(0, 0, 0, 0.4),  
+  --perp-outer-glow-dark:  2px 2px 4px rgba(0, 0, 0, 0.4), -1px -1px 2px rgba(49, 54, 58, 0.4);
+  --perp-inner-glow-dark: inset 1px 1px 2px rgba(49, 54, 58, 0.4), inset -1px -1px 2px rgba(0, 0, 0, 0.4);
+  --perp-outer-glow-intense-dark: 3px 3px 5px rgba(0, 0, 0, 0.4),  
   -1px -1px 2px rgba(49, 54, 58, 0.4),
   -3px -3px 10px rgba(49, 54, 58, 0.4);
-  --border-color-dark: var(--dark);
+  --perp-border-color-dark: var(--perp-dark);
 
-  --input-border-dark: inset 1px 1px 1px rgba(13, 14, 15, 0.4), inset -1px -1px 1px rgba(49, 54, 58, 0.4);
-  --input-background-dark: var(--semi-transparent-dark);
-  --button-selected-background-dark : var(--semi-transparent-medium-dark);
-  --button-border-dark: 1px 1px 2px rgba(0, 0, 0, 0.4), -1px -1px 2px rgba(49, 54, 58, 0.4);
-  --button-border-selected-dark: inset 1px 1px 2px rgba(0, 0, 0, 0.4), inset -1px -1px 2px rgba(49, 54, 58, 0.4);
-  --button-border-hover-dark: 0.5px 0.5px 0.5px var(--light-grey), -0.5px -0.5px 0.5px #babecc;
+  --perp-input-border-dark: inset 1px 1px 1px rgba(13, 14, 15, 0.4), inset -1px -1px 1px rgba(49, 54, 58, 0.4);
+  --perp-input-background-dark: var(--perp-semi-transparent-dark);
+  --perp-button-selected-background-dark : var(--perp-semi-transparent-medium-dark);
+  --perp-button-border-dark: 1px 1px 2px rgba(0, 0, 0, 0.4), -1px -1px 2px rgba(49, 54, 58, 0.4);
+  --perp-button-border-selected-dark: inset 1px 1px 2px rgba(0, 0, 0, 0.4), inset -1px -1px 2px rgba(49, 54, 58, 0.4);
+  --perp-button-border-hover-dark: 0.5px 0.5px 0.5px var(--perp-light-grey), -0.5px -0.5px 0.5px #babecc;
 
 }
 
 :root {
 
   /* Variables that can be changed using Theme Toggle component, default = lightmode */
-  --background: var(--light);
-  --background-radial: var(--radial-gradient-light);
-  --background-linear: var(--linear-gradient-light);
-  --background-linear-2: var(--linear-gradient-light-2);
+  --perp-background: var(--perp-light);
+  --perp-background-radial: var(--perp-radial-gradient-light);
+  --perp-background-linear: var(--perp-linear-gradient-light);
+  --perp-background-linear-2: var(--perp-linear-gradient-light-2);
 
-  --semi-transparent-background: var(--semi-transparent-light);
+  --perp-semi-transparent-background: var(--perp-semi-transparent-light);
 
-  --foreground: var(--dark);
-  --font-color-bold: var(--font-color-bold-light);
-  --font-color: var(--font-color-light);
+  --perp-foreground: var(--perp-dark);
+  --perp-font-color-bold: var(--perp-font-color-bold-light);
+  --perp-font-color: var(--perp-font-color-light);
 
-  --outer-glow: var(--outer-glow-light);
-  --inner-glow: var(--inner-glow-light);
-  --outer-glow-intense: var(--outer-glow-intense-light);
-  --border-color: var(--border-color-light);
-  --input-border: var(--input-border-light);
-  --button-border: var(--button-border);
-  --input-background: var(--input-background-light);
-  --button-selected-background : var(--button-selected-background-light);
-  --button-border-selected: var(--button-border-selected-light);
-  --button-border-hover: var(--button-border-hover-light);
+  --perp-outer-glow: var(--perp-outer-glow-light);
+  --perp-inner-glow: var(--perp-inner-glow-light);
+  --perp-outer-glow-intense: var(--perp-outer-glow-intense-light);
+  --perp-border-color: var(--perp-border-color-light);
+  --perp-input-border: var(--perp-input-border-light);
+  --perp-button-border: var(--perp-button-border);
+  --perp-input-background: var(--perp-input-background-light);
+  --perp-button-selected-background : var(--perp-button-selected-background-light);
+  --perp-button-border-selected: var(--perp-button-border-selected-light);
+  --perp-button-border-hover: var(--perp-button-border-hover-light);
 }
 
-#root {
-  background-color: var(--purple);
-  /* background-image: var(--background-radial); */
+.App {
+  /* colors */
+  --perp-darkest-grey: #4d5458;
+  --perp-medium-grey: #5f696f;
+  --perp-light-grey: #73818a;
+  --perp-white: rgb(255,255,255);
+  --perp-black: rgb(0,0,0);
+
+  --perp-purple: rgb(213,198,198);
+  --perp-purple-light: rgb(211,213,213);
+  --perp-green: rgb(60,234,234);
+  --perp-orange: rgb(244,131,131);
+  --perp-yellow: rgb(254,230,68);
+
+  --perp-font-family-regular:  "Sk-Modernist";
+  --perp-font-family-bold: "Sk-Modernist-Bold";
+  --perp-font-family-mono: "Sk-Modernist-Mono";
+
+}
+
+.App {
+  background-color: #3CEBAB;
+  background: linear-gradient(176deg, #3CEBAB 2%, var(--perp-green-2) 25%);
   background-size: 100% 100%;
   background-repeat: no-repeat;
   height: fit-content;
-  min-width: var(--min-screen-width);
+  min-width: var(--perp-min-screen-width);
   min-height: 100vh;
   padding-bottom: 30px;
 }
@@ -150,22 +161,23 @@
   padding: 0;
 }
 
+/* .App {
+  background: var(--perp-background-linear);
+} */
+
 .App {
-  background: var(--background-linear);
-}
-
-body {
   font-family: 'Sk-Modernist', sans-serif;
-  color: var(--font-color);
+  color: var(--perp-font-color);
 }
 
-h1 {
+.header-title {
   font-size: 18px;
   font-weight: 600;
-  color: var(--font-color-bold);
+  color: var(--perp-font-color-bold);
+  font-family: 'Sk-Modernist-Bold';
 }
 
-input {
+.input {
     font-family: 'Sk-Modernist-Mono', sans-serif;
     grid-column: auto / span 3;
     grid-row: auto;
@@ -174,14 +186,14 @@ input {
     text-align: center;
     font-size: 16px;
     height: 30px;
-    background-color: var(--input-background);
-    box-shadow:  var(--input-border);
-    border-radius: 14px;
-    border: var(--border-color);
+    background-color: var(--perp-input-background);
+    /* box-shadow:  var(--perp-input-border); */
+    border-radius: 4px;
+    border: 1px solid var(--perp-purple);
     text-align: center;
     margin: 5px;
     margin-left: 5px;
-    color: var(--font-color);
+    color: var(--perp-font-color);
 }
 
 input::-webkit-outer-spin-button,
@@ -228,16 +240,16 @@ button:active {
 }
 
 button.selected {
-  box-shadow: var(--button-border-selected);
-  background-color: var(--button-selected-background);
+  box-shadow: var(--perp-button-border-selected);
+  background-color: var(--perp-button-selected-background);
 }
 
 button.selected:hover {
-  box-shadow: var(--button-border-hover);
+  box-shadow: var(--perp-button-border-hover);
 }
 
 div.parent-container {
-  min-width: var(--min-screen-width);
+  min-width: var(--perp-min-screen-width);
   margin: 15px;
   width: calc(100% - 0px);
 }
@@ -269,17 +281,17 @@ button.list-item:disabled {
 }
 
 .outer-glow {
-  background-color: var(--semi-transparent-background);
-  border: 1px solid var(--border-color);
-  border-radius: 15px;
-  box-shadow:  var(--outer-glow);
+  background-color: var(--perp-semi-transparent-background);
+  border: 2px solid var(--black);
+  border-radius: 5px;
+  /* box-shadow:  var(--perp-outer-glow); */
 }
 
 .inner-glow {
-  box-shadow: var(--input-border);
+  /* box-shadow: var(--perp-input-border); */
   border-radius: 8px;
-  border: 1px solid var(--border-color);
-  background-color: var(--semi-transparent-background);
+  border: 1px solid var(--black);
+  background-color: #1fc2f5;
 }
 
 .dashboard-section {
@@ -300,92 +312,16 @@ button.list-item:disabled {
   font-weight: 500;
 }
 
-.y-axis-label {
-  font-size: 12px;
-  fill: var(--font-color);
-  stroke: none;
-  font-weight: 400;
-}
 
-.mouseover-container {
-  fill: transparent;
-  opacity: 0.2;
-  stroke-opacity: 0;
-}
-
-.mouse-over-marker-line {
-  stroke-width: 1px;
-  stroke: rgb(175, 129, 228); 
-  stroke-dasharray: 2 2;
-}
-
-.mouse-over-text {
-  z-index: 9999;
-  font-size: 11px;
-  font-weight: 400;
-  fill: var(--font-color);
-  stroke: none;
-}
-
-.current-price-line {
-  stroke-width: 1px;
-  stroke: rgb(255, 102, 102);
-  stroke-dasharray: 2 2;
-}
-
-.current-price-circle {
-  stroke-width: 1px;
-  stroke-dasharray: none;
-  fill: none;
-}
-
-.strategy-drag-control rect {
-  fill: var(--light-grey);
-  stroke: var(--medium-grey);
-  stroke-width: 2px;
-  stroke-opacity: 0.2;
-}
-
-.nav-icon {
-  fill: var(--font-color);
-  stroke-width: 0;
-  width: 12px;
-  height: 12px;
-}
-
-.nav-icon-heart {
-  fill: var(--pink-icon);
-}
-
-g.chart-axis line, g.chart-axis-ticks {
-  stroke: var(--font-color);
-  fill:  var(--font-color);
-  stroke-width: 0.4;
-}
-
-g.chart-axis-ticks {
-  font-size: 8px;
-  stroke: none;
-  font-weight: 400;
-}
-
-.chart-container {
+.sub-container {
   background-color: var(--semi-transparent-background);
-}
-
-.candle-green { 
-  fill: #9bd8c8;
-  stroke: #9bd8c8
-}
-
-.candle-red {
-  fill: rgb(255, 102, 102);
-  stroke: rgb(255, 102, 102);
-}
-
-rect.bar {
-  stroke-width: 0.5px;
-  fill: rgba(238, 175, 246, 0.5);
-  stroke: rgba(238, 175, 246, 0.6); 
+  border: 1px solid black;
+  border-radius: 5px;
+  /* box-shadow:  var(--inner-glow); */
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 10px;
+  padding-bottom: 8px;
+  padding-top: 5px;
 }
 

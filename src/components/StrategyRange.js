@@ -81,7 +81,7 @@ const StrategyInput = (props) => {
       <CrementButton type="incremement" onCrement={handleCrement}></CrementButton><br></br>
       <input ref={inputRef}
         type="number" 
-        className={styles["default-input"]} 
+        className={`${props.pageStyle["input"]} ${styles["default-input"]}`} 
         label={props.inputVals.label} 
         value={inputVal} 
         onChange={(e) => handleInputChange(e)}
@@ -95,13 +95,13 @@ const StrategyRange = (props) => {
   const strategies = useSelector(selectSelectedStrategyRanges);
 
   const containers = strategies.filter(strat => strat.id !== 'v2').map(strat => {
-    return <div className={styles['sub-container']}>
+    return <div className={props.pageStyle['sub-container'] ? props.pageStyle['sub-container'] : styles['sub-container']}>
       <div className={styles["input-container"]}>
       <label className={styles["input-label"]} style={{color: strat.color}}>{strat.name}</label><br></br>
-      <StrategyInput inputVals={strat.inputs.min} id={strat.id} keyId={"min"}></StrategyInput>
-      <StrategyInput inputVals={strat.inputs.max} id={strat.id} keyId={"max"}></StrategyInput>
+      <StrategyInput pageStyle={props.pageStyle} inputVals={strat.inputs.min} id={strat.id} keyId={"min"}></StrategyInput>
+      <StrategyInput pageStyle={props.pageStyle} inputVals={strat.inputs.max} id={strat.id} keyId={"max"}></StrategyInput>
       </div>
-      { props.leverageHidden ? <></> : <Leverage strategy={strat}></Leverage> }
+      { props.leverageHidden ? <></> : <Leverage pageStyle={props.pageStyle} strategy={strat}></Leverage> }
     </div>
   });
 

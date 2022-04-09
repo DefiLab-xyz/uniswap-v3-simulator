@@ -1,19 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
 import { roundToNearestTick } from "../helpers/uniswap/liquidity";
-import chartColors from "../data/colorsUniswap.json";
+import chartColors from "../data/colors.json";
 import { parsePrice } from "../helpers/numbers";
 
 const initialState = [
-{id: "S1", name: "Strategy 1", color: chartColors.blue, 
+{id: "S1", name: "Strategy 1", color: chartColors['uniswap'].S1, 
   inputs: { min: { value: 1, name: "Min", label: "Min Range S1" }, max: {value: 1, name: "Max", label: "Max Range S1" } },
   liquidityMultiplier: 1, selected: true, leverage: 1, rangesEditable: true, tokenratio: {token0: 0.5, token1: 0.5}
 }, 
-{id: "S2", name: "Strategy 2", color: chartColors.purple, 
+{id: "S2", name: "Strategy 2", color: chartColors['uniswap'].S2, 
   inputs:  { min: { value: 1, name: "Min", label: "Min Range S1" }, max: {value: 1, name: "Max", label: "Max Range S2" } },
   liquidityMultiplier: 1, selected: false, leverage: 1, rangesEditable: true, tokenratio: {token0: 0.5, token1: 0.5}
 },
-{id: "v2", name: "Unbounded", color: chartColors.green, 
+{id: "v2", name: "Unbounded", color: chartColors['uniswap'].v2, 
   inputs:  { min: { value: Math.pow(1.0001, -887220), name: "Min", label: "Min Range V2" }, max: {value: Math.pow(1.0001, 887220), name: "Max", label: "Max Range V2" } },
   liquidityMultiplier: 1, selected: true, leverage: 1, rangesEditable: false, tokenratio: {token0: 0.5, token1: 0.5}
 }];
@@ -142,6 +142,11 @@ export const strategyRanges = createSlice({
       if (index >=0) {
         state[index].tokenratio = action.payload.tokenratio;
       }
+    },
+    setStrategyRangeColors: (state, action) => {
+      state.forEach((d, i) => {
+         state[i].color = chartColors[action.payload][d.id];
+      });
     }
   }
 });
@@ -221,6 +226,6 @@ export const selectStrategyRangeMinMaxValues = state => {
 }
 
 export const { setStrategyRangeInputVal, setDefaultStrategyRangeInputVals, setStrategyLeverage,
-  crementStrategyRangeInputVal, toggleStrategyRangeInputVals, setStrategyRangeSelected, setTokenRatio} = strategyRanges.actions;
+  crementStrategyRangeInputVal, toggleStrategyRangeInputVals, setStrategyRangeSelected, setTokenRatio, setStrategyRangeColors} = strategyRanges.actions;
 
 export default strategyRanges.reducer;

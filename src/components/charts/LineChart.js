@@ -65,7 +65,7 @@ export const Lines = (props) => {
               class={`path-two-${props.uniqueName}`} 
               stroke={ props.colors && props.colors.length ? props.colors[i] : "rgba(238, 175, 246, 0.8)"}
               strokeWidth={ props.strokeWidth ? props.strokeWidth(d, i) : "4px"}
-              strokeDasharray={ props.dash && props.dash.length && props.dash[i] === true ? " 1 4" : ""}
+              strokeDasharray={ props.dash && props.dash.length && props.dash[i] === true ? " 1 8" : ""}
               strokeLinecap="round"
               d={line(d)}
               fill="none"
@@ -75,7 +75,7 @@ export const Lines = (props) => {
               class={`path-two-${props.uniqueName}`} 
               stroke={ props.colors && props.colors.length ? props.colors[i] : "rgba(238, 175, 246, 0.8)"}
               strokeWidth={ props.strokeWidth ? props.strokeWidth(d, i) : "1px"}
-              strokeDasharray={ props.dash && props.dash.length && props.dash[i] === true ? " 1 4" : ""}
+              strokeDasharray={ props.dash && props.dash.length && props.dash[i] === true ? "1 8" : ""}
               strokeLinecap="round"
               d={line(d)}
               fill="none"

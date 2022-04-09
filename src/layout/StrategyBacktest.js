@@ -243,9 +243,9 @@ const StrategyBacktest = (props) => {
       <MouseOverText text={mouseOverText} textPosition={{x: 10, y: 10}} visibility={null}></MouseOverText>  
       </BarChartGrouped>
       <div className={`${styles["backtest-indicators-container"]}`}>
-        <BacktestIndicators className={styles["backtest-indicators"]} data={selectedIndicatorsData} loading={dataLoading} supressFields={props.supressIndicatorFields}></BacktestIndicators>
-        <StrategyToggle className={styles["strategy-toggle"]} handleToggle={handleStrategyChange}></StrategyToggle>
-        <StrategyBreakdown className={styles["strategy-breakdown-container"]} data={chartData} strategy={strategyToggled} totalReturnKeys={props.totalReturnKeys} amountKey={props.amountKey}></StrategyBreakdown>
+        <BacktestIndicators pageStyle={props.pageStyle} className={styles["backtest-indicators"]} data={selectedIndicatorsData} loading={dataLoading} supressFields={props.supressIndicatorFields}></BacktestIndicators>
+        <StrategyToggle pageStyle={props.pageStyle} className={styles["strategy-toggle"]} handleToggle={handleStrategyChange}></StrategyToggle>
+        <StrategyBreakdown pageStyle={props.pageStyle} className={styles["strategy-breakdown-container"]} data={chartData} strategy={strategyToggled} totalReturnKeys={props.totalReturnKeys} amountKey={props.amountKey}></StrategyBreakdown>
       </div>
 
     </div>

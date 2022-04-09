@@ -108,7 +108,7 @@
   --button-border-hover: var(--button-border-hover-light);
 }
 
-#root {
+.App {
   background-color: var(--background);
   background-image: var(--background-radial);
   background-size: 100% 100%;
@@ -116,7 +116,7 @@
   height: fit-content;
   min-width: var(--min-screen-width);
   min-height: 100vh;
-  padding-bottom: 30px;
+  /* padding-bottom: 30px; */
 }
 
 .App {
@@ -131,13 +131,13 @@
   color: var(--font-color);
 }
 
-h1 {
+.header-title {
   font-size: 18px;
   font-weight: 600;
   color: var(--font-color-bold);
 }
 
-input {
+.input {
     font-family: 'Barlow', sans-serif;
     grid-column: auto / span 3;
     grid-row: auto;

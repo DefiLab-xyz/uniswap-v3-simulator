@@ -8,6 +8,7 @@ import { parsePrice } from "../../helpers/numbers";
 // Data //
 import { selectCurrentPrice, selectBaseToken, selectQuoteToken } from "../../store/pool"
 import { ChartContext } from "../charts/ChartContainer";
+import colors from '../../data/colors.json'
 
 // Components //
 import { Line } from "../charts/Line"
@@ -115,7 +116,7 @@ const TokenValueSplitChart = (props) => {
   return (
     <LineChartStacked className={`${props.className ? props.className : ""} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`}
       data={chartData} domain={chartDomain} lineType="area" keys={["l1", "l2"]}
-      chartProps={chartProps} colors={["rgb(238, 175, 246)", "rgb(249, 193, 160)"]}
+      chartProps={chartProps} colors={colors[props.page]["tokenratio"]} fillOpacity={props.page === "perpetual" ? () => 0.85 : null}
       currentPriceLine={true} margin={margin} mouseOverMarker={true} mouseOverMarkerPos="fixed"
       mouseOverText={mouseOverText} handleMouseOver={handleMouseOver}>
       <Line className="min-limit-line" useParentScale={true} data={minLineData} stroke={props.strategy && props.strategy.color ? props.strategy.color : "white"}></Line>

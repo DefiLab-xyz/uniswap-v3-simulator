@@ -28,8 +28,8 @@ const BaseToken = (props) => {
   return ( 
     <div className={styles["input-container"]}>
       <label className={styles["input-label"]}>Base Token</label><br></br>
-      <input className={styles["toggle-input"]} label="Base Token" value={baseToken ? baseToken.symbol : ""}></input>
-      <ToggleButton onClick={handlePriceToggle} alt="toggle base currency"></ToggleButton>
+      <input className={`${props.pageStyle["input"]} ${styles["toggle-input"]}`} label="Base Token" value={baseToken ? baseToken.symbol : ""}></input>
+      <ToggleButton pageStyle={props.pageStyle} onClick={handlePriceToggle} alt="toggle base currency"></ToggleButton>
     </div>
   );
 }
@@ -44,7 +44,7 @@ const Investment = (props) => {
   return ( 
     <div className={styles["input-container"]}>
       <label className={styles["input-label"]}>{`Investment ${baseToken.symbol}`}</label>
-      <input type="number" className={styles["default-input"]} label="Base Token" value={investment} onChange={(e) => handleInputChange(e)}></input>
+      <input type="number" className={`${styles["default-input"]} ${props.pageStyle['input']}`} label="Base Token" value={investment} onChange={(e) => handleInputChange(e)}></input>
     </div>
   );
   
@@ -72,8 +72,8 @@ const CurrentPrice = (props) => {
   return (
     <div className={styles["input-container"]}>
       <label className={styles["input-label"]}>Current Price</label>
-      <RefreshButton onClick={handleRefresh} alt="Refresh Current Price"></RefreshButton>
-      <input className={styles["default-input"]} label="Current Price" value={parsePrice(currentPrice)} onChange={(e) => handleInputChange(e)}></input>
+      <RefreshButton pageStyle={props.pageStyle} onClick={handleRefresh} alt="Refresh Current Price"></RefreshButton>
+      <input className={`${props.pageStyle["input"]} ${styles["default-input"]}`} label="Current Price" value={parsePrice(currentPrice)} onChange={(e) => handleInputChange(e)}></input>
     </div>     
   );
 
@@ -81,20 +81,20 @@ const CurrentPrice = (props) => {
 
 const SideBar = (props) => {
 
-  const baseToken = props.baseTokenHidden === true ? false : <BaseToken></BaseToken>
+  const baseToken = props.baseTokenHidden === true ? false : <BaseToken pageStyle={props.pageStyle}></BaseToken>
 
   return (
-    <div className={`${styles["sidebar"]} outer-glow`}>
-      <div className={styles['sub-container']}>
-        <PoolSearch protocols={props.protocols} customSearch={props.customSearch} baseTokenHidden={props.baseTokenHidden} perpStatsData={props.perpStatsData}></PoolSearch>
+    <div className={`${styles["sidebar"]} ${props.pageStyle["outer-glow"]}`}>
+      <div className={props.pageStyle['sub-container'] ? props.pageStyle['sub-container'] : styles['sub-container']}>
+        <PoolSearch pageStyle={props.pageStyle} protocols={props.protocols} customSearch={props.customSearch} baseTokenHidden={props.baseTokenHidden} perpStatsData={props.perpStatsData}></PoolSearch>
         {baseToken}
       </div>
-      <div className={styles['sub-container']}>
-        <Investment></Investment>
-        <CurrentPrice></CurrentPrice>
+      <div className={props.pageStyle['sub-container'] ? props.pageStyle['sub-container'] : styles['sub-container']}>
+        <Investment pageStyle={props.pageStyle}></Investment>
+        <CurrentPrice pageStyle={props.pageStyle}></CurrentPrice>
       </div>
-      <StrategyPicker strategies={props.strategies}></StrategyPicker>
-      <StrategyRange leverageHidden={props.leverageHidden}></StrategyRange>
+      <StrategyPicker pageStyle={props.pageStyle} strategies={props.strategies}></StrategyPicker>
+      <StrategyRange pageStyle={props.pageStyle} leverageHidden={props.leverageHidden}></StrategyRange>
     </div>
   )
 }

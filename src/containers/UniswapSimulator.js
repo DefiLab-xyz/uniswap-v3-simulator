@@ -4,10 +4,6 @@ import { useEffect } from "react";
 // Styles //
 import styles from '../styles/modules/containers/UniswapSimulator.module.css';
 import themeProps from '../data/themeProperties.json'
-import SideBarStyles from '../styles/modules/SideBar.module.css';
-import PoolOverviewStyles from '../styles/modules/PoolOverview.module.css';
-import PoolPriceLiquidityStyles from '../styles/modules/PoolPriceLiquidity.module.css';
-
 
 // Layout //
 import NavBar from "../layout/NavBar";
@@ -26,6 +22,10 @@ import { poolById } from '../api/thegraph/uniPools'
 import { fetchPoolData, selectPool } from '../store/pool';
 import { setWindowDimensions, selectWindowDimensions } from '../store/window';
 import { selectProtocolId } from '../store/protocol';
+import { setStrategyColors } from '../store/strategies';
+import colors from '../data/colors.json'
+import { setTokenRatioColors } from '../store/tokenRatios';
+import { setStrategyRangeColors } from '../store/strategyRanges';
 
 const UniswapSimulator = (props) => {
 
@@ -52,6 +52,16 @@ useEffect(() => {
   return () => window.removeEventListener('resize', handleResize);
 }, );
 
+//-----------------------------------------------------------------------------------------------
+// Set CHART COLORS ON LOAD //
+//-----------------------------------------------------------------------------------------------
+
+useEffect(() => {
+  dispatch(setStrategyColors("uniswap"));
+  dispatch(setStrategyRangeColors("uniswap"));
+  dispatch(setTokenRatioColors("uniswap"))
+});
+
 
 //-----------------------------------------------------------------------------------------------
 // GET DEFAULT POOL ON LOAD (USDC / WETH) 0.3%
@@ -77,7 +87,7 @@ useEffect(() => {
   return (
     <div className={styles["App"]}>
       <div className={styles["parent-container"]}>
-        <NavBar
+        <NavBar page="uniswap"
           width={windowDim.width} minWidth={pageMinWidth}
           title="Uniswap V3 Strategy Simulator"
           themeProps={themeProps.uniswap}
@@ -87,12 +97,12 @@ useEffect(() => {
           rows={150} columns={62}
           cellAspectRatio={0.82} gridGap={5}
           gridWidth={windowDim.width} minWidth={pageMinWidth}>
-          <PoolOverview pageStyle={styles}></PoolOverview>
-          <StrategyOverview pageStyle={styles}></StrategyOverview>
-          <PoolPriceLiquidity pageStyle={styles}></PoolPriceLiquidity>
-          <StrategyBacktest pageStyle={styles}></StrategyBacktest>
-          <SideBar width={windowDim.width} minWidth={pageMinWidth} protocols={[0, 1, 2, 3]} leverageHidden={true} pageStyle={styles}></SideBar>
-          <DashBoard pageStyle={styles}></DashBoard>
+          <PoolOverview page="uniswap" pageStyle={styles}></PoolOverview>
+          <StrategyOverview page="uniswap" pageStyle={styles} colors={colors["uniswap"]}></StrategyOverview>
+          <PoolPriceLiquidity page="uniswap" pageStyle={styles}></PoolPriceLiquidity>
+          <StrategyBacktest  page="uniswap" pageStyle={styles}></StrategyBacktest>
+          <SideBar  page="uniswap" width={windowDim.width} minWidth={pageMinWidth} protocols={[0, 1, 2, 3]} leverageHidden={true} pageStyle={styles}></SideBar>
+          <DashBoard  page="uniswap" pageStyle={styles}></DashBoard>
         </Grid>
       </div>
     </div>

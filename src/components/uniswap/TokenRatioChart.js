@@ -8,6 +8,7 @@ import { parsePrice } from "../../helpers/numbers";
 // Data //
 import { selectCurrentPrice, selectBaseToken, selectQuoteToken } from "../../store/pool"
 import { ChartContext } from "../charts/ChartContainer";
+import colors from '../../data/colors.json'
 
 // Components //
 import { Line } from "../charts/Line"
@@ -119,13 +120,15 @@ const TokenRatioChart = (props) => {
       setMaxLineData({x1: props.strategyLimits.max, x2: props.strategyLimits.max});
     }
   }, [props.strategyLimits]);
+
+
   
   return (
-    <LineChartDoubleAxis className={`${props.className ? props.className : ""} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`}
+    <LineChartDoubleAxis page={props.page} className={`${props.className ? props.className : ""} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`}
       data={[chartData]} domain={chartDomain} lineType="area"
-      chartProps={chartProps} colors={["rgb(238, 175, 246)", "rgb(249, 193, 160)"]}
+      chartProps={chartProps} colors={colors[props.page]["tokenratio"]}
       currentPriceLine={true} margin={margin} mouseOverMarker={true} mouseOverMarkerPos="fixed"
-      mouseOverText={mouseOverText} handleMouseOver={handleMouseOver}>
+      mouseOverText={mouseOverText} handleMouseOver={handleMouseOver} fillOpacity={props.page === "perpetual" ? () => 0.85 : null}>
       <Line className="min-limit-line" useParentScale={true} data={minLineData} stroke={props.strategy && props.strategy.color ? props.strategy.color : "white"}></Line>
       <Line className="max-limit-line" useParentScale={true} data={maxLineData} stroke={props.strategy && props.strategy.color ? props.strategy.color : "white"}></Line>
       <TokenRatioInfo minToken={minToken} maxToken={maxToken} base={baseToken.symbol} token={quoteToken.symbol}></TokenRatioInfo>

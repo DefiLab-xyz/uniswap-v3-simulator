@@ -32,7 +32,12 @@
   grid-row: var(--strategy-chart-row-start) / span var(--strategy-chart-row-span);
   grid-column: 1 / span 50;
   display: flex;
+  
 }
+
+/* .strategy-chart svg{
+  background-color: #83E7F2;
+} */
 
 .strategy-indicators {
   grid-row: var(--strategy-chart-row-start) / span 12;

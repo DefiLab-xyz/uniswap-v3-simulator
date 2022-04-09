@@ -26,7 +26,7 @@ render(
           <Route path="/polygonnow" element={<PolygonNow/>}/>
         </Routes> 
       </BrowserRouter>
-    </Provider>,
+    </Provider>
   </React.StrictMode>, rootElement);
 
 

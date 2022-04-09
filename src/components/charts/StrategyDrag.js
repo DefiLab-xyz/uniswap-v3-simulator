@@ -54,10 +54,10 @@ const DoubleRangeHorizontal = (props) => {
           width={chartContextData.chartContainer ? chartContextData.chartContainer.getBoundingClientRect().width : 0} height={30} style={{fill: "blue", opacity: 0.0}}>
       </rect>
       <g onMouseDown={ (e) => startDrag(e, `${props.id}-min`) } onMouseUp={ (e) => endDrag(e)} >
-        <path d={genControlPoints("min")} strokeLinejoin="round" strokeWidth={0.8} fill={props.color} stroke={props.color} strokeOpacity={1} fillOpacity={0.4}></path>
+        <path d={genControlPoints("min")} strokeLinejoin="round" strokeWidth={0.8} fill={props.color} stroke={props.color} strokeOpacity={1} fillOpacity={props.fillOpacity || 0.4}></path>
       </g>
       <g onMouseDown={ (e) => startDrag(e, `${props.id}-max`) } onMouseUp={ (e) => endDrag(e)} >
-        <path d={genControlPoints("max")} strokeLinejoin="round" strokeWidth={0.8} fill={props.color} stroke={props.color} strokeOpacity={1} fillOpacity={0.4}></path>
+        <path d={genControlPoints("max")} strokeLinejoin="round" strokeWidth={0.8} fill={props.color} stroke={props.color} strokeOpacity={1} fillOpacity={props.fillOpacity || 0.4}></path>
       </g>
     </g>
 
@@ -84,9 +84,10 @@ const StrategyDragControl = (props) => {
   return (
     <g className="strategy-drag-control">
       <line x1={lineCoords.x1} x2={lineCoords.x2} y1={lineCoords.y1} y2={lineCoords.y2} stroke={props.color} strokeWidth={1} strokeLinecap="round"></line>
-      <line x1={lineCoords.x1} x2={lineCoords.x2} y1={lineCoords.y1} y2={lineCoords.y2} stroke={props.color} strokeWidth={4} strokeLinecap="round" strokeOpacity={0.2}></line>      <DoubleRangeHorizontal id={props.id} scale={props.scale} 
+      <line x1={lineCoords.x1} x2={lineCoords.x2} y1={lineCoords.y1} y2={lineCoords.y2} stroke={props.color} strokeWidth={4} strokeLinecap="round" strokeOpacity={0.2}></line>      
+      <DoubleRangeHorizontal id={props.id} scale={props.scale} 
         maxX={lineCoords.x2} minX={lineCoords.x1} y={lineCoords.y1 - 5} color={props.color}
-        strategyRange={strategyRange}>
+        strategyRange={strategyRange} fillOpacity={props.fillOpacity}>
       </DoubleRangeHorizontal>
     </g>
   )
@@ -117,7 +118,7 @@ const StrategyDrag = (props) => {
             margin={props.margin || {top: 20, right: 30, bottom: 30, left: 70}} lineType="area"
             strokeWidth={() => { return 0} } fillOpacity={props.fillOpacity}>
             </Lines>
-          <StrategyDragControls ids={props.ids} scale={chartContextData.scale} colors={props.colors} domain={props.domain}></StrategyDragControls>
+          <StrategyDragControls ids={props.ids} scale={chartContextData.scale} colors={props.colors} domain={props.domain} fillOpacity={props.fillOpacity}></StrategyDragControls>
         </g>
         )
       }
