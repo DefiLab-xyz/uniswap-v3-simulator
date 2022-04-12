@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect, Fragment, useRef } from "react";
 
 import styles from '../styles/modules/containers/PerpetualSimulator.module.css';
 import themeProps from '../data/themeProperties.json'
@@ -86,7 +86,7 @@ useEffect(() => {
 
 
 //-----------------------------------------------------------------------------------------------
-// GET DEFAULT POOL ON LOAD 
+// GET DEFAULT POOL ON LOAD WETH/PERP
 //-----------------------------------------------------------------------------------------------
 
 useEffect(() => {
@@ -94,7 +94,7 @@ useEffect(() => {
   dispatch(setProtocol({id: 1}));
   const abortController = new AbortController();
 
-  poolById("0xf993cc412edf1257f3e771bb744645daf4c19b14", abortController.signal, 1).then( pool => {
+  poolById("0x535541f1aa08416e69dc4d610131099fa2ae7222", abortController.signal, 1).then( pool => {
     if (pool) {
       dispatch(fetchPoolData({...pool, protocol: 1, toggleBase: true}));
     }
@@ -111,6 +111,7 @@ useEffect(() => {
 
 const [searchData, setSearchData] = useState();
 const [enrichedSearchData, setEnrichedSearchData] = useState();
+const enrichedSearchDataRef = useRef();
 const [perpMarketData, setPerpMarketData] = useState();
 const [perpStatsData, setPerpStatsData] = useState();
 const [perpAddressList, setPerpAddressList] = useState();
@@ -126,15 +127,10 @@ useEffect(() => {
       const pools = markets.map( d => d.pool );
       
       poolByIds(pools, abortController.signal, 1).then( pools => {
-
         if (pools && pools.length && pools.length > 0) {
 
           const tempSearchData = pools.map( p => {
-            const tvl = markets.find( m => m.pool === p.id); 
-            p.totalValueLockedUSD = tvl.quoteAmount;
             p.feeTier = 1000;
-            p.poolDayData[0].volumeUSD = p.poolDayData[0].volumeToken1;
-            p.poolDayData[0].feesUSD = parseFloat(p.poolDayData[0].volumeToken1) * 0.001;
             return p
           });
 
@@ -181,16 +177,16 @@ useEffect(() => {
 
 useEffect(() => {
   if (searchData && searchData.length) {
+    enrichedSearchDataRef.current = enrichSearchData(searchData, perpStatsData);
     setEnrichedSearchData(enrichSearchData(searchData, perpStatsData));
   }
-  
-}, [perpStatsData, searchData])
+}, [perpStatsData, searchData]);
 
 //---------------------------------------------------------
 // Custom search for perp
 //---------------------------------------------------------
 
-const handleSearch = (searchTerm) => {
+const handleSearch = async (searchTerm) => {
 
   const searchStringIsAnId = (searchString) => searchString.length && searchString.length === 42 && searchString.startsWith('0x');
   const searchStringIsValid = (searchString) => searchString.trim() && typeof(searchString) === 'string' && searchString.trim().length > 0;
@@ -200,19 +196,38 @@ const handleSearch = (searchTerm) => {
     return enrichedSearchData.find( sd => sd.id === searchTerm);
   }
   if (searchStringIsValid(searchTerm) && enrichedSearchData && enrichedSearchData.length) {
-
     const results = enrichedSearchData.filter( sd => sd.token0.symbol.toUpperCase().includes(searchTerm.toUpperCase()) || sd.token1.symbol.toUpperCase().includes(searchTerm.toUpperCase()));
-    
     return results && results.length && results.length > 0 ? results : "empty";
   }
   
   if (searchTerm === "") {
-    return enrichedSearchData;
+    
+    if (enrichedSearchData) {
+      return enrichedSearchData;
+    } 
+    else {
+
+      const result = await setInterval(() => {
+        console.log('hi')
+        if (isEnriched()) {
+          console.log(enrichedSearchDataRef.current)
+          clearInterval(result);
+          return enrichedSearchData;
+        }
+      }, 500);
+
+      if (isEnriched()) return result
+     
+    } 
+    
   }
 
   return null;
 }
 
+const isEnriched = () => {
+  return enrichedSearchDataRef.current && Array.isArray(enrichedSearchDataRef.current)
+}
 //-----------------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------
 

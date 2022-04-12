@@ -183,8 +183,9 @@ const SearchResults = (props) => {
 
     if (props.visibility !== 'none') {
       if (props.customSearch) {
-        const results = props.customSearch(props.searchString);
-        setSearchResults(results);
+        props.customSearch(props.searchString).then(d => {
+          setSearchResults(d);
+        });
       }
       else {
         searchStringController.current = new AbortController();

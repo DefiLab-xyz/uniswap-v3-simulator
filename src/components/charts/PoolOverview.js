@@ -103,9 +103,6 @@ export const DailyVolume = (props) => {
     setMouseOverText(genMouseOverText(xEvent, chartData, scale, "Volume"));
   }
   
-  useEffect(() => {
-    console.log(props.pageStyle)
-  }, [props.pageStyle])
 
   return (
     <BarChart

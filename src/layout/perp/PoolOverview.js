@@ -70,13 +70,11 @@ const PoolOverview = (props) => {
 
 
   useEffect(() => {
-    if (pool && pool.id) {
+    if (pool && pool.id && props.markets && props.markets.length && props.addresses && props.addresses.length) {
       const market = props.markets.find( d => d.pool === pool.id); 
-      const address = props.addresses.find( d => d.address_lower === market.id)
-      console.log(pool.id);
       if (market) {
+        const address = props.addresses.find( d => d.address_lower === market.id)
         perpStats(address.address).then(d => {
-          console.log(address.address, d)
           if (d) setStats(d);
         });
       }

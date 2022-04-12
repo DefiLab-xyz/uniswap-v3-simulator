@@ -58,7 +58,6 @@ export const perpStats = async (ammAddr) => {
     });
 
     const data = await response.json();
-    console.log(data);
     if (data && data.data && data.data.getStatistics && data.data.getStatistics) {
       return data.data.getStatistics;
     }
