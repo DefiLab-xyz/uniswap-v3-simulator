@@ -1,0 +1,27 @@
+.container-perpetual {
+
+  display: grid;
+  justify-content: flex-start;
+}
+
+.td-perpetual {
+  border: 1px solid black;
+  border-radius: 5px;
+  /* transform: skew(-25deg); */
+  /* width: 25%; */
+  margin-left: 2%;
+}
+
+.td-text-perpetual {
+  /* font-family: 'Sk-Modernist-Bold'; */
+  text-align: center;
+  /* transform: skew(25deg); */
+}
+
+.td-uniswap {
+  text-align: center;
+}
+
+.td-text-uniswap {
+  text-align: center;
+}

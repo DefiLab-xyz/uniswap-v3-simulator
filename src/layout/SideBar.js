@@ -84,9 +84,9 @@ const SideBar = (props) => {
   const baseToken = props.baseTokenHidden === true ? false : <BaseToken pageStyle={props.pageStyle}></BaseToken>
 
   return (
-    <div className={`${styles["sidebar"]} ${props.pageStyle["outer-glow"]}`}>
+    <div className={`${styles["sidebar"]} ${props.pageStyle["outer-glow"]} `}>
       <div className={props.pageStyle['sub-container'] ? props.pageStyle['sub-container'] : styles['sub-container']}>
-        <PoolSearch pageStyle={props.pageStyle} protocols={props.protocols} customSearch={props.customSearch} baseTokenHidden={props.baseTokenHidden} perpStatsData={props.perpStatsData}></PoolSearch>
+        <PoolSearch page={props.page} pageStyle={props.pageStyle} protocols={props.protocols} customSearch={props.customSearch} baseTokenHidden={props.baseTokenHidden} perpStatsData={props.perpStatsData}></PoolSearch>
         {baseToken}
       </div>
       <div className={props.pageStyle['sub-container'] ? props.pageStyle['sub-container'] : styles['sub-container']}>

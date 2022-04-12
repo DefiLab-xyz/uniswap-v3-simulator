@@ -1,7 +1,12 @@
+:root {
+  --bar-fill: rgba(238, 175, 246, 0.5);
+  --bar-stroke: rgba(238, 175, 246, 0.6);
+}
+
 .bar {
   stroke-width: 0.5px;
-  fill: rgba(238, 175, 246, 0.5);
-  stroke: rgba(238, 175, 246, 0.6); 
+  fill: var(--bar-fill);
+  stroke: var(--bar-stroke);
 }
 
 .bars {

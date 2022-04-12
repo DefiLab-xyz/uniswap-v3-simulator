@@ -116,7 +116,7 @@ const StrategyDrag = (props) => {
             <Lines colors={props.colors} data={props.data} 
             scale={chartContextData.scale} domain={props.domain}
             margin={props.margin || {top: 20, right: 30, bottom: 30, left: 70}} lineType="area"
-            strokeWidth={() => { return 0} } fillOpacity={props.fillOpacity}>
+            strokeWidth={() => { return props.page === 'perpetual' ? 0.5 : 0} } fillOpacity={props.fillOpacity}>
             </Lines>
           <StrategyDragControls ids={props.ids} scale={chartContextData.scale} colors={props.colors} domain={props.domain} fillOpacity={props.fillOpacity}></StrategyDragControls>
         </g>

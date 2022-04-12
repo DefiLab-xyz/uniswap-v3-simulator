@@ -13,11 +13,34 @@
   src: local('Sk-Modernist-Bold'), url(../../fonts/Sk-Modernist-Bold.otf) format('opentype');
 }
 
+
+input[type="range"] {
+  accent-color: #DAC5E3;
+}
+
+input[type=range]:hover {
+  accent-color: #DAC5E3;
+}
+
+input[type=range]:focus {
+  accent-color: #DAC5E3;
+}
+
+
 :root {
+
+  --perp-purple: #CCBCFC;
+  --perp-green: #5AFBC7;
+  --perp-blue: #83E7F2;
+  --perp-blue-2: #1EC4FA;
+  
+
+  /* --perp-purple2:rgb(164, 136, 251)C; */
+
   --perp-green-1: rgb(29, 191, 131);
   --perp-green-2: rgb(60, 235, 171);
-  --perp-blue: rgb(0, 181, 216);
-  --perp-purple: rgb(194, 61, 235);
+  /* --perp-blue: rgb(0, 181, 216); */
+  /* --perp-purple: rgb(194, 61, 235); */
   --black: rgb(0, 0, 0);
   --white: rgba(255, 255, 255);
   --perp-grey: rgb(89, 89, 89);
@@ -54,7 +77,7 @@
   --perp-button-selected-background-light : var(--perp-input-background-light);
 
   --perp-button-border-light:  1px 1px 2px #BABECC, -1px -1px 2px #f7f5fe;
-  --perp-button-border-selected-light: inset 1px 1px 2px #babecc, inset -1px -1px 2px #f7f5fe;
+  --perp-button-border-selected-light: inset 1px 1px 2px #DAC5E3, inset -1px -1px 2px #DAC5E3;
   --perp-button-border-hover-light: 1px 1px 1px #fff, -1px -1px 1px #babecc;
 
 }
@@ -129,11 +152,6 @@
   --perp-white: rgb(255,255,255);
   --perp-black: rgb(0,0,0);
 
-  --perp-purple: rgb(213,198,198);
-  --perp-purple-light: rgb(211,213,213);
-  --perp-green: rgb(60,234,234);
-  --perp-orange: rgb(244,131,131);
-  --perp-yellow: rgb(254,230,68);
 
   --perp-font-family-regular:  "Sk-Modernist";
   --perp-font-family-bold: "Sk-Modernist-Bold";
@@ -142,8 +160,8 @@
 }
 
 .App {
-  background-color: #3CEBAB;
-  background: linear-gradient(176deg, #3CEBAB 2%, var(--perp-green-2) 25%);
+  background-color: var(--perp-green);
+  /* background: linear-gradient(176deg, #CCBCFC 2%, #CCBCFC 25%); */
   background-size: 100% 100%;
   background-repeat: no-repeat;
   height: fit-content;
@@ -186,23 +204,24 @@
     text-align: center;
     font-size: 16px;
     height: 30px;
-    background-color: var(--perp-input-background);
+    /* background-color: var(--perp-input-background); */
     /* box-shadow:  var(--perp-input-border); */
-    border-radius: 4px;
-    border: 1px solid var(--perp-purple);
+    border-radius: 8px;
+    border: 0.5px solid var(--border-color);
     text-align: center;
     margin: 5px;
     margin-left: 5px;
     color: var(--perp-font-color);
+    background-color: #8bfcd7;
 }
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
+.input::-webkit-outer-spin-button,
+.input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-input[type=number] {
+.input[type=number] {
   -moz-appearance: textfield;
 }
 
@@ -219,33 +238,42 @@ svg {
   background: transparent;
 }
 
-button {
-  box-shadow: -1px -1px 1px #fff, 1px 1px 1px #babecc;
+.button {
+  /* box-shadow: -1px -1px 1px #fff, 1px 1px 1px #babecc; */
   text-align: center;
   vertical-align: middle;
   font-family: 'Sk-Modernist-Mono', sans-serif;
   font-weight: 400;
-  border: none;
+  border: 0.5px solid black;
   outline: none;
   background-color: transparent;
-  border-radius: 10px;
+  border-radius: 8px;
+
 }
 
-button:hover {
-  box-shadow: 0.5px 0.5px 0.5px #fff, -0.5px -0.5px 0.5px #babecc;
+.button:hover {
+  box-shadow: none;
+  border: 1px solid #DAC5E3;
 }
 
-button:active {
-  box-shadow: inset -1px -1px 1px #fff, inset 1px 1px 1px #babecc;
+.button:active {
+  background-color: #8bfcd7;
 }
 
-button.selected {
-  box-shadow: var(--perp-button-border-selected);
-  background-color: var(--perp-button-selected-background);
+
+.button.selected {
+  /* box-shadow: var(--perp-button-border-selected); */
+  background-color: #c9fdec;
+  border: 0.9px solid black;
+
 }
 
-button.selected:hover {
-  box-shadow: var(--perp-button-border-hover);
+.button.selected:active {
+  background-color: transparent;
+}
+
+.button.selected:hover {
+
 }
 
 div.parent-container {
@@ -281,7 +309,14 @@ button.list-item:disabled {
 }
 
 .outer-glow {
-  background-color: var(--perp-semi-transparent-background);
+  /* background-color: var(--perp-purple); */
+  border: 1.2px solid var(--black);
+  border-radius: 5px;
+  /* box-shadow:  var(--perp-outer-glow); */
+}
+
+.outer-glow-with-background {
+  background-color: var(--perp-purple);
   border: 2px solid var(--black);
   border-radius: 5px;
   /* box-shadow:  var(--perp-outer-glow); */
@@ -290,8 +325,17 @@ button.list-item:disabled {
 .inner-glow {
   /* box-shadow: var(--perp-input-border); */
   border-radius: 8px;
+  border: 0.5px solid var(--black);
+  background-color: #7afbd2;
+}
+
+.inner-glow-with-background {
+  /* box-shadow: var(--perp-input-border); */
+  border-radius: 8px;
   border: 1px solid var(--black);
-  background-color: #1fc2f5;
+  background-color: #408873;
+  /* background-color: rgba(24,199,255,0.1); */
+
 }
 
 .dashboard-section {
@@ -315,7 +359,7 @@ button.list-item:disabled {
 
 .sub-container {
   background-color: var(--semi-transparent-background);
-  border: 1px solid black;
+  border: 0.5px solid black;
   border-radius: 5px;
   /* box-shadow:  var(--inner-glow); */
   margin-left: 10px;
@@ -323,5 +367,47 @@ button.list-item:disabled {
   margin-top: 10px;
   padding-bottom: 8px;
   padding-top: 5px;
+}
+
+
+.tab-so {
+  grid-row: 12 / span 2;
+  grid-column: 14 / span 20;
+}
+
+.tab-bt {
+  grid-row: 93 / span 2;
+  grid-column: 14 / span 20;
+}
+
+.tab {
+  border: 1.2px solid black;
+  border-right: none;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  background-color: var(--perp-blue);
+	/* border-bottom: 50px solid var(--perp-green);
+	border-right: 45px solid transparent;
+	height: 0;
+	width: 100% */
+}
+
+.tab2 {
+  transform: skew(45deg);
+  border: 1.2px solid black;
+  grid-column: 15 / span 20;
+  border-left: none;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background-color: var(--perp-blue);
+  display: flex;
+  align-items: center;
+  /* border-radius: 4px; */
+  /* background-color: var(--perp-green); */
+
+}
+
+.tab-title {
+  transform: skew(-45deg);
 }
 

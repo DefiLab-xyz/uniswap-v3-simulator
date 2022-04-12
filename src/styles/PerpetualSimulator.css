@@ -30,6 +30,8 @@
   --font-family-regular:  "Sk-Modernist";
   --font-family-bold: "Sk-Modernist-Bold";
   --font-family-mono: "Sk-Modernist-Mono";
+
+  --red-icon: #ff6666;
 }
 
 :root {
@@ -165,7 +167,7 @@ h1 {
   color: var(--font-color-bold);
 }
 
-input {
+.input {
     font-family: 'Sk-Modernist-Mono', sans-serif;
     grid-column: auto / span 3;
     grid-row: auto;
@@ -354,7 +356,7 @@ button.list-item:disabled {
 }
 
 .nav-icon-heart {
-  fill: var(--pink-icon);
+  fill: var(--red-icon);
 }
 
 g.chart-axis line, g.chart-axis-ticks {

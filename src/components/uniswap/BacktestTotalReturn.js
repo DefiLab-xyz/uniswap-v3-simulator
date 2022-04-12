@@ -9,6 +9,7 @@ import { selectEditableStrategyRanges } from '../../store/strategyRanges';
 import { parsePrice } from '../../helpers/numbers';
 import { selectCompareStrategies, selectStrategies } from '../../store/strategies';
 import { selectInvestment } from '../../store/investment';
+import colors from '../../data/colors.json'
 
 const BacktestTotalReturnSelect = (props) => {
 
@@ -32,8 +33,8 @@ export const BacktestTotalReturn = (props) => {
 
   const chartProps =  { scaleTypeX: "band", scaleTypeY:"linear", 
   dataTypeX: "date", dataTypeY: "number", ylabel: `Value in ${baseToken.symbol}`, xlabel: "", ...props.chartProps };
-  const totalReturnKeysDefault =  [{ key: 'amountV', name: "Amount", selected: true, color: "rgb(238, 175, 246)" }, 
-  {key: 'feeAcc', name: "Fee", selected: true, color: "rgb(249, 193, 160)"}];
+  const totalReturnKeysDefault =  [{ key: 'amountV', name: "Amount", selected: true, color: colors[props.page]["tokenratio"][0] }, 
+  {key: 'feeAcc', name: "Fee", selected: true, color: colors[props.page]["tokenratio"][1]}];
 
   //-------------------------------------------------------------------------------------------------------------
   // Lines on Total Return chart can be displayed or hidden using BacktestTotalReturnSelect component 
@@ -124,11 +125,11 @@ export const BacktestTotalReturn = (props) => {
       <span>LP Total Return&nbsp;&nbsp;&nbsp;</span>
       <BacktestTotalReturnSelect buttons={chartKeys} handleSelected={handleKeySelect}></BacktestTotalReturnSelect>
     </div>
-    <LineChartStacked className={`${props.className ? props.className : ""} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`}
+    <LineChartStacked loading={props.loading} className={`${props.className ? props.className : ""} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`}
       data={chartData} domain={chartDomain} lineType="area" keys={selectedKeys}
       chartProps={chartProps} colors={selectedKeyColors}
       currentPriceLine={false} mouseOverMarker={true} xScaleKey={'date'}
-      mouseOverText={mouseOverText} handleMouseOver={handleMouseOver}
+      mouseOverText={mouseOverText} handleMouseOver={handleMouseOver} fillOpacity={props.page === "perpetual" ? () => 0.85 : null}
     >
     </LineChartStacked>
     </>)
@@ -263,7 +264,7 @@ export const BacktestTotalReturnPercent = (props) => {
   return (
     <>
      <StrategyDropdown className={props.strategyDropdownClass} selectedStrategy={selectedStrategy} handleSelected={handleSelectedCompareStrategy}></StrategyDropdown>
-     <LineChart className={`${props.className ? props.className : ""} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`}
+     <LineChart loading={props.loading} className={`${props.className ? props.className : ""} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`}
      chartProps={chartProps} data={selectedChartData} colors={selectedChartColors} domain={chartDomain}
      mouseOverText={mouseOverText} handleMouseOver={handleMouseOver} mouseOverMarker={true}></LineChart>
     </>

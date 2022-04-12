@@ -290,7 +290,10 @@ const SearchInput = (props) => {
   return(
     <div className={styles["search-input-container"]}>
       <input 
-        className={props.visibility === null ? styles['search-input-open'] : styles['search-input']}
+        className={`
+          ${props.visibility === null ? styles['search-input-open'] : styles['search-input']}
+          ${props.pageStyle['input']}
+        `}
         ref={inputRef}
         value={props.inputValue} 
         onChange={handleInput} 
@@ -356,8 +359,12 @@ const PoolSearch = (props) => {
     <div className={styles["container"]} style={props.containerStyle}>
       <div className={styles["label"]} style={props.labelStyle}>{ props.label || 'Pool'}</div> 
       <div className= {visibility === 'none' ? styles["results-container-hidden"] : styles['results-container']}>
-        <SearchDescription visibility={visibility}></SearchDescription>
+        <SearchDescription visibility={visibility}           
+          pageStyle={props.pageStyle}
+          page={props.page}></SearchDescription>
         <SearchInput 
+          pageStyle={props.pageStyle}
+          page={props.page}
           inputValue={inputValue} 
           handleInput={handleInput} 
           handleKeyUp={handleInput}
@@ -365,9 +372,14 @@ const PoolSearch = (props) => {
           handleBlur={toggleVisibility} 
           visibility={visibility} 
           disableBlur={disableBlur}>
-          <Protocol handleProtocolChange={handleDisableBlur} visibility={visibility} protocols={props.protocols}></Protocol>
+          <Protocol 
+          pageStyle={props.pageStyle}
+          page={props.page}
+          handleProtocolChange={handleDisableBlur} visibility={visibility} protocols={props.protocols}></Protocol>
         </SearchInput>
         <SearchResults
+          pageStyle={props.pageStyle}
+          page={props.page}
           customSearch={props.customSearch} 
           searchString={inputValue} 
           visibility={visibility} 

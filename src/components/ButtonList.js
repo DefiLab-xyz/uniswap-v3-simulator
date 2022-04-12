@@ -14,7 +14,7 @@ export const ToggleButtonsFlex = (props) => {
   props.buttons.map((d, i) => {
     return ( 
     <button  style={d.style}
-      onClick={() => handleToggle(d, i)} className={ selected === i ? styles["toggle-button-selected"] : styles["toggle-button"] }>
+      onClick={() => handleToggle(d, i)} className={ selected === i ? `${styles["toggle-button-selected"]}` : `${styles["toggle-button"]}` }>
       {d.label}
     </button>
     );

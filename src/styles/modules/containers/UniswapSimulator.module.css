@@ -106,6 +106,8 @@
   --button-selected-background : var(--button-selected-background-light);
   --button-border-selected: var(--button-border-selected-light);
   --button-border-hover: var(--button-border-hover-light);
+
+  --tooltip-background: var(--semi-transparent-background);
 }
 
 .App {

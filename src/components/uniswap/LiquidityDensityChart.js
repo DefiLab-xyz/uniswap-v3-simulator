@@ -35,8 +35,9 @@ const StrategyRangeOverlay = (props) => {
       width={props.line.width}
       height={props.line.height}
       fill={props.color}
-      stroke={0}
-      fillOpacity={0.1}>
+      strokeWidth={"1px"}
+      strokeOpacity={props.strokeOpacity || 0}
+      fillOpacity={props.fillOpacity || 0.1}>
     </rect>
     {/* <line x1={props.line.x} x2={props.line.x + props.line.width}  
       y1={props.line.y} y2={props.line.y}
@@ -62,7 +63,8 @@ const StrategyOverlays = (props) => {
         const min = getTickFromPrice(d.inputs.min.value, props.pool, props.baseTokenId);
         const max = getTickFromPrice(d.inputs.max.value, props.pool, props.baseTokenId);
 
-        return <StrategyRangeOverlay 
+        return <StrategyRangeOverlay
+          fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} 
           line={{ x: chartContextData.scale.x(min), y: 0,  
             height: chartContextData.chartHeight , width: chartContextData.scale.x(max) - chartContextData.scale.x(min) }}
           color={d.color}>
@@ -165,7 +167,7 @@ export default function LiquidityDensityChart (props) {
     data={chartData} domain={chartDomain}  mouseOverMarker={true} handleMouseOver={handleMouseOver}
     mouseOverText={mouseOverText} chartProps={chartProps} barWidth={calcBarWidth}>
       <Line className="current-price-line" useParentScale={true} data={currentPriceLineData}></Line>
-      <StrategyOverlays strategyRanges={selectedRanges} pool={pool} baseTokenId={baseTokenId}></StrategyOverlays>
+      <StrategyOverlays fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity} strategyRanges={selectedRanges} pool={pool} baseTokenId={baseTokenId}></StrategyOverlays>
   </BarChart>
   )
 }

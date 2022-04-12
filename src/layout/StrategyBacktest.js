@@ -12,7 +12,7 @@ import { selectBaseToken, selectBaseTokenId, selectPool, selectPoolID } from '..
 import { selectProtocolId } from '../store/protocol';
 import {  selectSelectedStrategyRanges } from '../store/strategyRanges';
 import { selectInvestment } from '../store/investment';
-import { selectEditableStrategyRanges } from '../store/strategyRanges';
+import { selectSelectedEditableStrategyRanges, selectEditableStrategyRanges } from '../store/strategyRanges';
 import { selectTokenRatios } from '../store/tokenRatios'
 
 import { BarChartGrouped } from '../components/charts/BarChart';
@@ -30,7 +30,7 @@ const fromDateForHourlyData = (days) => {
 
 const StrategyToggle = (props) => {
   
-  const strategies = useSelector(selectEditableStrategyRanges);
+  const strategies = useSelector(selectSelectedEditableStrategyRanges);
 
   const buttons = strategies.map( d => {
     return {id: d.id, label: d.name, style: {color: d.color}}
@@ -52,12 +52,12 @@ const StrategyBreakdown = (props) => {
 
   return (
     <div className={props.className}>
-      <BacktestTotalReturn className={`${styles['strategy-breakdown-chart']} ${styles['strategy-breakdown-chart-left']} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`} 
+      <BacktestTotalReturn loading={props.loading} page={props.page} className={`${styles['strategy-breakdown-chart']} ${styles['strategy-breakdown-chart-left']} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`} 
         classNameTitle={`${styles['strategy-breakdown-total-return-title']} sub-title`}
         data={props.data} strategy={props.strategy} totalReturnKeys={props.totalReturnKeys}>
       </BacktestTotalReturn>
-      <div className={`${styles['strategy-breakdown-total-return-perc-title']} sub-title`}>LP Total Return %</div>
-      <BacktestTotalReturnPercent className={`${styles['strategy-breakdown-chart']} ${styles['strategy-breakdown-chart-right']} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`}
+      <div page={props.page} className={`${styles['strategy-breakdown-total-return-perc-title']} sub-title`}>LP Total Return %</div>
+      <BacktestTotalReturnPercent loading={props.loading} className={`${styles['strategy-breakdown-chart']} ${styles['strategy-breakdown-chart-right']} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`}
         strategyDropdownClass={styles['strategy-dropdown']} strategy={props.strategy} data={props.data} amountKey={props.amountKey}>
       </BacktestTotalReturnPercent>
     </div>
@@ -74,7 +74,7 @@ const StrategyBacktest = (props) => {
   const baseToken = useSelector(selectBaseToken)
   const investment = useSelector(selectInvestment);
   const strategyRanges = useSelector(selectSelectedStrategyRanges);
-  const editableStrategyRanges = useSelector(selectEditableStrategyRanges);
+  const editableStrategyRanges = useSelector(selectSelectedEditableStrategyRanges);
   const tokenRatios = useSelector(selectTokenRatios);
   const [strategies, setStrategies] = useState();
   const [dataLoading, setDataLoading] = useState(true)
@@ -116,7 +116,7 @@ const StrategyBacktest = (props) => {
 
   // Hourly Pool Data
   useEffect(() => {
-    setDataLoading(true);
+   
     const abortController = new AbortController();
     getPoolHourData(poolID, fromDateForHourlyData(days), abortController.signal, protocolID).then( d => 
       setHourlyPoolData(d && d.length ? d.reverse() : null) 
@@ -129,8 +129,8 @@ const StrategyBacktest = (props) => {
 
   useEffect(() => {
     if (pool && pool.token0 && hourlyPoolData && hourlyPoolData.length && pool.id === hourlyPoolData[0].pool.id) {
-      const startPrice = baseTokenId === 0 ? hourlyPoolData[0].close : 1 / hourlyPoolData[0].close;
       
+      const startPrice = baseTokenId === 0 ? hourlyPoolData[0].close : 1 / hourlyPoolData[0].close;
       setChartData(genChartData(strategies, pool, investment, startPrice,  hourlyPoolData, baseTokenId, props.customFeeDivisor));
     }
   }, [baseTokenId, hourlyPoolData, investment, pool, props.customFeeDivisor, strategies]);
@@ -139,7 +139,7 @@ const StrategyBacktest = (props) => {
   // ChartData is restructured to fit into the required data structure for a grouped bar chart
   useEffect(() => {
     if (strategies && chartData && chartData.length) {
-
+      // setDataLoading(true);
       let selectedDataTemp = [];
       const selectedColorsTemp = [];
       const selectedGroupsTemp = [];
@@ -162,10 +162,10 @@ const StrategyBacktest = (props) => {
         }
       });
 
-      setSelectedChartData(selectedDataTemp);
+      setSelectedChartData(selectedDataTemp,  setDataLoading(false));
       setSelectedChartColors(selectedColorsTemp);
       setSelectedBarGroups(selectedGroupsTemp);
-      setDataLoading(false);
+      // setDataLoading(false);
     }
   }, [chartData, strategies]);
 
@@ -226,7 +226,6 @@ const StrategyBacktest = (props) => {
       ${props.pageStyle ? props.pageStyle["dashboard-section"] : "dashboard-section"}`} 
       onMouseLeave={() => { setMouseOverText([])}}>
       <div className={`title ${styles['strategy-backtest-title']}`}>
-        <span>Strategy Backtest</span>
         <RangeSlider className={styles['range-slider-backtest-days']} handleInputChange={handleDaysChange} min={5} max={30} value={days} step={1}></RangeSlider>
         <span>Last {days} days</span>
       </div>
@@ -243,9 +242,9 @@ const StrategyBacktest = (props) => {
       <MouseOverText text={mouseOverText} textPosition={{x: 10, y: 10}} visibility={null}></MouseOverText>  
       </BarChartGrouped>
       <div className={`${styles["backtest-indicators-container"]}`}>
-        <BacktestIndicators pageStyle={props.pageStyle} className={styles["backtest-indicators"]} data={selectedIndicatorsData} loading={dataLoading} supressFields={props.supressIndicatorFields}></BacktestIndicators>
-        <StrategyToggle pageStyle={props.pageStyle} className={styles["strategy-toggle"]} handleToggle={handleStrategyChange}></StrategyToggle>
-        <StrategyBreakdown pageStyle={props.pageStyle} className={styles["strategy-breakdown-container"]} data={chartData} strategy={strategyToggled} totalReturnKeys={props.totalReturnKeys} amountKey={props.amountKey}></StrategyBreakdown>
+        <BacktestIndicators page={props.page} pageStyle={props.pageStyle} className={styles["backtest-indicators"]} data={selectedIndicatorsData} loading={dataLoading} supressFields={props.supressIndicatorFields}></BacktestIndicators>
+        <StrategyToggle page={props.page} pageStyle={props.pageStyle} className={styles["strategy-toggle"]} handleToggle={handleStrategyChange}></StrategyToggle>
+        <StrategyBreakdown loading={dataLoading} page={props.page} pageStyle={props.pageStyle} className={styles["strategy-breakdown-container"]} data={chartData} strategy={strategyToggled} totalReturnKeys={props.totalReturnKeys} amountKey={props.amountKey}></StrategyBreakdown>
       </div>
 
     </div>

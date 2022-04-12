@@ -4,11 +4,11 @@
 }
 
 .button {
-  background-color: var(--semi-transparent-background);
+  background-color: var(--tooltip-background);
   color:var(--font-color);
   outline: none;
   box-shadow: var(--outer-glow);
-  border: var(--border-color);
+  border: 0.2px solid var(--border-color);
   transition: all 0.2s ease-in-out;
   cursor: pointer;
   border-radius: 50%;
@@ -17,7 +17,7 @@
   margin-left: 6px;
   margin-bottom: 6px;
   font-size: 9px;
-  text-align:center;
+  text-align: center;
   vertical-align: middle;
   padding: 0;
 
@@ -43,4 +43,5 @@
   transition-delay: 0.2s;
   visibility: hidden;
   z-index: 9999999;
+  border: 1px solid var(--border-color)
 }

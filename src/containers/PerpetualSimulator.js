@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 
 import styles from '../styles/modules/containers/PerpetualSimulator.module.css';
 import themeProps from '../data/themeProperties.json'
@@ -27,6 +27,7 @@ import { setStrategyColors } from '../store/strategies';
 import { setStrategyRangeColors } from '../store/strategyRanges';
 import { setTokenRatioColors } from '../store/tokenRatios';
 import colors from '../data/colors.json';
+import perplogo from '../assets/perpetual-logo.svg'
 
 const PerpetualSimulator = (props) => {
 
@@ -54,7 +55,7 @@ useEffect(() => {
 }, );
 
 //-----------------------------------------------------------------------------------------------
-// Set CHART COLORS ON LOAD //
+// SET PER STYLE OVERRIDES ON LOAD //
 //-----------------------------------------------------------------------------------------------
 
 useEffect(() => {
@@ -64,6 +65,23 @@ useEffect(() => {
   
   const docEl = document.documentElement;
   docEl.style.setProperty("--font-color", "#0E1415");
+  docEl.style.setProperty("--background", "#5AFBC7");
+  docEl.style.setProperty("--background-linear-2", "#5AFBC7");
+  docEl.style.setProperty("--semi-transparent-background", "#5AFBC7")
+  docEl.style.setProperty("--outer-glow-intense", "none");
+  docEl.style.setProperty("--border-color", "black");
+  docEl.style.setProperty("--input-border", "none");
+  docEl.style.setProperty("--search-icon-left-position", "440px");
+  docEl.style.setProperty("--search-description-margin-left", "110px");
+  docEl.style.setProperty("--axis-stroke-width", 1);
+  docEl.style.setProperty("--strategy-backtest-container-row-start", 95);
+  docEl.style.setProperty("--tooltip-background", '#DAC5E3');
+  docEl.style.setProperty("--outer-glow", "none");
+  docEl.style.setProperty("--pink-icon", "black");
+  docEl.style.setProperty("--candle-green", "#408873");
+  docEl.style.setProperty("--bar-fill", "#FCD4D4");
+  docEl.style.setProperty("--bar-stroke", "#FCD4D4");
+
 }, []);
 
 
@@ -204,7 +222,7 @@ const handleSearch = (searchTerm) => {
         <NavBar
           width={windowDim.width} minWidth={pageMinWidth}
           themeToggleHidden={true}
-          title="Perpetual Liquidity Strategy Simulator"
+          title={<Fragment><span><img style={{height: 32, width: 32}} src={perplogo} alt="Perpetual Logo"></img></span><span>Perpetual Liquidity Strategy Simulator</span></Fragment>}
           themeProps={themeProps.uniswap}
           pageStyle={styles}>
         </NavBar>
@@ -214,18 +232,31 @@ const handleSearch = (searchTerm) => {
           gridWidth={windowDim.width} minWidth={pageMinWidth}
           pageStyle={styles}>
           <PoolOverview page="perpetual" pageStyle={styles} colors={colors["perpetual"]} poolStatsHidden={true} markets={perpMarketData} addresses={perpAddressList} stats={perpStatsData}></PoolOverview>
+          
+          <div className={`${styles['tab-so']} ${styles['tab']}`}></div>
+          <div className={`${styles['tab-so']} ${styles['tab2']}`}>
+            <div className={`${styles['tab-so']} ${styles['tab-title']}`}>Strategy Overview</div>
+          </div>
+          
+        
           <StrategyOverview page="perpetual" pageStyle={styles} chartDataOverride="leveraged" strategies={['S1', 'S2']}
             impLossHidden={true} zeroLine={true} extendedHoverData={true}> 
           </StrategyOverview>
           <PoolPriceLiquidity page="perpetual" pageStyle={styles}></PoolPriceLiquidity>
+          
+          <div className={`${styles['tab-bt']} ${styles['tab']}`}></div>
+          <div className={`${styles['tab-bt']} ${styles['tab2']}`}>
+            <div className={`${styles['tab-bt']} ${styles['tab-title']}`}>Strategy Backtest</div>
+          </div>
+          
           <StrategyBacktest page="perpetual" pageStyle={styles} customFeeDivisor={3} supressIndicatorFields={['assetval', 'total', 'token0Fee', 'token1Fee']} amountKey={"amountTR"}
-          totalReturnKeys={[{ key: 'amountTR', name: "Amount", selected: true, color: "rgb(238, 175, 246)" }, {key: 'feeAcc', name: "Fee", selected: true, color: "rgb(249, 193, 160)"}]}></StrategyBacktest>
+          totalReturnKeys={[{ key: 'amountTR', name: "Amount", selected: true, color: colors['perpetual']['tokenratio'][0] }, {key: 'feeAcc', name: "Fee", selected: true, color: colors['perpetual']['tokenratio'][1]}]}></StrategyBacktest>
           <SideBar page="perpetual" pageStyle={styles} width={windowDim.width} minWidth={pageMinWidth} baseTokenHidden={true} protocols={[4]}
            strategies={['S1', 'S2']}
            customSearch={handleSearch}
            perpStatsData={perpStatsData}>
           </SideBar>
-          <DashBoard  page="perpetual" pageStyle={styles}></DashBoard>
+          <DashBoard page="perpetual" pageStyle={styles}></DashBoard>
         </Grid>
       </div>
     </div>

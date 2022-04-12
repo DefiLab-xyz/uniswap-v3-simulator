@@ -1,7 +1,11 @@
+:root {
+  --axis-stroke-width: 0.4
+}
+
 g.chart-axis line, g.chart-axis-ticks {
   stroke: var(--font-color);
   fill:  var(--font-color);
-  stroke-width: 0.4;
+  stroke-width: var(--axis-stroke-width);
 }
 
 g.chart-axis-ticks {

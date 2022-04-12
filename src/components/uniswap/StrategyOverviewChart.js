@@ -112,14 +112,14 @@ const StrategyOverviewChart = (props) => {
   <LineChart
     className={`${styles['chart']} ${styles['strategy-chart']} ${ props.extendedHoverData ? styles['strategy-chart-extended'] : ""} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`}
     data={chartData.data} domain={props.chartDomain} strokeOpacity={props.page === "perpetual" ? () => 0.85 : null} fillOpacity={props.page === "perpetual" ? () => 0.45 : null}
-    avgLine={true} mouseOverMarker={true} mouseOverText={mouseOverText} handleMouseOver={handleMouseOver} strokeWidth={props.page === "perpetual" ? () => 3 : null}
+    avgLine={true} mouseOverMarker={true} mouseOverText={mouseOverText} handleMouseOver={handleMouseOver} strokeWidth={props.page === "perpetual" ? () => 1.5 : null}
     chartProps={chartProps} colors={chartData.colors} mouseOverTextExtended={ props.extendedHoverData ? true : false } mouseOverMarkerPos={ props.extendedHoverData ? "fixed" : null }
     currentPriceLine={true} margin={margin} dash={chartData.dash}>
     <ZeroLine zeroLine={props.zeroLine}
       xMin={props.chartDomain && props.chartDomain.x ? props.chartDomain.x[0] : 0} 
       xMax={props.chartDomain && props.chartDomain.x ? props.chartDomain.x[1] : 0}>
     </ZeroLine> 
-    <StrategyDrag data={v3StrategyData.data} colors={v3StrategyData.colors} ids={v3StrategyData.ids} domain={props.chartDomain} fillOpacity={props.page === "perpetual" ? () => 0.85 : null}></StrategyDrag>
+    <StrategyDrag page={props.page} data={v3StrategyData.data} colors={v3StrategyData.colors} ids={v3StrategyData.ids} domain={props.chartDomain} fillOpacity={props.page === "perpetual" ? () => 0.2 : null}></StrategyDrag>
   </LineChart>
   )
 }

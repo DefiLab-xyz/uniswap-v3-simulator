@@ -32,7 +32,9 @@ const PoolPriceLiquidity = (props) => {
       </div>
       </Title>
       <LiquidityDensityChart pageStyle={props.pageStyle} className={`${styles['chart-container']} ${styles['liquidity-density-chart-container']}`}
-        zoomLevel={liquidityZoom}>
+        zoomLevel={liquidityZoom}
+        strokeOpacity={props.page === 'perpetual' ? 1 : 0.4}
+        fillOpacity={props.page === 'perpetual' ? 0.3 : 0.2}>
       </LiquidityDensityChart>
     </div>
   )

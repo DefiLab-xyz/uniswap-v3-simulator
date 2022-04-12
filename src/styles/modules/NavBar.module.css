@@ -1,4 +1,4 @@
-.menu {
+.nav-menu {
   left: -200;
   top: 30;
   width: 240;
@@ -7,16 +7,32 @@
   align-items: center; 
   margin: 15px; 
   text-align: center; 
-  background-color: #e5faf8; 
-  fill: #4d5458;
+  background-color: var(--background); 
+  fill: var(--font-color);
   padding: 15px;
+  border: 1px solid var(--border-color);
 }
 
 .nav-icon {
-  fill: var(--font-color);
   stroke-width: 0;
   width: 12px;
   height: 12px;
+  fill: var(--font-color);
+}
+
+.nav-list-item {
+  font-weight: 500;
+  border: none;
+  width: 100%; 
+  text-align: center; 
+  height: 22px; 
+  border-radius: 1;
+  margin-left: 0; 
+  padding-left: 5%; 
+  padding-right: 5%; 
+  margin-right: 5%; 
+  font-size: 12px; 
+  margin-bottom: 7px;
 }
 
 .nav-icon-heart {

@@ -1,3 +1,8 @@
+:root {
+  --search-icon-left-position: 365px;
+  --search-description-margin-left: 35px;
+}
+
 .container {
   position:"inherit"
 }
@@ -11,7 +16,7 @@
 .description {
   font-size: 10px;
   font-style: italic; 
-  margin-left: 25px; 
+  margin-left: var(--search-description-margin-left); 
   margin-top: 15px;
 }
 
@@ -24,6 +29,7 @@
   border: 2px solid var(--border-color);
   box-shadow: var(--outer-glow-intense);
   top: 0;
+  background: var(--semi-transparent-background);
   background-image: var(--background-linear-2);
 }
 
@@ -35,6 +41,7 @@
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .search-icon {
@@ -57,7 +64,7 @@
   height: 30px;
   box-shadow: var(--input-border);
   border-radius: 14px;
-  border: var(--border-color);
+  border: 1px solid var(--border-color);
   text-align: center;
   margin: 5px;
   margin-left: 20px;
@@ -66,14 +73,24 @@
   z-index: 999999;
 } 
 
+.search-input::-webkit-outer-spin-button,
+.search-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.search-input[type=number] {
+  -moz-appearance: textfield;
+}
+
 .search-input-open {
-  width: 400px;
+  width: 360px;
   margin-left: 20px;
   margin-top: 5px;
 }
 
 .search-input-open + .search-icon {
-  left: 400px;
+  left: var(--search-icon-left-position);
 }
 
 .protocol-container {
@@ -154,6 +171,7 @@ img.protocol {
   margin-right: 20px;
   margin-top: 20px;
   font-size: 16px;
+  font-weight: 600;
 }
 
 .search-label {

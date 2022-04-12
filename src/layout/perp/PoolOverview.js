@@ -1,18 +1,16 @@
 
 import styles from '../../styles/modules/PoolOverviewPerp.module.css'
-import { Title} from '../../components/charts/PoolOverview';
 import { perpStats } from '../../api/perpStats';
 import { useSelector } from 'react-redux';
-import { selectPool } from '../../store/pool';
-import { useEffect, useState } from 'react'
+import { selectPool, selectFeeTier } from '../../store/pool';
+import { useEffect, useState, Fragment } from 'react'
 import { parsePrice, formatLargeNumber, round } from '../../helpers/numbers';
 import { calcCLI } from '../../helpers/uniswap/liquidity';
 import { selectYesterdaysPriceData, selectNormStd, selectLiquidity, selectBaseToken, selectQuoteToken } from '../../store/pool';
-
+import { selectProtocol } from '../../store/protocol';
 
 const StatContainer = (props) => {
 
-  const yesterday = useSelector(selectYesterdaysPriceData);
   const pool =  useSelector(selectPool);
   const normStd = useSelector(selectNormStd);
   const liquidity = useSelector(selectLiquidity);
@@ -24,6 +22,7 @@ const StatContainer = (props) => {
   const lowerReward = props.marketStats && props.marketStats.lowerRewardApr ? parsePrice(props.marketStats.lowerRewardApr, true) : ""
   const upperReward = props.marketStats && props.marketStats.upperRewardApr ? parsePrice(props.marketStats.upperRewardApr, true) : ""
   const volume24H = props.stats && props.stats.volume24h ? formatLargeNumber(props.stats.volume24h) : ""
+  const fee24h = props.stats && props.stats.volume24h ? props.stats.volume24h * 0.001 : ""
 
   useEffect(() => {
     if (pool && pool.token0) {
@@ -39,14 +38,27 @@ const StatContainer = (props) => {
         <div class={`${styles['stat-2']} inner-glow`}>{`${lowerReward}% - ${upperReward}%`}</div>
         <label class={`${styles['stat-label-3']} sub-title`}>Volume 24h</label>
         <div class={`${styles['stat-3']} inner-glow`}>{volume24H}</div>
-        <label class={`${styles['stat-label-4']} sub-title`}>Volatility</label>
-        <div class={`${styles['stat-4']} inner-glow`}>{round(normStd, 2) + '%'}</div>
-        <label class={`${styles['stat-label-5']} sub-title`}>Conc. Liquidity Index</label>
-        <div class={`${styles['stat-5']} inner-glow`}>{round(CLI, 2) + '%'}</div>
+        <label class={`${styles['stat-label-4']} sub-title`}>Fee 24h</label>
+        <div class={`${styles['stat-4']} inner-glow`}>{formatLargeNumber(fee24h)}</div>
+        <label class={`${styles['stat-label-5']} sub-title`}>Volatility</label>
+        <div class={`${styles['stat-5']} inner-glow`}>{round(normStd, 2) + '%'}</div>
+
       </div>
     )
 
 } 
+
+export const Title = (props) => {
+
+  const protocol = useSelector(selectProtocol);
+  
+  return (
+    <div className={`${props.pageStyle ? props.pageStyle["title"] : "title"} ${styles['title']}`}>
+      <span><img src={protocol.logo} alt={protocol.title} style={{ width: "18px", height: "18px", marginRight: 5}}></img></span>
+      <span>{props.text}</span>
+    </div>
+  );
+}
 
 const PoolOverview = (props) => {
 
@@ -79,22 +91,25 @@ const PoolOverview = (props) => {
 
   useEffect(() => {
     const docEl = document.documentElement;
-    docEl.style.setProperty("--strategy-container-row-start", 12);
+    docEl.style.setProperty("--strategy-container-row-start", 14);
   }, [])
 
 
   return (
+    <Fragment>
+    <div className={styles['tab']}></div>
+    <div className={styles['tab2']}></div>
+    <Title className={styles['title']} text={`Pool Stats ${quoteToken.symbol} / ${baseToken.symbol}`}></Title>
     <div className={`${ props.pageStyle ? props.pageStyle["dashboard-section"]: "dashboard-section"} 
     ${props.pageStyle ? props.pageStyle["outer-glow"] : "outer-glow"}  
     ${styles['pool-overview-container']}`}>
-      <Title text={`Pool Stats ${quoteToken.symbol} / ${baseToken.symbol}`}></Title>
+     
       <div className={styles["chart-container"]}>
-       
         <StatContainer stats={stats} marketStats={marketStats}></StatContainer>
         {/* <PoolStats poolStatsHidden={props.poolStatsHidden}></PoolStats> */}
       </div>
-      
     </div>
+    </Fragment>
   )
 }
 

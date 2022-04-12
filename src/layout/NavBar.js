@@ -31,26 +31,9 @@ const NavMenu = (props) => {
     display: "grid", 
     alignItems: "center", 
     margin: "15px", 
-    textAlign:"center", 
-    backgroundColor: "#e5faf8", 
+    textAlign:"center",
     fill: '#4d5458',
     padding:"15px"
-  }
-
-  const navItemStyle = {
-    fontWeight: "500", 
-    border: "none", 
-    width: '100%', 
-    // color: "rgb(173,126,228)", 
-    textAlign: "center", 
-    height: "22px", 
-    borderRadius: "1", 
-    marginLeft: "0%", 
-    paddingLeft: "5%", 
-    paddingRight: "5%", 
-    marginRight: "5%", 
-    fontSize: "12px", 
-    marginBottom: "7px"
   }
 
   const navItemData = NavData.navItems;
@@ -58,9 +41,8 @@ const NavMenu = (props) => {
   const NavItems = () => {
     return (navItemData.map((item) => 
       <Link to={item.link} onClick={() => this.forceUpdate}>
-        <button className="list-item"
-          key={item.id}
-          style={navItemStyle}><span>{item.name}</span>
+        <button className={`${styles["nav-list-item"]}`}
+          key={item.id}><span>{item.name}</span>
         </button>
       </Link>
     ));
@@ -70,6 +52,7 @@ const NavMenu = (props) => {
     <ToolTip 
     text={<NavItems></NavItems>}
     textStyle={navMenuStyle}
+    classNameText={styles['nav-menu']}
     onClick={() => navMenuVis === null ? setNavMenuVis('hidden') : setNavMenuVis(null)}
     onBlur={() => setNavMenuVis('hidden')}>
       <Hamburger alt="Site Menu navigation" className={styles["nav-icon"]}></Hamburger>
@@ -109,7 +92,6 @@ const ERC20Donation = (props) => {
   return (
     <ToolTip
     textStyle={textStyle}
-    // buttonStyle={{backgroundColor: "rgba(128, 232, 221, 0.5)"}} 
     text={<ERC20DonationText></ERC20DonationText>}
     onClick={() => donationVis === null ? setDonationVis('hidden') : setDonationVis(null)}
     onBlur={() => setDonationVis('hidden')}
@@ -203,22 +185,24 @@ const NavBar = (props) => {
 const genStyles = (props) => {
   return {
     title: {
-      gridColumn: "3 / span 30",
+      gridColumn: "2 / span 30",
       gridRow: "1 / span 3",
       verticalAlign: "middle",
       marginTop: 20,
+      display: "flex",
+      alignItems: "center",
       ...props.titleStyle 
     },
     links: {
       display: "flex", 
       justifyContent: "flex-end",
       gridColumn: "42 / span 17",
-      gridRow: "2 / span 1",
+      gridRow: "3 / span 1",
       ...props.linkStyle 
     },
     themeToggle: {
       gridColumn: "40 / span 4",
-      gridRow: "2 / span 1"
+      gridRow: "3 / span 1"
     }
   };
 }

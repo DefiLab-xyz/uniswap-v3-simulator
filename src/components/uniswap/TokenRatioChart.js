@@ -128,7 +128,7 @@ const TokenRatioChart = (props) => {
       data={[chartData]} domain={chartDomain} lineType="area"
       chartProps={chartProps} colors={colors[props.page]["tokenratio"]}
       currentPriceLine={true} margin={margin} mouseOverMarker={true} mouseOverMarkerPos="fixed"
-      mouseOverText={mouseOverText} handleMouseOver={handleMouseOver} fillOpacity={props.page === "perpetual" ? () => 0.85 : null}>
+      mouseOverText={mouseOverText} handleMouseOver={handleMouseOver} fillOpacity={props.page === "perpetual" ? () => 0.7 : null}>
       <Line className="min-limit-line" useParentScale={true} data={minLineData} stroke={props.strategy && props.strategy.color ? props.strategy.color : "white"}></Line>
       <Line className="max-limit-line" useParentScale={true} data={maxLineData} stroke={props.strategy && props.strategy.color ? props.strategy.color : "white"}></Line>
       <TokenRatioInfo minToken={minToken} maxToken={maxToken} base={baseToken.symbol} token={quoteToken.symbol}></TokenRatioInfo>

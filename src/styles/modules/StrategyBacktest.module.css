@@ -39,15 +39,16 @@
 
 .backtest-indicators-container {
   grid-row: calc(var(--strategy-backtest-chart-span) + var(--strategy-backtest-title-span) + 4);
-  grid-row: span calc(var(--strategy-backtest-container-row-span) - var(--strategy-backtest-chart-span) - var(--strategy-backtest-title-span) - 3);
+  grid-row: span calc(var(--strategy-backtest-container-row-span) - var(--strategy-backtest-chart-span) - var(--strategy-backtest-title-span) - 2);
   grid-column: 1 / span 25;
   display: grid;
+  justify-content: flex-end;
   grid-template-rows: repeat(25, 4%);
   grid-template-columns: repeat(25, 4%);
 }
 
 .backtest-indicators {
-  grid-row: 3 / span var(--backtest-indicators-row-span);
+  grid-row: 1 / span var(--backtest-indicators-row-span);
   grid-column: 1 / span 25;
 }
 
@@ -61,8 +62,8 @@
 }
 
 .strategy-toggle-container {
-  grid-row: calc(5 + var(--backtest-indicators-row-span)) / span 2;
-  grid-column: 10;
+  grid-row: calc(3 + var(--backtest-indicators-row-span)) / span 2;
+  grid-column: 1;
 }
 
 .strategy-toggle {
@@ -71,7 +72,7 @@
 
 .strategy-breakdown-container {
   grid-column: 1 / span 25;
-  grid-row: calc(7 + var(--backtest-indicators-row-span)) / span 8;
+  grid-row: calc(5 + var(--backtest-indicators-row-span)) / span 8;
   display: grid;
   grid-template-rows: repeat(10, 10%);
   grid-template-columns: repeat(25, 4%);
@@ -126,4 +127,10 @@
   overflow: visible;
   display: grid;
   justify-items: start;
+}
+
+.strategy-backtest-title {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
 }

@@ -16,7 +16,7 @@ const StrategyPicker = (props) => {
     return (
       <button  
         onClick={() => toggleStrategySelect(d.id)}
-        className={d.selected ? `selected` : "outer-container-strategy" }
+        className={d.selected ? `${props.pageStyle['button']} ${props.pageStyle['selected']}` : `${props.pageStyle  ['button']}` }
         style={{ width: '95%', color: d.style.color, justifyContent: "center", height: "22px", borderRadius: "1", paddingLeft: "5%", paddingRight: "5%", fontSize: "12px", fontWeight: 400, marginBottom: "7px"}}>
         <span style={{width: "10px", height: "10px", backgroundColor: d.color, borderRadius: "50%"}}></span><span>&nbsp;&nbsp;&nbsp;{d.name}</span>
     </button>
