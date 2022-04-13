@@ -26,7 +26,7 @@ const Leverage = (props) => {
     return (
     <div class="leverage-container">
       <label className={styles["input-label"]} style={{ display: 'grid', alignItems: 'center', justifyContent: 'center'}}>Leverage: {props.strategy.leverage}x</label>
-      <input type="range" min="1" max="10" className="leverage-range-control" step={0.1} value={props.strategy.leverage} style={{ display: 'grid', alignItems: 'center', justifyContent: 'center', width: '90%'}}
+      <input type="range" min="1" max="10" className="leverage-range-control" step={0.1} value={props.strategy.leverage} style={{ display: 'grid', alignItems: 'center', justifyContent: 'center', width: '85%', marginLeft: '5%'}}
       onInput={handleInputChange}></input>
       <label className={styles["input-label"]} style={{ display: 'grid', alignItems: 'center', justifyContent: 'center'}}>Leveraged {baseToken.symbol}:</label>
       <div className={styles["default-input"]} style={{display: 'grid', alignItems: 'center', justifyContent: 'center'}}>{parsePrice(props.strategy.leverage * investment)}</div>

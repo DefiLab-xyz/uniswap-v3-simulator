@@ -15,9 +15,21 @@
 
 
 input[type="range"] {
-  color: #DAC5E3;
-  background-color: white;
+  accent-color: var(--font-color);
+  fill: #DAC5E3;
+  flood-color: #DAC5E3;
+  /* background-color: white; */
 }
+
+/* input[type=range]::-moz-range-progress {
+  background-color: #DAC5E3;
+}
+
+input[type=range]::-webkit-progress-value {
+  background-color: #DAC5E3;
+}  */
+
+
 
 /* input[type="range" i] {
   accent-color: #DAC5E3;
