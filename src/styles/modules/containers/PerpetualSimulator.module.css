@@ -15,16 +15,22 @@
 
 
 input[type="range"] {
-  accent-color: #DAC5E3;
+  color: #DAC5E3;
+  background-color: white;
 }
 
-input[type=range]:hover {
+/* input[type="range" i] {
   accent-color: #DAC5E3;
-}
+  color: white;
+} */
 
-input[type=range]:focus {
+/* input[type=range]:hover {
   accent-color: #DAC5E3;
-}
+} */
+
+/* input[type=range]:focus {
+  accent-color: #DAC5E3;
+} */
 
 
 :root {

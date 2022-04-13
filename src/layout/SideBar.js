@@ -86,7 +86,8 @@ const SideBar = (props) => {
   return (
     <div className={`${styles["sidebar"]} ${props.pageStyle["outer-glow"]} `}>
       <div className={props.pageStyle['sub-container'] ? props.pageStyle['sub-container'] : styles['sub-container']}>
-        <PoolSearch page={props.page} pageStyle={props.pageStyle} protocols={props.protocols} customSearch={props.customSearch} baseTokenHidden={props.baseTokenHidden} perpStatsData={props.perpStatsData}></PoolSearch>
+        <PoolSearch page={props.page} pageStyle={props.pageStyle} protocols={props.protocols} 
+        customSearch={props.customSearch} baseTokenHidden={props.baseTokenHidden} perpStatsData={props.perpStatsData} enrichedSearchData={props.enrichedSearchData}></PoolSearch>
         {baseToken}
       </div>
       <div className={props.pageStyle['sub-container'] ? props.pageStyle['sub-container'] : styles['sub-container']}>

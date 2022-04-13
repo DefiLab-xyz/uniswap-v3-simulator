@@ -94,7 +94,7 @@ useEffect(() => {
   dispatch(setProtocol({id: 1}));
   const abortController = new AbortController();
 
-  poolById("0x535541f1aa08416e69dc4d610131099fa2ae7222", abortController.signal, 1).then( pool => {
+  poolById("0x86f03c6e26b0488b6e39b34d7f10d843ae8e3d1b", abortController.signal, 1).then( pool => {
     if (pool) {
       dispatch(fetchPoolData({...pool, protocol: 1, toggleBase: true}));
     }
@@ -186,7 +186,7 @@ useEffect(() => {
 // Custom search for perp
 //---------------------------------------------------------
 
-const handleSearch = async (searchTerm) => {
+const handleSearch = (searchTerm) => {
 
   const searchStringIsAnId = (searchString) => searchString.length && searchString.length === 42 && searchString.startsWith('0x');
   const searchStringIsValid = (searchString) => searchString.trim() && typeof(searchString) === 'string' && searchString.trim().length > 0;
@@ -201,25 +201,7 @@ const handleSearch = async (searchTerm) => {
   }
   
   if (searchTerm === "") {
-    
-    if (enrichedSearchData) {
-      return enrichedSearchData;
-    } 
-    else {
-
-      const result = await setInterval(() => {
-        console.log('hi')
-        if (isEnriched()) {
-          console.log(enrichedSearchDataRef.current)
-          clearInterval(result);
-          return enrichedSearchData;
-        }
-      }, 500);
-
-      if (isEnriched()) return result
-     
-    } 
-    
+      return enrichedSearchData; 
   }
 
   return null;
@@ -269,6 +251,7 @@ const isEnriched = () => {
           <SideBar page="perpetual" pageStyle={styles} width={windowDim.width} minWidth={pageMinWidth} baseTokenHidden={true} protocols={[4]}
            strategies={['S1', 'S2']}
            customSearch={handleSearch}
+           enrichedSearchData={enrichedSearchData}
            perpStatsData={perpStatsData}>
           </SideBar>
           <DashBoard page="perpetual" pageStyle={styles}></DashBoard>

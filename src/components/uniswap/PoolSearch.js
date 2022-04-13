@@ -8,7 +8,6 @@ import cat from '../../assets/cat.svg'
 import {tokensBySymbol} from '../../api/thegraph/uniTokens'
 import {top50PoolsByTvl, poolsByTokenId, poolsByTokenIds} from '../../api/thegraph/uniPools'
 import {formatLargeNumber, parsePrice} from '../../helpers/numbers'
-import { perpStats } from '../../api/perpStats'
 
 const SearchItemsStatsPerp = (props) => {
 
@@ -176,6 +175,12 @@ const SearchResults = (props) => {
     return tokenPairs && tokenPairs.length && tokenPairs.length > 0 ? await poolsByTokenIds(tokenPairs.map(d => d.id), abortController.signal, protocolID) : "empty";
   }
 
+  useEffect(() => {
+    if (props.enrichedSearchData && searchResults !== 'empty' && props.searchString === "") {
+      setSearchResults(props.enrichedSearchData)
+    }
+  }, [props.enrichedSearchData, props.searchString, searchResults]);
+
 
   useEffect(() => {
 
@@ -183,9 +188,7 @@ const SearchResults = (props) => {
 
     if (props.visibility !== 'none') {
       if (props.customSearch) {
-        props.customSearch(props.searchString).then(d => {
-          setSearchResults(d);
-        });
+          setSearchResults( props.customSearch(props.searchString));
       }
       else {
         searchStringController.current = new AbortController();
@@ -301,6 +304,7 @@ const SearchInput = (props) => {
         onFocus={(e) => props.handleFocus(e)}
         onBlur={handleBlur}
         onKeyUp={(e) => props.handleKeyUp(e)}
+        style={{fontSize: 14}}
       >     
       </input>       
       <span className={styles['search-icon']}>{searchIcon}</span>
@@ -380,6 +384,7 @@ const PoolSearch = (props) => {
         </SearchInput>
         <SearchResults
           pageStyle={props.pageStyle}
+          enrichedSearchData={props.enrichedSearchData}
           page={props.page}
           customSearch={props.customSearch} 
           searchString={inputValue} 
