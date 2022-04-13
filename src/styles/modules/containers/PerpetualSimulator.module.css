@@ -264,7 +264,7 @@ svg {
   font-weight: 400;
   border: 0.5px solid black;
   outline: none;
-  background-color: transparent;
+  background-color: var(--perp-green);
   border-radius: 8px;
 
 }
@@ -274,24 +274,26 @@ svg {
   border: 1px solid #DAC5E3;
 }
 
-.button:active {
+.button:active, .button.selected:active  {
   background-color: #8bfcd7;
+
 }
 
 
 .button.selected {
   /* box-shadow: var(--perp-button-border-selected); */
+  border: 1px solid #DAC5E3;
   background-color: #c9fdec;
-  border: 0.9px solid black;
+  /* border: 0.9px solid black; */
 
 }
-
+/* 
 .button.selected:active {
   background-color: transparent;
-}
+} */
 
 .button.selected:hover {
-
+  border: 0.9px solid black;
 }
 
 div.parent-container {

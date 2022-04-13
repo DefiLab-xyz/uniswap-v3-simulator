@@ -22,7 +22,7 @@ const BacktestTotalReturnSelect = (props) => {
   }, [props.buttons]);
 
  
-  return (<ButtonList type="flex" buttons={buttons} handleSelected={props.handleSelected}></ButtonList>)
+  return (<ButtonList  pageStyle={props.pageStyle} type="flex" buttons={buttons} handleSelected={props.handleSelected}></ButtonList>)
 }
 
 export const BacktestTotalReturn = (props) => {
@@ -123,7 +123,7 @@ export const BacktestTotalReturn = (props) => {
     <>
     <div className={props.classNameTitle}>
       <span>LP Total Return&nbsp;&nbsp;&nbsp;</span>
-      <BacktestTotalReturnSelect buttons={chartKeys} handleSelected={handleKeySelect}></BacktestTotalReturnSelect>
+      <BacktestTotalReturnSelect pageStyle={props.pageStyle} buttons={chartKeys} handleSelected={handleKeySelect}></BacktestTotalReturnSelect>
     </div>
     <LineChartStacked loading={props.loading} className={`${props.className ? props.className : ""} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`}
       data={chartData} domain={chartDomain} lineType="area" keys={selectedKeys}
@@ -263,7 +263,7 @@ export const BacktestTotalReturnPercent = (props) => {
 
   return (
     <>
-     <StrategyDropdown className={props.strategyDropdownClass} selectedStrategy={selectedStrategy} handleSelected={handleSelectedCompareStrategy}></StrategyDropdown>
+     <StrategyDropdown page={props.page} pageStyle={props.pageStyle} className={props.strategyDropdownClass} selectedStrategy={selectedStrategy} handleSelected={handleSelectedCompareStrategy}></StrategyDropdown>
      <LineChart loading={props.loading} className={`${props.className ? props.className : ""} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`}
      chartProps={chartProps} data={selectedChartData} colors={selectedChartColors} domain={chartDomain}
      mouseOverText={mouseOverText} handleMouseOver={handleMouseOver} mouseOverMarker={true}></LineChart>

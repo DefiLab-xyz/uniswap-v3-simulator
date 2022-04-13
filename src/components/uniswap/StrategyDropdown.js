@@ -25,6 +25,10 @@ const DropdownSelect = (props) => {
     handleSelected({id: "hodl5050"});
   }, [props.selectedStrategy])
 
+  useEffect(() => {
+    console.log(props.pageStyle)
+  }, [props.pageStyle])
+
 
   const handleSelected = (selected) => {
     const selectedTemp = strategies.find( d => d.id === selected.id );
@@ -39,12 +43,12 @@ const DropdownSelect = (props) => {
   const toggleVisibility = () => {
     setVisibility(visibility === "hidden" ? null : "hidden");
   }
-
+//${props.pageStyle["button"]} ${props.pageStyle["selected"]}
     return (
       <Fragment>
-        <button className={`${buttonStyles["button-list-grid"]} selected`} style={{color: selected.style.color, textAlign: 'bottom'}}
+        <button className={`${buttonStyles["button-list-grid"]} ${props.pageStyle["button"]} ${props.pageStyle["selected"]}`} style={{color: props.page === 'perpetual' ? "black" : selected.style.color, textAlign: 'bottom'}}
         onClick={toggleVisibility} onBlur={handleBlur}>{selected.name}</button>
-        <ButtonListToggle style={{visibility: visibility}} buttons={buttonList} labelKey="name" handleSelected={handleSelected} classNameButton="selected" type="grid"></ButtonListToggle>
+        <ButtonListToggle page={props.page} pageStyle={props.pageStyle} style={{visibility: visibility}} buttons={buttonList} labelKey="name" handleSelected={handleSelected} classNameButton={props.pageStyle["button"]} type="grid"></ButtonListToggle>
       </Fragment>
  
     )
@@ -61,7 +65,7 @@ const StrategyDropdown = (props) => {
         <span style={{color: props.selectedStrategy ? props.selectedStrategy.color : "black"}}>{props.selectedStrategy && props.selectedStrategy.name ? props.selectedStrategy.name : ""}</span>
         <span> &nbsp; vs</span> 
       </div>
-      <DropdownSelect visibility={selectVisible} selectedStrategy={props.selectedStrategy} handleSelected={props.handleSelected}></DropdownSelect>
+      <DropdownSelect page={props.page} pageStyle={props.pageStyle} visibility={selectVisible} selectedStrategy={props.selectedStrategy} handleSelected={props.handleSelected}></DropdownSelect>
      </Fragment>
    
    )

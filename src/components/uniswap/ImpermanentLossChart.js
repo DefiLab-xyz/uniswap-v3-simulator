@@ -76,7 +76,7 @@ const ImpermanentLossChart = (props) => {
       chartProps={chartProps} colors={[chartColor]}
       margin={margin} lineType={"area"} mouseOverText={mouseOverText} handleMouseOver={handleMouseOver}>
       </LineChart>
-      <StrategyDropdown className={props.classNameDropdown} selectedStrategy={props.selectedStrategy} handleSelected={handleSelectedCompareStrategy}></StrategyDropdown>
+      <StrategyDropdown pageStyle={props.pageStyle} className={props.classNameDropdown} selectedStrategy={props.selectedStrategy} handleSelected={handleSelectedCompareStrategy}></StrategyDropdown>
     </Fragment>
     
   )

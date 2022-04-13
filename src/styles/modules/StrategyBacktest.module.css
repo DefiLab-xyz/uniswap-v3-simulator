@@ -107,23 +107,26 @@
 .strategy-dropdown {
   grid-row: 1 / span 1;
   grid-column: 14 / span 12;
-  text-align: right;
-  padding-right: 5px;
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  padding-right: 15px;
+  margin-top: 5px;
 }
 
 
 .strategy-dropdown + button {
-  margin-top: 5px;
-  padding-bottom: 5px;
   grid-row: 2 / span 1;
-  grid-column: 21 / span 4;
+  grid-column: 14 / span 12;
+  justify-self: flex-end;
   overflow: visible;
 }
 
 .strategy-dropdown + button + div {
   margin-top: 5px;
-  grid-row: 4 / span 4;
-  grid-column: 21 / span 12;
+  grid-row: 3 / span 4;
+  grid-column: 14 / span 12;
+  justify-self: flex-end;
   overflow: visible;
   display: grid;
   justify-items: start;

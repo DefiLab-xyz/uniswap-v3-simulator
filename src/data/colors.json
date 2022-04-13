@@ -4,7 +4,7 @@
     "tokenratio": ["rgb(238, 175, 246)", "rgb(249, 193, 160)"]
   },
   "perpetual": {
-    "S1": "#1EC4FA", "S2": "#b9adff", "v2":"#80E8DD", "hodl5050": "#F9C1A0", "hodl2": "#E784BA", "hodl1": "#eeaff6", 
+    "S1": "#1EC4FA", "S2": "#b9adff", "v2":"#80E8DD", "hodl5050": "#f38352", "hodl2": "#FCD4D4", "hodl1": "#FCF48C", 
     "tokenratio": ["#FCD4D4", "#FCF48C"]
   }
 }

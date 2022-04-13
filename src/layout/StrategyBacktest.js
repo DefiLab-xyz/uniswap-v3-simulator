@@ -52,12 +52,12 @@ const StrategyBreakdown = (props) => {
 
   return (
     <div className={props.className}>
-      <BacktestTotalReturn loading={props.loading} page={props.page} className={`${styles['strategy-breakdown-chart']} ${styles['strategy-breakdown-chart-left']} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`} 
+      <BacktestTotalReturn page={props.page} pageStyle={props.pageStyle} loading={props.loading} className={`${styles['strategy-breakdown-chart']} ${styles['strategy-breakdown-chart-left']} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`} 
         classNameTitle={`${styles['strategy-breakdown-total-return-title']} sub-title`}
         data={props.data} strategy={props.strategy} totalReturnKeys={props.totalReturnKeys}>
       </BacktestTotalReturn>
       <div page={props.page} className={`${styles['strategy-breakdown-total-return-perc-title']} sub-title`}>LP Total Return %</div>
-      <BacktestTotalReturnPercent loading={props.loading} className={`${styles['strategy-breakdown-chart']} ${styles['strategy-breakdown-chart-right']} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`}
+      <BacktestTotalReturnPercent page={props.page} pageStyle={props.pageStyle} loading={props.loading} className={`${styles['strategy-breakdown-chart']} ${styles['strategy-breakdown-chart-right']} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`}
         strategyDropdownClass={styles['strategy-dropdown']} strategy={props.strategy} data={props.data} amountKey={props.amountKey}>
       </BacktestTotalReturnPercent>
     </div>
