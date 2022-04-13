@@ -3,6 +3,7 @@
   --strategy-backtest-container-row-span: 60;
   --strategy-backtest-title-span: 1;
   --strategy-backtest-chart-span: 15;
+  --strategy-backtest-chart-span-column: 25;
   --backtest-indicators-row-span: 8;
 }
 
@@ -27,7 +28,7 @@
 
 .strategy-backtest-chart {
   grid-row: 2 / span var(--strategy-backtest-chart-span);
-  grid-column: 1 / span 25;
+  grid-column: 1 / span var(--strategy-backtest-chart-span-column);
 }
 
 .bar-mouseover {

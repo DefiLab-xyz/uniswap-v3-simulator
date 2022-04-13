@@ -81,6 +81,7 @@ useEffect(() => {
   docEl.style.setProperty("--candle-green", "#408873");
   docEl.style.setProperty("--bar-fill", "#FCD4D4");
   docEl.style.setProperty("--bar-stroke", "#FCD4D4");
+  // docEl.style.setProperty("--strategy-backtest-chart-span-column", 16);
 
 }, []);
 

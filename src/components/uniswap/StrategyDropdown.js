@@ -9,25 +9,27 @@ const DropdownSelect = (props) => {
 
   const strategies = useSelector(selectStrategies);
   const [buttonList, setButtonList] = useState();
-  const [selected, setSelected] = useState(strategies.find( d => d.id === "hodl5050"));
+  const [selected, setSelected] = useState( strategies.find( d => props.page === 'perpetual' ?  d.id === "hodl2" :  d.id === "hodl5050") );
   const [visibility, setVisibility] = useState("hidden");
 
   useEffect(() => {
     if (strategies && props.selectedStrategy) {
       const buttonListTemp = strategies.filter(d => {
-        return d.id !== props.selectedStrategy.id && d.id !== selected.id
+        return props.page === 'perpetual' ? d.id !== props.selectedStrategy.id && d.id !== selected.id && d.id !== "v2" : d.id !== props.selectedStrategy.id && d.id !== selected.id
       });
       setButtonList(buttonListTemp);
     }
   }, [strategies, selected, props.selectedStrategy]);
 
   useEffect(() => {
-    handleSelected({id: "hodl5050"});
+    handleSelected({id: props.page === 'perpetual' ? "hodl2" :  "hodl5050"});
   }, [props.selectedStrategy])
 
   useEffect(() => {
     console.log(props.pageStyle)
   }, [props.pageStyle])
+
+
 
 
   const handleSelected = (selected) => {
