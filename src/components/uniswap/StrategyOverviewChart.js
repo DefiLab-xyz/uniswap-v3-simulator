@@ -49,9 +49,10 @@ const StrategyOverviewChart = (props) => {
   const [v3StrategyData, setV3StrategyData] = useState([]);
   const [mouseOverText, setMouseOverText] = useState();
 
+  const yLabel = props.page === 'perpetual' ?  `Impermanent loss ${baseToken.symbol}` :  `Asset Value ${baseToken.symbol}`
   const margin = props.extendedHoverData ? {top: 20, right: 30, bottom: 220, left: 70} : {top: 20, right: 30, bottom: 120, left: 70};
   const chartProps = { scaleTypeX: "linear", scaleTypeY:"linear", 
-  dataTypeX: "number", dataTypeY: "number", ylabel: `Asset Value ${baseToken.symbol}` , xlabel: "" }
+  dataTypeX: "number", dataTypeY: "number", ylabel: yLabel , xlabel: "" }
   const bisect = bisector(d => d.x);
 
   const handleMouseOver = (xEvent, scale) => {

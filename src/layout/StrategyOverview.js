@@ -27,10 +27,11 @@ const Title = (props) => {
 
   const baseToken = useSelector(selectBaseToken);
   const quoteToken = useSelector(selectQuoteToken);
-  
+  const title = props.page === 'perpetual' ?  `Impermanent loss (excl. Funding rates) vs ${quoteToken.symbol} / ${baseToken.symbol} Price` :
+  `Asset Value (excl. fees) vs ${quoteToken.symbol} / ${baseToken.symbol} Price`
   return (
     <div class={`title ${styles['title']}`}>
-      <span>{`Asset Value (excl. fees) vs ${quoteToken.symbol} / ${baseToken.symbol} Price`}</span>
+      <span>{title}</span>
     </div>
   );
 }
@@ -216,7 +217,7 @@ const StrategyOverview = (props) => {
     <div className={`${styles['strategy-overview-container']} 
     ${props.pageStyle ? props.pageStyle["outer-glow"] : "outer-glow"}
     ${props.pageStyle ? props.pageStyle["dashboard-section"] : "dashboard-section"}`}>
-      <Title pageStyle={props.pageStyle}></Title>
+      <Title page={props.page} pageStyle={props.pageStyle}></Title>
       <StrategyOverviewChart  page={props.page} pageStyle={props.pageStyle} chartData={chartData} v3StrategyData={v3StrategyData} chartDomain={chartDomain} 
         chartDataOverride={props.chartDataOverride} zeroLine={props.zeroLine} extendedHoverData={props.extendedHoverData}>
       </StrategyOverviewChart>
