@@ -94,7 +94,7 @@ const SideBar = (props) => {
         <Investment pageStyle={props.pageStyle}></Investment>
         <CurrentPrice pageStyle={props.pageStyle}></CurrentPrice>
       </div>
-      <StrategyPicker pageStyle={props.pageStyle} strategies={props.strategies}></StrategyPicker>
+      <StrategyPicker page={props.page} pageStyle={props.pageStyle} strategies={props.strategies}></StrategyPicker>
       <StrategyRange pageStyle={props.pageStyle} leverageHidden={props.leverageHidden}></StrategyRange>
     </div>
   )
