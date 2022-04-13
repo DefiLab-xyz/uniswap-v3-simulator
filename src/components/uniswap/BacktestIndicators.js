@@ -6,10 +6,10 @@ const displayField = (supressFields, fieldName) => {
   return !supressFields || (supressFields && supressFields.length && !supressFields.includes(fieldName));
 }
 
-const fields = (baseToken, quoteToken) => {
+const fields = (baseToken, quoteToken, page) => {
 
   return [{key: 'feeroi', label: "Fee ROI %"}, 
-  {key: 'apr', label: "APR %"}, 
+  {key: 'apr', label: page === 'perpetual' ? "Fee APR% Proj." : "APR %"}, 
   {key: 'assetval', label: "Asset Value"}, 
   {key: 'total', label: "Total Return"}, 
   {key: 'token0Fee', label: `${baseToken} collected`}, 
@@ -45,7 +45,7 @@ const BacktestIndicators = (props) => {
   const baseToken = useSelector(selectBaseToken);
   const quoteToken = useSelector(selectQuoteToken);
   const loading = useSelector(selectLoading);
-  const tableFields = fields(baseToken.symbol, quoteToken.symbol);
+  const tableFields = fields(baseToken.symbol, quoteToken.symbol, props.page);
 
   if (props.loading|| loading) {
     return (<div className="backtest-indicators-data-loading"></div>)
