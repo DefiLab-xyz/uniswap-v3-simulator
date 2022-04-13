@@ -226,9 +226,9 @@ const StrategyOverview = (props) => {
       
       { props.impLossHidden ? 
       <Fragment>
-         <div class={`sub-title ${styles['position-breakdown-token-ratio-title']}`}>Position Breakdown By Token Ratio</div>
+         <div class={`sub-title ${styles['position-breakdown-token-ratio-title']}`}>{props.page === 'perpetual' ? "Leveraged LP Position Breakdown By Token Ratio" : "Position Breakdown By Token Ratio"}</div>
         <TokenRatioChart page={props.page} pageStyle={props.pageStyle} className={`${styles["position-breakdown-token-ratio-container"]} inner-glow`} chartData={selectedStrategyChartData} strategy={selectedStrategyToggle} strategyLimits={strategyLimits}></TokenRatioChart>
-        <div class={`sub-title ${styles['position-breakdown-value-title']}`}>Position Breakdown By Token Value</div>
+        <div class={`sub-title ${styles['position-breakdown-value-title']}`}>{props.page === 'perpetual' ? "Leveraged LP Position Breakdown By Token Value" : "Position Breakdown By Token Value"}</div>
         <TokenValueSplitChart page={props.page} pageStyle={props.pageStyle} className={`${styles["position-breakdown-value-container"]} inner-glow`} chartData={selectedStrategyChartData} strategy={selectedStrategyToggle} strategyLimits={strategyLimits}></TokenValueSplitChart>
       </Fragment> :
       <Fragment>
