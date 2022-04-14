@@ -106,38 +106,3 @@ export const perpAddresses = async () => {
 
 
 }
-
-export const perpStatsWebSocket = async () => {
-
-  const url = "wss://subgraph-ws-singapore.perp.fi/subgraphs/name/perpetual-protocol/perpetual-v2-optimism";
-
-  try {
-    const response = await fetch(url, 
-    {
-        method:'GET',
-        headers: {}
-        // {
-        //   'Content-Type': 'application/json',
-        // }
-    });
-
-    const data = await response.json();
-    console.log(data)
-    // if (data && data.contracts ) {
-    //   const addresses = Object.values(data.contracts).map( aD => {
-    //     return { address: aD.address, address_lower: aD.address.toLowerCase()}
-    //   })
-    //   return addresses;
-    // }
-    // else {
-    //   return null;
-    // }
-    
-
-  } catch (error) {
-    console.log(error)
-    return {error: error};
-  }
-
-
-}
