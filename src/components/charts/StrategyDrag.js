@@ -118,7 +118,9 @@ const StrategyDrag = (props) => {
             margin={props.margin || {top: 20, right: 30, bottom: 30, left: 70}} lineType="area"
             strokeWidth={() => { return props.page === 'perpetual' ? 0.5 : 0} } fillOpacity={props.fillOpacity}>
             </Lines>
-          <StrategyDragControls ids={props.ids} scale={chartContextData.scale} colors={props.colors} domain={props.domain} fillOpacity={props.fillOpacity}></StrategyDragControls>
+            {
+              props.hideStrategyControls ? <></> : <StrategyDragControls ids={props.ids} scale={chartContextData.scale} colors={props.colors} domain={props.domain} fillOpacity={props.fillOpacity}></StrategyDragControls>
+            }
         </g>
         )
       }

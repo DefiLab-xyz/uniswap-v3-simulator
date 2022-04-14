@@ -12,7 +12,6 @@ const inputsForChartData = (currentPrice, investment, strategyRanges, strategies
 }
 
 export const genChartData = (currentPrice, investment, strategyRanges, strategies, chartDataOverride) => {
-
   
   if (!chartDataOverride) {
     const { range1Inputs, range2Inputs, inputsAll } = inputsForChartData(currentPrice, investment, strategyRanges, strategies);
@@ -44,21 +43,26 @@ export const genChartData = (currentPrice, investment, strategyRanges, strategie
     });
 
     const chartData = chartDataTemp.map( cd => {
-
-      const {x0, y0} = tokenCoeff(cd);
-      const test = tokenCoeff(cd);
-      const newData = cd.data.map( d => {
-
-        const perpDebtVal = (x0 * parseFloat(d.x)) + y0;
-        const impLoss = d.y - perpDebtVal;
-        const impPos = x0 - d.token;
-        const notionalSize = Math.abs(impPos * d.x);
-        const margin = (impLoss >= 0 && impLoss < 0.00001) ?  "∞" : ((parseFloat(investment) + parseFloat(impLoss)) / notionalSize) * 100;
-
-        return {...d, investment: investment, test: test, perpDebtVal: perpDebtVal, impLoss: impLoss, impPos: impPos, notionalSize: notionalSize, margin: margin, y: impLoss}
-      });
-
-      cd[chartDataOverride] = newData;
+      
+      if ( cd.id === 'S1' || cd.id === 'S2') {
+        const {x0, y0} = tokenCoeff(cd);
+        const test = tokenCoeff(cd);
+        const newData = cd.data.map( d => {
+  
+          const perpDebtVal = (x0 * parseFloat(d.x)) + y0;
+          const impLoss = d.y - perpDebtVal;
+          const impPos = x0 - d.token;
+          const notionalSize = Math.abs(impPos * d.x);
+          const margin = (impLoss >= 0 && impLoss < 0.00001) ?  "∞" : ((parseFloat(investment) + parseFloat(impLoss)) / notionalSize) * 100;
+  
+          return {...d, investment: investment, test: test, perpDebtVal: perpDebtVal, impLoss: impLoss, impPos: impPos, notionalSize: notionalSize, margin: margin, y: impLoss}
+        });
+  
+        cd[chartDataOverride] = newData;
+      }
+      else {
+        cd[chartDataOverride] = cd.data
+      }
       return cd;
 
     });

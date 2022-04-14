@@ -50,8 +50,8 @@ const StrategyOverviewChart = (props) => {
   const [mouseOverText, setMouseOverText] = useState();
 
   const yLabel = props.page === 'perpetual' ?  `Impermanent loss ${baseToken.symbol}` :  `Asset Value ${baseToken.symbol}`
-  const margin = props.extendedHoverData ? {top: 20, right: 30, bottom: 220, left: 70} : {top: 20, right: 30, bottom: 120, left: 70};
-  const chartProps = { scaleTypeX: "linear", scaleTypeY:"linear", 
+  const margin = props.extendedHoverData ? {top: 20, right: 30, bottom: 220, left: 70} : props.margin || {top: 20, right: 30, bottom: 120, left: 70};
+  const chartProps = props.chartProps || { scaleTypeX: "linear", scaleTypeY:"linear", 
   dataTypeX: "number", dataTypeY: "number", ylabel: yLabel , xlabel: "" }
   const bisect = bisector(d => d.x);
 
@@ -64,8 +64,6 @@ const StrategyOverviewChart = (props) => {
 
       const idx = bisect.left(hoverData[0].data, parseFloat(scale.x.invert(xEvent)));
       if (props.extendedHoverData) {
-
-        
 
         hoverData.forEach(hd => {
           const longShort = currentPrice < hd.data[idx].x ? "LONG" : "SHORT";
@@ -91,7 +89,7 @@ const StrategyOverviewChart = (props) => {
 
   useEffect(() => {
     if (props.v3StrategyData) {
-      const strategyData = genSelectedStrategyData(props.v3StrategyData, strategies);
+      const strategyData = genSelectedStrategyData( props.v3StrategyData, strategies);
       setV3StrategyData(strategyData);
 
     }
@@ -111,16 +109,17 @@ const StrategyOverviewChart = (props) => {
 
   return (    
   <LineChart
-    className={`${styles['chart']} ${styles['strategy-chart']} ${ props.extendedHoverData ? styles['strategy-chart-extended'] : ""} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`}
+    className={`${props.className} ${styles['chart']} ${styles['strategy-chart']} ${ props.extendedHoverData ? styles['strategy-chart-extended'] : ""} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`}
     data={chartData.data} domain={props.chartDomain} strokeOpacity={props.page === "perpetual" ? () => 0.85 : null} fillOpacity={props.page === "perpetual" ? () => 0.45 : null}
     avgLine={true} mouseOverMarker={true} mouseOverText={mouseOverText} handleMouseOver={handleMouseOver} strokeWidth={props.page === "perpetual" ? () => 1.5 : null}
     chartProps={chartProps} colors={chartData.colors} mouseOverTextExtended={ props.extendedHoverData ? true : false } mouseOverMarkerPos={ props.extendedHoverData ? "fixed" : null }
-    currentPriceLine={true} margin={margin} dash={chartData.dash}>
+    currentPriceLine={props.currentPriceLine} margin={margin} dash={chartData.dash} price={props.price}>
     <ZeroLine zeroLine={props.zeroLine}
       xMin={props.chartDomain && props.chartDomain.x ? props.chartDomain.x[0] : 0} 
       xMax={props.chartDomain && props.chartDomain.x ? props.chartDomain.x[1] : 0}>
     </ZeroLine> 
-    <StrategyDrag page={props.page} data={v3StrategyData.data} colors={v3StrategyData.colors} ids={v3StrategyData.ids} domain={props.chartDomain} fillOpacity={props.page === "perpetual" ? () => 0.2 : null}></StrategyDrag>
+    <StrategyDrag hideStrategyControls={props.hideStrategyControls} page={props.page} data={v3StrategyData.data} colors={v3StrategyData.colors} ids={v3StrategyData.ids} domain={props.chartDomain} fillOpacity={props.page === "perpetual" ? () => 0.2 : null}></StrategyDrag>
+    {props.children}
   </LineChart>
   )
 }

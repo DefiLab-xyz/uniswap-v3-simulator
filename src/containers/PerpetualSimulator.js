@@ -81,7 +81,7 @@ useEffect(() => {
   docEl.style.setProperty("--candle-green", "#408873");
   docEl.style.setProperty("--bar-fill", "#FCD4D4");
   docEl.style.setProperty("--bar-stroke", "#FCD4D4");
-  // docEl.style.setProperty("--strategy-backtest-chart-span-column", 16);
+  docEl.style.setProperty("--strategy-backtest-chart-span-column", 13);
 
 }, []);
 
@@ -247,7 +247,7 @@ const isEnriched = () => {
             <div className={`${styles['tab-bt']} ${styles['tab-title']}`}>Strategy Backtest</div>
           </div>
           
-          <StrategyBacktest page="perpetual" pageStyle={styles} customFeeDivisor={3} supressIndicatorFields={['assetval', 'total', 'token0Fee', 'token1Fee']} amountKey={"amountTR"}
+          <StrategyBacktest chartDataOverride="leveraged" page="perpetual" pageStyle={styles} customFeeDivisor={3} supressIndicatorFields={['assetval', 'total', 'token0Fee', 'token1Fee']} amountKey={"amountTR"}
           totalReturnKeys={[{ key: 'amountTR', name: "Amount", selected: true, color: colors['perpetual']['tokenratio'][0] }, {key: 'feeAcc', name: "Fee", selected: true, color: colors['perpetual']['tokenratio'][1]}]}></StrategyBacktest>
           <SideBar page="perpetual" pageStyle={styles} width={windowDim.width} minWidth={pageMinWidth} baseTokenHidden={true} protocols={[4]}
            strategies={['S1', 'S2']}

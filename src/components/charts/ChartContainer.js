@@ -146,7 +146,7 @@ const ChartContainer = forwardRef((props, ref) => {
             width={width} height={height} scale={scale} mouseOverTextExtended={props.mouseOverTextExtended}
             mouseOverText={props.mouseOverText || []} handleMouseOver={props.handleMouseOver} handleHoverMouseIn={props.handleHoverMouseIn} handleHoverMouseOut={props.handleHoverMouseOut}
           ></MouseOverMarker>
-          <CurrentPriceLine domain={props.domain} scale={scale} currentPriceLine={props.currentPriceLine} pageStyle={props.pageStyle}></CurrentPriceLine>
+          <CurrentPriceLine price={props.price} domain={props.domain} scale={scale} currentPriceLine={props.currentPriceLine} pageStyle={props.pageStyle}></CurrentPriceLine>
           <Loader cx={"50%"} cy={"50%"} loading={props.loading || loading}></Loader>
           </g>
         </svg>

@@ -31,6 +31,11 @@
   grid-column: 1 / span var(--strategy-backtest-chart-span-column);
 }
 
+.strategy-overview {
+  grid-row: 2 / span var(--strategy-backtest-chart-span);
+  grid-column: calc(var(--strategy-backtest-chart-span-column) + 2) / span 12;
+}
+
 .bar-mouseover {
   outline: 1px solid rgba(238, 175, 246);
   /* outline-offset: 0.5; */

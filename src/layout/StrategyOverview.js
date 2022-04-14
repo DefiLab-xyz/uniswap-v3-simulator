@@ -219,7 +219,7 @@ const StrategyOverview = (props) => {
     ${props.pageStyle ? props.pageStyle["dashboard-section"] : "dashboard-section"}`}>
       <Title page={props.page} pageStyle={props.pageStyle}></Title>
       <StrategyOverviewChart  page={props.page} pageStyle={props.pageStyle} chartData={chartData} v3StrategyData={v3StrategyData} chartDomain={chartDomain} 
-        chartDataOverride={props.chartDataOverride} zeroLine={props.zeroLine} extendedHoverData={props.extendedHoverData}>
+        chartDataOverride={props.chartDataOverride} zeroLine={props.zeroLine} extendedHoverData={props.extendedHoverData} currentPriceLine={true}>
       </StrategyOverviewChart>
       <StrategyOverviewIndicators page={props.page} pageStyle={props.pageStyle} chartData={chartData}></StrategyOverviewIndicators>
       <StrategyToggle page={props.page} pageStyle={props.pageStyle} handleStrategyChange={updateSelectedStrategyToggle}></StrategyToggle>

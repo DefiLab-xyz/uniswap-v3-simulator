@@ -21,6 +21,7 @@ import { ToggleButtonsFlex } from '../components/ButtonList';
 import BacktestIndicators from '../components/uniswap/BacktestIndicators';
 import { BacktestTotalReturn, BacktestTotalReturnPercent } from '../components/uniswap/BacktestTotalReturn';
 import RangeSlider from '../components/RangeSlider';
+import BacktestStrategyOverview from '../components/uniswap/BacktestStrategyOverview';
 
 const fromDateForHourlyData = (days) => {
   const date = new Date();
@@ -229,7 +230,7 @@ const StrategyBacktest = (props) => {
         <RangeSlider className={styles['range-slider-backtest-days']} handleInputChange={handleDaysChange} min={5} max={30} value={days} step={1}></RangeSlider>
         <span>Last {days} days</span>
       </div>
-      
+
       <BarChartGrouped className={`${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"} ${styles['strategy-backtest-chart']}`}
         onMouseLeave={() => { setMouseOverText([]) } }
         domain={chartDomain} chartProps={chartProps} loading={dataLoading}
@@ -241,6 +242,13 @@ const StrategyBacktest = (props) => {
        >
       <MouseOverText text={mouseOverText} textPosition={{x: 10, y: 10}} visibility={null}></MouseOverText>  
       </BarChartGrouped>
+
+      {
+        props.page === 'perpetual' ? <BacktestStrategyOverview page={props.page} pageStyle={props.pageStyle}
+        className={styles['strategy-overview']} currentPrice={ chartData && chartData[0] ? chartData[0].data[0].baseClose : 0 } ></BacktestStrategyOverview> 
+        : <></>
+      }
+
       <div className={`${styles["backtest-indicators-container"]}`}>
         <BacktestIndicators page={props.page} pageStyle={props.pageStyle} className={styles["backtest-indicators"]} data={selectedIndicatorsData} loading={dataLoading} supressFields={props.supressIndicatorFields}></BacktestIndicators>
         <StrategyToggle page={props.page} pageStyle={props.pageStyle} className={styles["strategy-toggle"]} handleToggle={handleStrategyChange}></StrategyToggle>
