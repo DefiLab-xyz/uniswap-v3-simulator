@@ -99,7 +99,7 @@ const StrategyOverviewChart = (props) => {
     if (props.chartData) {
       const chartData = genSelectedChartData(props.chartData, strategies, props.chartDataOverride || 'data');
       setChartData(chartData);
-   
+      if (props.handleLiquidationLines ) props.handleLiquidationLines(chartData);
     }
   }, [strategies, props.chartData, props.chartDataOverride]);
 

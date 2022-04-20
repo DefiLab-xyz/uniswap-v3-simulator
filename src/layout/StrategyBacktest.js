@@ -22,6 +22,8 @@ import BacktestIndicators from '../components/uniswap/BacktestIndicators';
 import { BacktestTotalReturn, BacktestTotalReturnPercent } from '../components/uniswap/BacktestTotalReturn';
 import RangeSlider from '../components/RangeSlider';
 import BacktestStrategyOverview from '../components/uniswap/BacktestStrategyOverview';
+import DailyPriceChart from '../components/uniswap/DailyPriceChart';
+import { Line } from '../components/charts/Line';
 
 const fromDateForHourlyData = (days) => {
   const date = new Date();
@@ -81,6 +83,9 @@ const StrategyBacktest = (props) => {
   const [dataLoading, setDataLoading] = useState(true)
  
   const [days, setDays] = useState(30);
+  const [entryPrice, setEntryPrice] = useState();
+  const [liquidationData, setLiquidationData] = useState();
+  const [liquidationLines, setLiquidationLines] = useState([]);
   const [hourlyPoolData, setHourlyPoolData] = useState();
   const [chartData, setChartData] = useState();
   const [indicatorsData, setIndicatorsData] = useState();
@@ -202,6 +207,7 @@ const StrategyBacktest = (props) => {
     if (chartData && chartData.length) {
       const yMax = maxInArray(chartData.map(d => d.data), 'feeV');
       setChartDomain({x: chartData[0].data.map(d => d.date), y: [0, yMax]});
+      setEntryPrice(chartData[0].data[0].baseClose);
     }
   }, [chartData]);
 
@@ -221,6 +227,57 @@ const StrategyBacktest = (props) => {
     setStrategyToggled(strategy);
   }
 
+  const handleLiquidationLines = (data) => {
+
+    setLiquidationData(data);
+
+    console.log(data);
+    const liquidationLinesTemp = [];
+    if (data && data.dash && data.dash.length) {
+      data.dash.forEach((d, i) => {
+        if (d === true && data.data[i] && data.data[i].length > 0) {
+
+          let l1 = data.data[i][0].x;
+          let l2 = data.data[i][data.data[i].length - 1].x;
+          console.log(l1, l2, entryPrice)
+          if ( l1 && l2 < entryPrice) {
+            liquidationLinesTemp.push({y: l2, color:  data.colors[i]})
+          }
+          else {
+            liquidationLinesTemp.push({y: l1, color:  data.colors[i]})
+          }     
+
+        }
+      });
+      console.log(liquidationLinesTemp)
+    }
+  }
+
+  // Generate data to display the point of liquidation on Daily prices chart
+  useEffect(() => {
+    const liquidationLinesTemp = [];
+    if (liquidationData && liquidationData.dash && liquidationData.dash.length && entryPrice > 0) {
+      liquidationData.dash.forEach((d, i) => {
+        if (d === true && liquidationData.data[i] && liquidationData.data[i].length > 0) {
+
+          let l1 = liquidationData.data[i][0].x;
+          let l2 = liquidationData.data[i][liquidationData.data[i].length - 1].x;
+
+          if ( l1 < entryPrice && l2 < entryPrice) {
+            liquidationLinesTemp.push({y: l2, color:  liquidationData.colors[i]})
+          }
+          else {
+            liquidationLinesTemp.push({y: l1, color:  liquidationData.colors[i]})
+          }     
+        }
+      });
+      setLiquidationLines(liquidationLinesTemp);
+    }
+
+
+
+  }, [liquidationData, entryPrice])
+
   return (
     <div className={`${styles['strategy-backtest-container']}
       ${props.pageStyle ? props.pageStyle["outer-glow"] : "outer-glow"}
@@ -228,7 +285,7 @@ const StrategyBacktest = (props) => {
       onMouseLeave={() => { setMouseOverText([])}}>
       <div className={`title ${styles['strategy-backtest-title']}`}>
         <RangeSlider className={styles['range-slider-backtest-days']} handleInputChange={handleDaysChange} min={5} max={30} value={days} step={1}></RangeSlider>
-        <span>Last {days} days</span>
+        <span style={{fontSize:12}}>Last {days} days &nbsp; |  &nbsp;{entryPrice && entryPrice > 0 ? `Entry price: ${parsePrice(entryPrice)} ${baseToken.symbol}` : ""}</span>
       </div>
 
       <BarChartGrouped className={`${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"} ${styles['strategy-backtest-chart']}`}
@@ -244,13 +301,28 @@ const StrategyBacktest = (props) => {
       </BarChartGrouped>
 
       {
-        props.page === 'perpetual' ? <BacktestStrategyOverview page={props.page} pageStyle={props.pageStyle}
+        props.page === 'perpetual' ? <BacktestStrategyOverview handleLiquidationLines={handleLiquidationLines} page={props.page} pageStyle={props.pageStyle}
         className={styles['strategy-overview']} currentPrice={ chartData && chartData[0] ? chartData[0].data[0].baseClose : 0 } ></BacktestStrategyOverview> 
         : <></>
       }
 
       <div className={`${styles["backtest-indicators-container"]}`}>
         <BacktestIndicators page={props.page} pageStyle={props.pageStyle} className={styles["backtest-indicators"]} data={selectedIndicatorsData} loading={dataLoading} supressFields={props.supressIndicatorFields}></BacktestIndicators>
+        
+        {
+        props.page === 'perpetual' ? <DailyPriceChart page={props.page} pageStyle={props.pageStyle} className={styles['daily-prices']} days={days} minMaxVals={liquidationLines.map(d => d.y)}>
+          {
+            liquidationLines.map( d => {
+              return d && d.y ? <Line className={styles["liquidation-line"]} 
+              useParentScale={true} data={{ y1: d.y, y2: d.y }} stroke={d.color}
+              strokeWidth={1} strokeDasharray={"6 6"}>
+              </Line> : <></>
+            })
+          }
+        </DailyPriceChart> 
+        : <></>
+        }
+        
         <StrategyToggle page={props.page} pageStyle={props.pageStyle} className={styles["strategy-toggle"]} handleToggle={handleStrategyChange}></StrategyToggle>
         <StrategyBreakdown loading={dataLoading} page={props.page} pageStyle={props.pageStyle} className={styles["strategy-breakdown-container"]} data={chartData} strategy={strategyToggled} totalReturnKeys={props.totalReturnKeys} amountKey={props.amountKey}></StrategyBreakdown>
       </div>

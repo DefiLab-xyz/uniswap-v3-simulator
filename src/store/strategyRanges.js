@@ -49,10 +49,11 @@ export const strategyRanges = createSlice({
     crementStrategyRangeInputVal: (state, action) => {
       const index = state.findIndex(i => i.id === action.payload.id);
       if (index >= 0) {
+
         const key = action.payload.key;
         const crement = action.payload.crement;
         const newValue = parseFloat(state[index].inputs[key].value) + parseFloat(crement);
-
+        console.log(action.payload)
         if (validateStrategyRangeValue(state[index], key, newValue)) {
           state[index].liquidityMultiplier = calcContrentratedLiquidityMultiplier(state[index].inputs['min'].value, state[index].inputs['max'].value);
         }

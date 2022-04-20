@@ -114,9 +114,20 @@ const StrategyOverlays = (props) => {
 
   useEffect(() => {
     if (baseToken && candleData && candleData[baseToken.symbol]) {
-      setChartData(candleData[baseToken.symbol]);
+
+      const newChartData = candleData[baseToken.symbol];
+      if (props.days && props.days > 1 && newChartData.length - props.days > 0) {
+        setChartData(newChartData.slice(0, props.days));
+       
+      }
+      else {
+        setChartData(newChartData);
+      }
+     
     }
-  }, [baseToken, candleData]);
+  }, [baseToken, candleData, props.days]);
+
+
 
   const handleMouseOver = (xEvent, scale) => {
 
@@ -144,8 +155,10 @@ const StrategyOverlays = (props) => {
 
     if ( chartData && strategyRanges && pool && pool.normStd ) {
       const selectedStrategies = strategyRanges.filter(d => d.selected === true && d.id !== 'v2');
-      const yMax = Math.max(...chartData.map(d => d.high), ...selectedStrategies.map(d => d.inputs.max.value));
-      const yMin = Math.min(...chartData.map(d => d.low), ...selectedStrategies.map(d => d.inputs.min.value));
+      const additionalChecks = props.minMaxVals ? props.minMaxVals : [];
+      console.log(props.minMaxVals)
+      const yMax = Math.max(...chartData.map(d => d.high), ...selectedStrategies.map(d => d.inputs.max.value), ...additionalChecks);
+      const yMin = Math.min(...chartData.map(d => d.low), ...selectedStrategies.map(d => d.inputs.min.value), ...additionalChecks);
 
       if (pool.normStd === 1) {
         setChartDomain({x: chartData.map(d => d.date).reverse(), y: [yMin * .9 , yMax * 1.1]});
@@ -154,7 +167,7 @@ const StrategyOverlays = (props) => {
         setChartDomain({x: chartData.map(d => d.date).reverse(), y: [yMin * (1 - (pool.normStd / 100)) , yMax * (1 + (pool.normStd / 100))]});
       }
     }
-  }, [strategyRanges, chartData, pool])
+  }, [strategyRanges, chartData, pool, props.minMaxVals])
 
   return (
     <CandleChart
@@ -164,6 +177,7 @@ const StrategyOverlays = (props) => {
       avgLine={false} chartProps={chartProps}
       mouseOverMarker={true}>
         <StrategyOverlays strategyRanges={strategyRanges}></StrategyOverlays>
+        {props.children}
     </CandleChart>
   )
   

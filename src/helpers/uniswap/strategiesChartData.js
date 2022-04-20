@@ -45,6 +45,7 @@ export const genChartData = (currentPrice, investment, strategyRanges, strategie
     const chartData = chartDataTemp.map( cd => {
       
       if ( cd.id === 'S1' || cd.id === 'S2') {
+        
         const {x0, y0} = tokenCoeff(cd);
         const test = tokenCoeff(cd);
         const newData = cd.data.map( d => {

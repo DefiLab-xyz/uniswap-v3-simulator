@@ -31,7 +31,6 @@ const BacktestStrategyOverview = (props) => {
   // Generate Asset Value Chart's domain when chart data changes
   useEffect(() => {
     if (chartData && chartData.length) {
-
       const xMax = maxInArray(chartData.map(d => d['leveraged']), 'x');
       const yMax = maxInArray(chartData.map(d => d['leveraged']), 'y');
       const yMin = minInArray(chartData.map(d => d['leveraged']), 'y');
@@ -50,7 +49,7 @@ const BacktestStrategyOverview = (props) => {
     }, [chartData, props.currentPrice, investment, props.chartDataOverride, strategies, strategyRanges]);
 
   return (
-      <StrategyOverviewChart page={props.page} pageStyle={props.pageStyle} className={props.className} chartData={chartData} v3StrategyData={v3StrategyData} chartDomain={chartDomain} 
+      <StrategyOverviewChart handleLiquidationLines={props.handleLiquidationLines} page={props.page} pageStyle={props.pageStyle} className={props.className} chartData={chartData} v3StrategyData={v3StrategyData} chartDomain={chartDomain} 
       chartDataOverride={"leveraged"} zeroLine={props.zeroLine} currentPriceLine={true} price={props.currentPrice}
       chartProps={chartProps} margin={margin} currentPrice={props.currentPrice} hideStrategyControls={true}>
       </StrategyOverviewChart>

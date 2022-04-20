@@ -12,7 +12,7 @@ export const Line = (props) => {
 
       const lineDataTemp = { 
         x1: props.data.x1 ? chartContextData.scale.x(props.data.x1) : 0, 
-        x2: props.data.x2 ? chartContextData.scale.x(props.data.x2) : 0, 
+        x2: props.data.x2 ? chartContextData.scale.x(props.data.x2) : chartContextData.chartWidth || 0, 
         y1: props.data.hasOwnProperty("y1") ? chartContextData.scale.y(props.data.y1) : 0, 
         y2: props.data.hasOwnProperty("y2") ? chartContextData.scale.y(props.data.y2) : chartContextData.chartHeight || 0, 
       };

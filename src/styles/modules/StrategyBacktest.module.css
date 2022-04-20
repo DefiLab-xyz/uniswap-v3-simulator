@@ -31,10 +31,11 @@
   grid-column: 1 / span var(--strategy-backtest-chart-span-column);
 }
 
-.strategy-overview {
+.strategy-overview{
   grid-row: 2 / span var(--strategy-backtest-chart-span);
   grid-column: calc(var(--strategy-backtest-chart-span-column) + 2) / span 12;
 }
+
 
 .bar-mouseover {
   outline: 1px solid rgba(238, 175, 246);
@@ -53,9 +54,15 @@
   grid-template-columns: repeat(25, 4%);
 }
 
+
+.daily-prices {
+  grid-row: 2 / 11;
+  grid-column: 15 / span 12;
+}
+
 .backtest-indicators {
   grid-row: 1 / span var(--backtest-indicators-row-span);
-  grid-column: 1 / span 25;
+  grid-column: 1 / span 13;
 }
 
 .backtest-indicators td, .backtest-indicators th {
@@ -63,7 +70,7 @@
 }
 
 .backtest-indicators th {
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 500;
 }
 
@@ -142,4 +149,7 @@
   margin-bottom: 10px;
   display: flex;
   align-items: center;
+}
+
+.liquidation-line {
 }
