@@ -62,7 +62,9 @@ const StrategyBreakdown = (props) => {
         classNameTitle={`${styles['strategy-breakdown-total-return-title']} sub-title`}
         data={props.data} strategy={props.strategy} totalReturnKeys={props.totalReturnKeys}>
       </BacktestTotalReturn>
-      <div page={props.page} className={`${styles['strategy-breakdown-total-return-perc-title']} sub-title`}>LP Total Return %</div>
+      <div page={props.page} className={`${styles['strategy-breakdown-total-return-perc-title']} sub-title`}>LP Total Return %
+      <ToolTip textStyle={{width: "300px", height: "fill-content", left:"-0px", top: "20px", border: props.page === 'perpetual' ? "0.5px solid black" : "", textAlign: "left"}} 
+            buttonStyle={{width: 15, height: 15}} text={HelpText[props.page].totalReturnPerc}>?</ToolTip></div>
       <BacktestTotalReturnPercent page={props.page} pageStyle={props.pageStyle} loading={props.loading} className={`${styles['strategy-breakdown-chart']} ${styles['strategy-breakdown-chart-right']} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`}
         strategyDropdownClass={styles['strategy-dropdown']} strategy={props.strategy} data={props.data} amountKey={props.amountKey}>
       </BacktestTotalReturnPercent>

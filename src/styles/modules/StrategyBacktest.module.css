@@ -116,6 +116,8 @@
 .strategy-breakdown-total-return-perc-title {
   grid-row: 2 / span 1;
   grid-column: 14 / span 12;
+  display: flex;
+  align-items: center;
 }
 
 .strategy-dropdown {

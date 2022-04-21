@@ -10,6 +10,8 @@ import { parsePrice } from '../../helpers/numbers';
 import { selectCompareStrategies, selectStrategies } from '../../store/strategies';
 import { selectInvestment } from '../../store/investment';
 import colors from '../../data/colors.json'
+import HelpText from '../../data/HelpText';
+import ToolTip from '../ToolTip';
 
 const BacktestTotalReturnSelect = (props) => {
 
@@ -123,8 +125,11 @@ export const BacktestTotalReturn = (props) => {
   return ( 
     <>
     <div className={props.classNameTitle}>
-      <span>LP Total Return&nbsp;&nbsp;&nbsp;</span>
+      <span>LP Total Return  
+      &nbsp;&nbsp;&nbsp;</span>
       <BacktestTotalReturnSelect page={props.page} pageStyle={props.pageStyle} buttons={chartKeys} handleSelected={handleKeySelect}></BacktestTotalReturnSelect>
+      <ToolTip textStyle={{width: "300px", height: "fill-content", left:"-0px", top: "20px", border: props.page === 'perpetual' ? "0.5px solid black" : "", textAlign: "left"}} 
+            buttonStyle={{width: 15, height: 15}} text={HelpText[props.page].totalReturn}>?</ToolTip>
     </div>
     <LineChartStacked loading={props.loading} className={`${props.className ? props.className : ""} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`}
       data={chartData} domain={chartDomain} lineType="area" keys={selectedKeys}
