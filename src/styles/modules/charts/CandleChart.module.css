@@ -1,5 +1,6 @@
 :root {
   --candle-green: #9bd8c8;
+  --candle-red: rgb(255, 102, 102);
 
 }
 
@@ -9,6 +10,6 @@
 }
 
 .candle-red {
-  fill: rgb(255, 102, 102);
-  stroke: rgb(255, 102, 102);
+  fill: var(--candle-red);
+  stroke: var(--candle-red);
 }
