@@ -84,6 +84,8 @@ useEffect(() => {
   docEl.style.setProperty("--strategy-backtest-chart-span-column", 13);
   docEl.style.setProperty("--button-border", "1px solid black");
   docEl.style.setProperty("--button-border-hover", "none");
+  docEl.style.setProperty("--strategy-dropdown-button-span", 3);
+ 
  
 
 }, []);

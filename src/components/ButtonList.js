@@ -40,7 +40,7 @@ export const ButtonListToggle = (props) => {
   const buttons = !props.buttons ? (<></>) :
   props.buttons.map((d, i) => {
     return ( 
-      <button  style={ props.page === 'perpetual' ? { color: "black", fontSize: 12 } : d.style}
+      <button  style={ props.page === 'perpetual' ? { color: "black", fontSize: 12, border: `1px solid ${d.style.color}` } : d.style}
         onMouseDown={() => handleSelected(d, i)} 
         className={selected === i ? `${props.pageStyle['button']} ${props.pageStyle['selected']}` : `${props.pageStyle['button']}` }>
         { props.labelKey ? d[props.labelKey] : d.label || ""}

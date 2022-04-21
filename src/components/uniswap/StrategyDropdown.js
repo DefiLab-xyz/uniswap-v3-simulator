@@ -19,24 +19,19 @@ const DropdownSelect = (props) => {
       });
       setButtonList(buttonListTemp);
     }
-  }, [strategies, selected, props.selectedStrategy]);
-
-  useEffect(() => {
-    handleSelected({id: props.page === 'perpetual' ? "hodl2" :  "hodl5050"});
-  }, [props.selectedStrategy])
-
-  useEffect(() => {
-    console.log(props.pageStyle)
-  }, [props.pageStyle])
-
-
-
+  }, [strategies, selected, props.selectedStrategy, props.page]);
 
   const handleSelected = (selected) => {
     const selectedTemp = strategies.find( d => d.id === selected.id );
     setSelected(selectedTemp);
     if (props.handleSelected) props.handleSelected(selectedTemp);
   }
+
+
+  useEffect(() => {
+    handleSelected({id: props.page === 'perpetual' ? "hodl2" :  "hodl5050"});
+  }, [props.page, props.selectedStrategy])
+
 
   const handleBlur = () => {
     setVisibility("hidden");
@@ -48,7 +43,7 @@ const DropdownSelect = (props) => {
 //${props.pageStyle["button"]} ${props.pageStyle["selected"]}
     return (
       <Fragment>
-        <button className={`${buttonStyles["button-list-grid"]} ${props.pageStyle["button"]} ${props.pageStyle["selected"]}`} style={{color: props.page === 'perpetual' ? "black" : selected.style.color, textAlign: 'bottom'}}
+        <button className={`${buttonStyles["button-list-grid"]} ${props.pageStyle["button"]} ${props.pageStyle["selected"]}`} style={{color: props.page === 'perpetual' ? "black" : selected.style.color, textAlign: 'bottom', border: props.page === 'perpetual' ? "1px solid " + selected.style.color : ""}}
         onClick={toggleVisibility} onBlur={handleBlur}>{selected.name}</button>
         <ButtonListToggle page={props.page} pageStyle={props.pageStyle} style={{visibility: visibility}} buttons={buttonList} labelKey="name" handleSelected={handleSelected} classNameButton={props.pageStyle["button"]} type="grid"></ButtonListToggle>
       </Fragment>
