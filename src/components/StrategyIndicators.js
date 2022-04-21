@@ -14,7 +14,7 @@ export const ConcentratedLiquidityMultiplier = (props) => {
   return (
       <div className={styles['cli-container']}>
         <div className={styles['title']}>Concentrated Liquidity Multiplier<span className={props.pageStyle['help-icon']}>
-      <ToolTip textStyle={{width: "450px", height: "fill-content", left:"-450px", top: "20px", border: props.page === 'perpetual' ? "0.5px solid black" : ""}} 
+      <ToolTip textStyle={{width: "450px", height: "fill-content", left:"-450px", top: "20px", border: props.page === 'perpetual' ? "0.5px solid black" : "", textAlign: "left"}} 
             buttonStyle={{width: 15, height: 15}} text={HelpText[props.page].CLM}>?</ToolTip>
       </span></div>
         <div className={styles['cli-value-container']}>
@@ -74,7 +74,7 @@ export const StrategyRangeSize = (props) => {
     <div className={`${styles['range-sizes-outer-container']} `}>
       <div className={styles['title']}>Range size
       <span className={props.pageStyle['help-icon']}>
-      <ToolTip textStyle={{width: "250px", height: "fill-content", left:"-250px", top: "20px", border: props.page === 'perpetual' ? "0.5px solid black" : ""}} 
+      <ToolTip textStyle={{width: "250px", height: "fill-content", left:"-250px", top: "20px", border: props.page === 'perpetual' ? "0.5px solid black" : "", textAlign: "left"}} 
             buttonStyle={{width: 15, height: 15}} text={HelpText[props.page].rangeSize}>?</ToolTip>
       </span>
       </div>
@@ -142,7 +142,7 @@ export const StrategyTokenRatio = (props) => {
     <div>
       <div className={styles['title']}>Token Ratio
       <span className={props.pageStyle['help-icon']}>
-      <ToolTip textStyle={{width: "450px", height: "fill-content", left:"-450px", top: "20px", border: props.page === 'perpetual' ? "0.5px solid black" : ""}} 
+      <ToolTip textStyle={{width: "450px", height: "fill-content", left:"-450px", top: "20px", border: props.page === 'perpetual' ? "0.5px solid black" : "", textAlign: "left"}} 
             buttonStyle={{width: 15, height: 15}} text={HelpText[props.page].tokenRatio}>?</ToolTip>
       </span>
       

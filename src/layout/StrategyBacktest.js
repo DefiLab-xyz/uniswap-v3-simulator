@@ -267,7 +267,7 @@ const StrategyBacktest = (props) => {
         <RangeSlider className={styles['range-slider-backtest-days']} handleInputChange={handleDaysChange} min={5} max={30} value={days} step={1}></RangeSlider>
         <span style={{fontSize:12}}>Last {days} days &nbsp; |  &nbsp;{entryPrice && entryPrice > 0 ? `Entry price: ${parsePrice(entryPrice)} ${baseToken.symbol}` : ""}</span>
         <span className={props.pageStyle['help-icon']}>
-        <ToolTip textStyle={{width: "450px", height: "fill-content", left:"-450px", top: "20px", border: props.page === 'perpetual' ? "0.5px solid black" : ""}} 
+        <ToolTip textStyle={{width: "450px", height: "fill-content", left:"-450px", top: "20px", border: props.page === 'perpetual' ? "0.5px solid black" : "", textAlign: "left"}} 
             buttonStyle={{width: 15, height: 15}} text={HelpText[props.page].backtest}>?</ToolTip>
       </span>
       </div>

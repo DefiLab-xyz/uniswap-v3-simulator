@@ -33,7 +33,7 @@ const Title = (props) => {
   return (
     <div class={`title ${styles['title']}`}>
       <span>{title}</span><span className={props.pageStyle['help-icon']}>
-      <ToolTip textStyle={{width: "450px", height: "fill-content", left:"-0px", top: "20px", border: props.page === 'perpetual' ? "0.5px solid black" : ""}} 
+      <ToolTip textStyle={{width: "450px", height: "fill-content", left:"-0px", top: "20px", border: props.page === 'perpetual' ? "0.5px solid black" : "", textAlign: "left"}} 
             buttonStyle={{width: 15, height: 15}} text={HelpText[props.page].chart1}>?</ToolTip>
       </span>
     </div>

@@ -12,7 +12,7 @@ const Stat = (props) => {
   <Fragment>
       <div className={`${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"} ${styles['stat-container']} ${styles[`stat-${props.row}`]}`}>{props.stat}</div>
       <div className={`${styles['stat-container']} ${styles['stat-label']} ${styles[`stat-label-${props.row}`]}`}>{props.label}</div>
-      <div className={`${styles['stat-container']} ${props.pageStyle[`help-icon`]} ${styles[`stat-help-${props.row}`]}`} ><ToolTip textStyle={{width: "400px", height: "fill-content", left:"-450px", top: "20px"}} 
+      <div className={`${styles['stat-container']} ${props.pageStyle[`help-icon`]} ${styles[`stat-help-${props.row}`]}`} ><ToolTip textStyle={{width: "400px", height: "fill-content", left:"-450px", top: "20px", textAlign: "left"}} 
       buttonStyle={{width: 15, height: 15}} text={props.helpText}>?</ToolTip></div>
   </Fragment>);
 }
