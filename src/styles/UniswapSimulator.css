@@ -42,6 +42,7 @@
 
   --button-border-light:  1px 1px 2px #BABECC, -1px -1px 2px #f7f5fe;
   --button-border-selected-light: inset 1px 1px 2px #babecc, inset -1px -1px 2px #f7f5fe;
+  --button-border-active-light: inset -1px -1px 1px #fff, inset 1px 1px 1px #babecc;
   --button-border-hover-light: 1px 1px 1px #fff, -1px -1px 1px #babecc;
 
 }
@@ -78,6 +79,7 @@
   --button-selected-background-dark : var(--semi-transparent-medium-dark);
   --button-border-dark: 1px 1px 2px rgba(0, 0, 0, 0.4), -1px -1px 2px rgba(49, 54, 58, 0.4);
   --button-border-selected-dark: inset 1px 1px 2px rgba(0, 0, 0, 0.4), inset -1px -1px 2px rgba(49, 54, 58, 0.4);
+  --button-border-active-dark: inset -1px -1px 1px var(--light-grey), inset 1px 1px 1px #babecc;
   --button-border-hover-dark: 0.5px 0.5px 0.5px var(--light-grey), -0.5px -0.5px 0.5px #babecc;
 
 }
@@ -105,6 +107,7 @@
   --input-background: var(--input-background-light);
   --button-selected-background : var(--button-selected-background-light);
   --button-border-selected: var(--button-border-selected-light);
+  --button-border-active: var(--button-border-active-light);
   --button-border-hover: var(--button-border-hover-light);
 }
 

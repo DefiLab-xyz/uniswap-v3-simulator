@@ -231,29 +231,7 @@ const StrategyBacktest = (props) => {
   }
 
   const handleLiquidationLines = (data) => {
-
     setLiquidationData(data);
-
-    console.log(data);
-    const liquidationLinesTemp = [];
-    if (data && data.dash && data.dash.length) {
-      data.dash.forEach((d, i) => {
-        if (d === true && data.data[i] && data.data[i].length > 0) {
-
-          let l1 = data.data[i][0].x;
-          let l2 = data.data[i][data.data[i].length - 1].x;
-          console.log(l1, l2, entryPrice)
-          if ( l1 && l2 < entryPrice) {
-            liquidationLinesTemp.push({y: l2, color:  data.colors[i]})
-          }
-          else {
-            liquidationLinesTemp.push({y: l1, color:  data.colors[i]})
-          }     
-
-        }
-      });
-      console.log(liquidationLinesTemp)
-    }
   }
 
   // Generate data to display the point of liquidation on Daily prices chart
@@ -261,7 +239,8 @@ const StrategyBacktest = (props) => {
     const liquidationLinesTemp = [];
     if (liquidationData && liquidationData.dash && liquidationData.dash.length && entryPrice > 0) {
       liquidationData.dash.forEach((d, i) => {
-        if (d === true && liquidationData.data[i] && liquidationData.data[i].length > 0) {
+        const strategy = editableStrategyRanges.find(sR => sR.color === liquidationData.colors[i]);
+        if (d === true && liquidationData.data[i] && liquidationData.data[i].length > 0 && strategy && strategy.leverage > 1) {
 
           let l1 = liquidationData.data[i][0].x;
           let l2 = liquidationData.data[i][liquidationData.data[i].length - 1].x;
@@ -276,10 +255,7 @@ const StrategyBacktest = (props) => {
       });
       setLiquidationLines(liquidationLinesTemp);
     }
-
-
-
-  }, [liquidationData, entryPrice])
+  }, [liquidationData, entryPrice, editableStrategyRanges]);
 
   return (
     <div className={`${styles['strategy-backtest-container']}
@@ -318,10 +294,13 @@ const StrategyBacktest = (props) => {
         <BacktestIndicators page={props.page} pageStyle={props.pageStyle} className={styles["backtest-indicators"]} data={selectedIndicatorsData} loading={dataLoading} supressFields={props.supressIndicatorFields}></BacktestIndicators>
         
         {
-        props.page === 'perpetual' ? <DailyPriceChart page={props.page} pageStyle={props.pageStyle} className={styles['daily-prices']} days={days} minMaxVals={liquidationLines.map(d => d.y)}>
+        props.page === 'perpetual' ? <DailyPriceChart page={props.page} pageStyle={props.pageStyle} className={styles['daily-prices']} days={days} 
+        minMaxVals={liquidationLines.map(d => d.y)}>
           {
-            liquidationLines.map( d => {
-              return d && d.y ? <Line className={styles["liquidation-line"]} 
+            liquidationLines.map( (d, i) => {
+
+              return d && d.y ? 
+              <Line className={styles["liquidation-line"]} 
               useParentScale={true} data={{ y1: d.y, y2: d.y }} stroke={d.color}
               strokeWidth={1} strokeDasharray={"6 6"}>
               </Line> : <></>

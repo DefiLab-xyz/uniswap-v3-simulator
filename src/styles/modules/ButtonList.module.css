@@ -11,6 +11,7 @@
 .toggle-buttons-flex-container button {
   width: 100px;
   height: 20px;
+  font-size: 11px;
 }
 
 .toggle-button{
@@ -43,6 +44,7 @@
   width: 180px;
   height: 20px;
   z-index: 999;
+  font-size: 11px;
 }
 
 .button-list-flex-selected {

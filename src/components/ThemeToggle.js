@@ -23,9 +23,11 @@ const themeProperties = (mode) => {
       { setProperty: "--input-border", getProperty: "--input-border-dark"},
       { setProperty: "--button-border", getProperty: "--button-border-dark"},
       { setProperty: "--button-border-selected", getProperty: "--button-border-selected-dark"},
+      { setProperty: "--button-border-active", getProperty: "--button-border-active-dark"},
       { setProperty: "--button-selected-background", getProperty: "--button-selected-background-dark"},
       { setProperty: "--button-border-hover", getProperty: "--button-border-hover-dark"},
       { setProperty: "--input-background", getProperty: "--input-background-dark"},
+      { setProperty: "--toggle-background", getProperty: "--toggle-background-dark"},
     ],
     light: [
       { setProperty: "--background", getProperty: "--light"},
@@ -43,9 +45,11 @@ const themeProperties = (mode) => {
       { setProperty: "--input-border", getProperty: "--input-border-light"},
       { setProperty: "--button-border", getProperty: "--button-border-light"},
       { setProperty: "--button-border-selected", getProperty: "--button-border-selected-light"},
+      { setProperty: "--button-border-active", getProperty: "--button-border-active-light"},
       { setProperty: "--button-border-hover", getProperty: "--button-border-hover-light"},
       { setProperty: "--input-background", getProperty: "--input-background-light"},
       { setProperty: "--button-selected-background", getProperty: "--button-selected-background-light"},
+      { setProperty: "--toggle-background", getProperty: "--toggle-background-light"},
     ]
   }
 
@@ -92,7 +96,7 @@ const ThemeToggle = (props) => {
   return (
     <div className={props.className} style={props.style}>
       <label className={styles["toggle-wrapper"]} htmlFor="toggle">
-      <div className={`${styles["toggle"]} ${setDarkIsEnabled ? styles["enabled"] : styles["disabled"]}`}>
+      <div className={ darkIsEnabled ? `${styles["toggle"]} ${styles["enabled"]}` : styles["toggle"]}>
         <span className={styles["hidden"]}>
           {setDarkIsEnabled ? "Enable Light Mode" : "Enable Dark Mode"}
         </span>

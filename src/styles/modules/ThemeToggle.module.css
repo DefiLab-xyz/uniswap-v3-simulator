@@ -12,6 +12,10 @@
   --toggle-button-height: calc(var(--toggle-height) - (var(--toggle-height) * 0.3));
   --toggle-button-width: calc(var(--toggle-height) - (var(--toggle-height) * 0.3));
 
+  --toggle-background-light: rgba(255,241,245,1);
+  --toggle-background-dark: rgba(56, 53, 54);
+  --toggle-background: var(var(--toggle-background-light))
+
 }
 
 .toggle-wrapper {
@@ -38,7 +42,8 @@
   border-radius: 50%;
   height: var(--toggle-button-height);
   width: var(--toggle-button-width);
-  background: var(--background);
+  background: var(--toggle-background);
+  box-shadow: var(--button-border);
   position: absolute;
   z-index: 2;
   transform: translate(0);

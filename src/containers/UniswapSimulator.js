@@ -91,7 +91,8 @@ useEffect(() => {
           width={windowDim.width} minWidth={pageMinWidth}
           title="Uniswap V3 Strategy Simulator"
           themeProps={themeProps.uniswap}
-          pageStyle={styles}>
+          pageStyle={styles}
+          >
         </NavBar>
         <Grid className={styles["dashboard-container"]}
           rows={150} columns={62}

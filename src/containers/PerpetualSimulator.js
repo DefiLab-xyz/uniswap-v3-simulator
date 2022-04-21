@@ -82,6 +82,9 @@ useEffect(() => {
   docEl.style.setProperty("--bar-fill", "#FCD4D4");
   docEl.style.setProperty("--bar-stroke", "#FCD4D4");
   docEl.style.setProperty("--strategy-backtest-chart-span-column", 13);
+  docEl.style.setProperty("--button-border", "1px solid black");
+  docEl.style.setProperty("--button-border-hover", "none");
+ 
 
 }, []);
 
@@ -219,7 +222,7 @@ const isEnriched = () => {
       <div className={styles["parent-container"]}>
         <NavBar
           width={windowDim.width} minWidth={pageMinWidth}
-          themeToggleHidden={true}
+          themeToggleHidden={true} page="perpetual"
           title={<Fragment><span><img style={{height: 32, width: 32}} src={perplogo} alt="Perpetual Logo"></img></span><span>Perpetual Liquidity Strategy Simulator</span></Fragment>}
           themeProps={themeProps.uniswap}
           pageStyle={styles}>

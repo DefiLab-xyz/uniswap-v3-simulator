@@ -33,7 +33,8 @@ const NavMenu = (props) => {
     margin: "15px", 
     textAlign:"center",
     fill: '#4d5458',
-    padding:"15px"
+    padding:"15px",
+    border: props.page === 'perpetual' ? "1px solid black" : ""
   }
 
   const navItemData = NavData.navItems;
@@ -176,7 +177,7 @@ const NavBar = (props) => {
         <SocialLinks></SocialLinks>
         <ERC20Donation></ERC20Donation>
         <GitHubRepo darkMode={darkModeEnabled}></GitHubRepo>
-        <NavMenu></NavMenu>
+        <NavMenu page={props.page} pageStyle={props.pageStyle}></NavMenu>
       </div>   
    </Grid>
   )
@@ -201,8 +202,9 @@ const genStyles = (props) => {
       ...props.linkStyle 
     },
     themeToggle: {
-      gridColumn: "40 / span 4",
-      gridRow: "3 / span 1"
+      gridColumn: "42 / span 4",
+      gridRow: "3 / span 2",
+      marginTop: 2
     }
   };
 }

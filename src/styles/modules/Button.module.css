@@ -11,7 +11,8 @@ button {
 }
 
 button:hover {
-  box-shadow: -1.3px -1.3px 1.3px #fff, 1.3px 1.3px 1.3px #babecc;
+  box-shadow: var(--button-border-hover);
+  border: var(--button-border);
 }
 
 button:active {
