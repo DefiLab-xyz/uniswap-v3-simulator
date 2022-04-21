@@ -120,8 +120,8 @@ const GitHubRepo = (props) => {
   const [img, setImg] = useState(props.darkMode  ? GitHub : GitHubLight);
 
   useEffect(() => {
-    setImg(props.darkMode  ? GitHub : GitHubLight)
-  }, [props.darkMode]);
+    setImg(props.darkMode || props.page === 'perpetual' ? GitHub : GitHubLight)
+  }, [props.darkMode, props.page]);
 
   return (
     <ToolTip text={"GitHub Open Source Code Repo"} 
@@ -176,7 +176,7 @@ const NavBar = (props) => {
         <GitCoin></GitCoin>
         <SocialLinks></SocialLinks>
         <ERC20Donation></ERC20Donation>
-        <GitHubRepo darkMode={darkModeEnabled}></GitHubRepo>
+        <GitHubRepo darkMode={darkModeEnabled} page={props.page}></GitHubRepo>
         <NavMenu page={props.page} pageStyle={props.pageStyle}></NavMenu>
       </div>   
    </Grid>
