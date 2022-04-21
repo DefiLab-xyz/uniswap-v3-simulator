@@ -102,7 +102,7 @@ useEffect(() => {
           <PoolPriceLiquidity page="uniswap" pageStyle={styles}></PoolPriceLiquidity>
           <StrategyBacktest  page="uniswap" pageStyle={styles}></StrategyBacktest>
           <SideBar  page="uniswap" width={windowDim.width} minWidth={pageMinWidth} protocols={[0, 1, 2, 3]} leverageHidden={true} pageStyle={styles}></SideBar>
-          <DashBoard  page="uniswap" pageStyle={styles}></DashBoard>
+          <DashBoard page="uniswap" pageStyle={styles}></DashBoard>
         </Grid>
       </div>
     </div>

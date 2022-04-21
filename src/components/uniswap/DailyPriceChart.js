@@ -156,7 +156,6 @@ const StrategyOverlays = (props) => {
     if ( chartData && strategyRanges && pool && pool.normStd ) {
       const selectedStrategies = strategyRanges.filter(d => d.selected === true && d.id !== 'v2');
       const additionalChecks = props.minMaxVals ? props.minMaxVals : [];
-      console.log(props.minMaxVals)
       const yMax = Math.max(...chartData.map(d => d.high), ...selectedStrategies.map(d => d.inputs.max.value), ...additionalChecks);
       const yMin = Math.min(...chartData.map(d => d.low), ...selectedStrategies.map(d => d.inputs.min.value), ...additionalChecks);
 

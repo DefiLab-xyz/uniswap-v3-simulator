@@ -49,10 +49,10 @@
   padding-left: 0.5em;
 }
 
-.stat-1, .stat-label-1 { grid-row: 1 / span 1; }
-.stat-2, .stat-label-2 { grid-row: 2 / span 1; }
-.stat-3, .stat-label-3 { grid-row: 3 / span 1; }
+.stat-1, .stat-label-1, .stat-help-1 { grid-row: 1 / span 1; }
+.stat-2, .stat-label-2, .stat-help-2 { grid-row: 2 / span 1; }
+.stat-3, .stat-label-3, .stat-help-3 { grid-row: 3 / span 1; }
 
 .stat-1, .stat-2, .stat-3 { grid-column: 1 / span 4; }
-.stat-label-1, .stat-label-2, .stat-label-3 { grid-column: 5 / span 5; }
+.stat-label-1, .stat-label-2, .stat-label-3 { grid-column: 5 / span 4; }
 

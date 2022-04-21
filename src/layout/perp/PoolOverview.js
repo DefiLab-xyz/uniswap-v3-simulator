@@ -8,6 +8,8 @@ import { parsePrice, formatLargeNumber, round } from '../../helpers/numbers';
 import { calcCLI } from '../../helpers/uniswap/liquidity';
 import { selectYesterdaysPriceData, selectNormStd, selectLiquidity, selectBaseToken, selectQuoteToken } from '../../store/pool';
 import { selectProtocol } from '../../store/protocol';
+import ToolTip from '../../components/ToolTip';
+import HelpText from '../../data/HelpText';
 
 const StatContainer = (props) => {
 
@@ -32,15 +34,27 @@ const StatContainer = (props) => {
 
     return (
       <div className={styles['stat-container']}>
-        <label class={`${styles['stat-label-1']} sub-title`}>Base APR%</label>
+        <label class={`${styles['stat-label-1']} sub-title`}>Base APR%
+          <span><ToolTip textStyle={{width: "400px", height: "fill-content", left:"-450px", top: "20px", border: "0.5px solid black"}} 
+            buttonStyle={{width: 15, height: 15}} text={HelpText[props.page].baseFee}>?</ToolTip>
+          </span>
+        </label>
         <div class={`${styles['stat-1']} inner-glow`}>{`${lowerBase}% - ${upperBase}%`}</div>&nbsp;&nbsp;
-        <label class={`${styles['stat-label-2']} sub-title`}>Reward APR%</label>
+        <label class={`${styles['stat-label-2']} sub-title`}>Reward APR%
+        <span><ToolTip textStyle={{width: "400px", height: "fill-content", left:"-450px", top: "20px", border: "0.5px solid black"}} 
+            buttonStyle={{width: 15, height: 15}} text={HelpText[props.page].rewardAPR}>?</ToolTip>
+          </span>
+        </label>
         <div class={`${styles['stat-2']} inner-glow`}>{`${lowerReward}% - ${upperReward}%`}</div>
         <label class={`${styles['stat-label-3']} sub-title`}>Volume 24h</label>
         <div class={`${styles['stat-3']} inner-glow`}>{volume24H}</div>
         <label class={`${styles['stat-label-4']} sub-title`}>Fee 24h</label>
         <div class={`${styles['stat-4']} inner-glow`}>{formatLargeNumber(fee24h)}</div>
-        <label class={`${styles['stat-label-5']} sub-title`}>Volatility</label>
+        <label class={`${styles['stat-label-5']} sub-title`}>Volatility
+        <span><ToolTip textStyle={{width: "400px", height: "fill-content", left:"-450px", top: "20px", border: "0.5px solid black"}} 
+            buttonStyle={{width: 15, height: 15}} text={HelpText[props.page].volatility}>?</ToolTip>
+          </span>
+        </label>
         <div class={`${styles['stat-5']} inner-glow`}>{round(normStd, 2) + '%'}</div>
 
       </div>
@@ -103,7 +117,7 @@ const PoolOverview = (props) => {
     ${styles['pool-overview-container']}`}>
      
       <div className={styles["chart-container"]}>
-        <StatContainer stats={stats} marketStats={marketStats}></StatContainer>
+        <StatContainer page={props.page} pageStyle={props.pageStyle} stats={stats} marketStats={marketStats}></StatContainer>
         {/* <PoolStats poolStatsHidden={props.poolStatsHidden}></PoolStats> */}
       </div>
     </div>

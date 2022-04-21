@@ -7,7 +7,6 @@
   background-color: var(--tooltip-background);
   color:var(--font-color);
   outline: none;
-  box-shadow: var(--outer-glow);
   border: 0.2px solid var(--border-color);
   transition: all 0.2s ease-in-out;
   cursor: pointer;

@@ -14,6 +14,7 @@ import {  selectSelectedStrategyRanges } from '../store/strategyRanges';
 import { selectInvestment } from '../store/investment';
 import { selectSelectedEditableStrategyRanges, selectEditableStrategyRanges } from '../store/strategyRanges';
 import { selectTokenRatios } from '../store/tokenRatios'
+import HelpText from '../data/HelpText';
 
 import { BarChartGrouped } from '../components/charts/BarChart';
 import { MouseOverText } from '../components/charts/MouseOverMarker';
@@ -24,6 +25,8 @@ import RangeSlider from '../components/RangeSlider';
 import BacktestStrategyOverview from '../components/uniswap/BacktestStrategyOverview';
 import DailyPriceChart from '../components/uniswap/DailyPriceChart';
 import { Line } from '../components/charts/Line';
+import ToolTip from '../components/ToolTip';
+
 
 const fromDateForHourlyData = (days) => {
   const date = new Date();
@@ -33,7 +36,7 @@ const fromDateForHourlyData = (days) => {
 
 const StrategyToggle = (props) => {
   
-  const strategies = useSelector(selectSelectedEditableStrategyRanges);
+  const strategies = useSelector(selectEditableStrategyRanges);
 
   const buttons = strategies.map( d => {
     return {id: d.id, label: d.name, style: {color: d.color}}
@@ -45,7 +48,7 @@ const StrategyToggle = (props) => {
 
   return (
     <div className={styles["strategy-toggle-container"]}>
-      <ToggleButtonsFlex buttons={buttons} className={styles["strategy-toggle"]} handleToggle={handleToggle}></ToggleButtonsFlex>
+      <ToggleButtonsFlex page={props.page} pageStyle={props.pageStyle} buttons={buttons} className={styles["strategy-toggle"]} handleToggle={handleToggle}></ToggleButtonsFlex>
     </div>
    
   )
@@ -284,8 +287,13 @@ const StrategyBacktest = (props) => {
       ${props.pageStyle ? props.pageStyle["dashboard-section"] : "dashboard-section"}`} 
       onMouseLeave={() => { setMouseOverText([])}}>
       <div className={`title ${styles['strategy-backtest-title']}`}>
+        <span>{props.page === "uniswap" ? "Strategy Backtest" : ""}</span>
         <RangeSlider className={styles['range-slider-backtest-days']} handleInputChange={handleDaysChange} min={5} max={30} value={days} step={1}></RangeSlider>
         <span style={{fontSize:12}}>Last {days} days &nbsp; |  &nbsp;{entryPrice && entryPrice > 0 ? `Entry price: ${parsePrice(entryPrice)} ${baseToken.symbol}` : ""}</span>
+        <span className={props.pageStyle['help-icon']}>
+        <ToolTip textStyle={{width: "450px", height: "fill-content", left:"-450px", top: "20px", border: props.page === 'perpetual' ? "0.5px solid black" : ""}} 
+            buttonStyle={{width: 15, height: 15}} text={HelpText[props.page].backtest}>?</ToolTip>
+      </span>
       </div>
 
       <BarChartGrouped className={`${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"} ${styles['strategy-backtest-chart']}`}

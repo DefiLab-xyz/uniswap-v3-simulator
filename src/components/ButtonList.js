@@ -13,8 +13,9 @@ export const ToggleButtonsFlex = (props) => {
   const buttons = !props.buttons ? (<></>) :
   props.buttons.map((d, i) => {
     return ( 
-    <button  style={d.style}
-      onClick={() => handleToggle(d, i)} className={ selected === i ? `${styles["toggle-button-selected"]}` : `${styles["toggle-button"]}` }>
+    <button  style={ props.page === 'perpetual' ? { color: "black", fontSize: 12 } : d.style}
+      onClick={() => handleToggle(d, i)} 
+      className={selected === i? `${props.pageStyle['button']} ${props.pageStyle['selected']}` : `${props.pageStyle['button']}` }>
       {d.label}
     </button>
     );
@@ -40,7 +41,8 @@ export const ButtonListToggle = (props) => {
   props.buttons.map((d, i) => {
     return ( 
       <button  style={ props.page === 'perpetual' ? { color: "black", fontSize: 12 } : d.style}
-        onMouseDown={() => handleSelected(d, i)} className={ selected === i ? `${styles[`button-list-${props.type}`]} ${props.classNameButton}` : `${styles[`button-list-${props.type}`]} ${props.classNameButton}` }>
+        onMouseDown={() => handleSelected(d, i)} 
+        className={selected === i ? `${props.pageStyle['button']} ${props.pageStyle['selected']}` : `${props.pageStyle['button']}` }>
         { props.labelKey ? d[props.labelKey] : d.label || ""}
       </button>
     );
@@ -73,8 +75,9 @@ export const ButtonList = (props) => {
       {
          buttons && buttons.length ? buttons.map((d, i) => {
           return ( 
-            <button style={d.style}
-              onMouseDown={() => handleSelected(d, i)} className={ d.selected ? `${styles[`button-list-${props.type}-selected`]} ${props.classNameButton}` : `${styles[`button-list-${props.type}`]} ${props.classNameButton}` }>
+            <button style={{...d.style, width: 70}}
+              onMouseDown={() => handleSelected(d, i)} 
+              className={ d.selected ? `${styles[`button-list-${props.type}`]} ${props.pageStyle['button']} ${props.pageStyle['selected']}` : `${styles[`button-list-${props.type}`]} ${props.pageStyle['button']}` }>
               { props.labelKey ? d[props.labelKey] : d.label || ""}
             </button>
          )}) : <></>

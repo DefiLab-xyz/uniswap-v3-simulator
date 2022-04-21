@@ -1,11 +1,16 @@
 .toggle-buttons-flex-container, .button-list-flex-container {
   display: flex;
   align-items: bottom;
-  justify-content: flex-start;
+  justify-content: space-around;
   font-size: 14px; 
   font-weight: 500;
   /* margin-bottom: 5px; */
  
+}
+
+.toggle-buttons-flex-container button {
+  width: 100px;
+  height: 20px;
 }
 
 .toggle-button{
@@ -47,7 +52,6 @@
 
 .button-list-flex, .button-list-flex-selected {
   font-size: 10px;
-  padding: 5px;
   height: 25px;
   width: 100px;
   margin: 5px;

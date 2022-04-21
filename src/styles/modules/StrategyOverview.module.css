@@ -26,6 +26,8 @@
 .title {
   grid-row: 1 / span 1;
   grid-column: 1 / span 40;
+  display: flex;
+  align-items: center;
 }
 
 .strategy-chart {

@@ -18,32 +18,8 @@ input[type="range"] {
   accent-color: var(--font-color);
   fill: #DAC5E3;
   flood-color: #DAC5E3;
-  /* background-color: white; */
+
 }
-
-/* input[type=range]::-moz-range-progress {
-  background-color: #DAC5E3;
-}
-
-input[type=range]::-webkit-progress-value {
-  background-color: #DAC5E3;
-}  */
-
-
-
-/* input[type="range" i] {
-  accent-color: #DAC5E3;
-  color: white;
-} */
-
-/* input[type=range]:hover {
-  accent-color: #DAC5E3;
-} */
-
-/* input[type=range]:focus {
-  accent-color: #DAC5E3;
-} */
-
 
 :root {
 
@@ -197,10 +173,6 @@ input[type=range]::-webkit-progress-value {
   padding: 0;
 }
 
-/* .App {
-  background: var(--perp-background-linear);
-} */
-
 .App {
   font-family: 'Sk-Modernist', sans-serif;
   color: var(--perp-font-color);
@@ -282,8 +254,8 @@ svg {
 
 .button.selected {
   /* box-shadow: var(--perp-button-border-selected); */
-  border: 1px solid #DAC5E3;
-  background-color: #c9fdec;
+  border: 1px solid  #f38352;
+  background-color: #7afbd2;
   /* border: 0.9px solid black; */
 
 }
@@ -429,5 +401,9 @@ button.list-item:disabled {
 
 .tab-title {
   transform: skew(-45deg);
+}
+
+.help-icon button {
+  color: var(--black);
 }
 

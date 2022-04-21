@@ -6,11 +6,11 @@ const PoolOverview = (props) => {
 
   return (
     <div className={`${props.pageStyle["dashboard-section"]} ${props.pageStyle["outer-glow"]}  ${styles['pool-overview-container']}`}>
-      <Title pageStyle={props.pageStyle}></Title>
+      <Title page={props.page} pageStyle={props.pageStyle}></Title>
       <div className={styles["chart-container"]}>
-        <DailyVolume pageStyle={props.pageStyle}></DailyVolume>
-        <DailyTVL pageStyle={props.pageStyle}></DailyTVL>
-        <PoolStats pageStyle={props.pageStyle}></PoolStats>
+        <DailyVolume page={props.page} pageStyle={props.pageStyle}></DailyVolume>
+        <DailyTVL page={props.page} pageStyle={props.pageStyle}></DailyTVL>
+        <PoolStats page={props.page} pageStyle={props.pageStyle}></PoolStats>
       </div>
     </div>
   )

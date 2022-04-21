@@ -14,7 +14,7 @@ import { selectCurrentPrice, selectBaseToken, selectQuoteToken } from "../store/
 import { selectInvestment } from "../store/investment"
 import { selectStrategies, selectStrategiesByIds } from "../store/strategies"
 import { selectStrategyRanges, selectSelectedEditableStrategyRanges, selectEditableStrategyRanges, setTokenRatio } from "../store/strategyRanges"
-
+import HelpText from "../data/HelpText"
 // Components //
 import { ConcentratedLiquidityMultiplier, StrategyRangeSize, StrategyTokenRatio } from "../components/StrategyIndicators"
 import { ToggleButtonsFlex } from "../components/ButtonList"
@@ -22,6 +22,7 @@ import TokenRatioChart from "../components/uniswap/TokenRatioChart"
 import TokenValueSplitChart from "../components/uniswap/TokenValueSplitChart"
 import ImpermanentLossChart from "../components/uniswap/ImpermanentLossChart"
 import StrategyOverviewChart from "../components/uniswap/StrategyOverviewChart"
+import ToolTip from "../components/ToolTip"
 
 const Title = (props) => {
 
@@ -31,7 +32,10 @@ const Title = (props) => {
   `Asset Value (excl. fees) vs ${quoteToken.symbol} / ${baseToken.symbol} Price`
   return (
     <div class={`title ${styles['title']}`}>
-      <span>{title}</span>
+      <span>{title}</span><span className={props.pageStyle['help-icon']}>
+      <ToolTip textStyle={{width: "450px", height: "fill-content", left:"-0px", top: "20px", border: props.page === 'perpetual' ? "0.5px solid black" : ""}} 
+            buttonStyle={{width: 15, height: 15}} text={HelpText[props.page].chart1}>?</ToolTip>
+      </span>
     </div>
   );
 }
@@ -91,7 +95,7 @@ const PositionBreakdown = (props) => {
     return (
       <div class={`${props.pageStyle ? props.pageStyle["sub-title"] : "sub-title"} ${styles['position-breakdown-title']}`}>
         <span>{`Position Breakdown By`}</span>&nbsp;&nbsp;&nbsp;
-        <ToggleButtonsFlex buttons={buttons} className={styles["strategy-buttons"]} handleToggle={handleBreakdownToggle}></ToggleButtonsFlex>
+        <ToggleButtonsFlex page={props.page} pageStyle={props.pageStyle} buttons={buttons} className={styles["strategy-buttons"]} handleToggle={handleBreakdownToggle}></ToggleButtonsFlex>
       </div>
     );
   }

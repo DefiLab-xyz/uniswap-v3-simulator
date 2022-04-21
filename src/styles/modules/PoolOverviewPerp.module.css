@@ -110,7 +110,7 @@
 
 
 .stat-label-1, .stat-label-2, .stat-label-3, .stat-label-4, .stat-label-5{
-  display: grid;
+  display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;

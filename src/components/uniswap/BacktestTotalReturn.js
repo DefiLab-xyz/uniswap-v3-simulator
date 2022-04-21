@@ -17,12 +17,13 @@ const BacktestTotalReturnSelect = (props) => {
 
   useEffect(() => {
     setButtons(props.buttons.map( d => {
-      return {id: d.key, label: d.name, style: {}, selected: d.selected || false}
+      return {id: d.key, label: d.name, style: props.page === "uniswap" ? {color: d.color} : {border: `1.2px solid ${d.color}` }, selected: d.selected || false}
     }));
+  
   }, [props.buttons]);
 
  
-  return (<ButtonList  pageStyle={props.pageStyle} type="flex" buttons={buttons} handleSelected={props.handleSelected}></ButtonList>)
+  return (<ButtonList page={props.page} pageStyle={props.pageStyle} type="flex" buttons={buttons} handleSelected={props.handleSelected}></ButtonList>)
 }
 
 export const BacktestTotalReturn = (props) => {
@@ -123,7 +124,7 @@ export const BacktestTotalReturn = (props) => {
     <>
     <div className={props.classNameTitle}>
       <span>LP Total Return&nbsp;&nbsp;&nbsp;</span>
-      <BacktestTotalReturnSelect pageStyle={props.pageStyle} buttons={chartKeys} handleSelected={handleKeySelect}></BacktestTotalReturnSelect>
+      <BacktestTotalReturnSelect page={props.page} pageStyle={props.pageStyle} buttons={chartKeys} handleSelected={handleKeySelect}></BacktestTotalReturnSelect>
     </div>
     <LineChartStacked loading={props.loading} className={`${props.className ? props.className : ""} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`}
       data={chartData} domain={chartDomain} lineType="area" keys={selectedKeys}

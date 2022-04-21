@@ -6,11 +6,17 @@ import { round } from '../helpers/numbers'
 import React, { Fragment, useEffect, useState, useCallback } from 'react'
 import { genTokenRatios } from '../helpers/uniswap/strategies'
 import { selectTokenRatios, setTokenRatio } from '../store/tokenRatios'
+import HelpText from '../data/HelpText'
+import ToolTip from './ToolTip'
+
 export const ConcentratedLiquidityMultiplier = (props) => {
 
   return (
       <div className={styles['cli-container']}>
-        <div className={styles['title']}>Concentrated Liquidity Multiplier</div>
+        <div className={styles['title']}>Concentrated Liquidity Multiplier<span className={props.pageStyle['help-icon']}>
+      <ToolTip textStyle={{width: "450px", height: "fill-content", left:"-450px", top: "20px", border: props.page === 'perpetual' ? "0.5px solid black" : ""}} 
+            buttonStyle={{width: 15, height: 15}} text={HelpText[props.page].CLM}>?</ToolTip>
+      </span></div>
         <div className={styles['cli-value-container']}>
           {
             props.strategies.map(d => {
@@ -66,7 +72,12 @@ export const StrategyRangeSize = (props) => {
 
   return (
     <div className={`${styles['range-sizes-outer-container']} `}>
-      <div className={styles['title']}>Range Size</div>
+      <div className={styles['title']}>Range size
+      <span className={props.pageStyle['help-icon']}>
+      <ToolTip textStyle={{width: "250px", height: "fill-content", left:"-250px", top: "20px", border: props.page === 'perpetual' ? "0.5px solid black" : ""}} 
+            buttonStyle={{width: 15, height: 15}} text={HelpText[props.page].rangeSize}>?</ToolTip>
+      </span>
+      </div>
       <div className={`${styles['range-sizes-outer-container']} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`}>
         <MinMaxLabels></MinMaxLabels>
         {
@@ -129,7 +140,13 @@ export const StrategyTokenRatio = (props) => {
 
   return (
     <div>
-      <div className={styles['title']}>Token Ratio</div>
+      <div className={styles['title']}>Token Ratio
+      <span className={props.pageStyle['help-icon']}>
+      <ToolTip textStyle={{width: "450px", height: "fill-content", left:"-450px", top: "20px", border: props.page === 'perpetual' ? "0.5px solid black" : ""}} 
+            buttonStyle={{width: 15, height: 15}} text={HelpText[props.page].tokenRatio}>?</ToolTip>
+      </span>
+      
+      </div>
       <div className={` ${styles['token-ratio-container']} ${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"}`}>
         <div className={styles['token-ratio-base']} >{base.symbol ? base.symbol : ""}</div>
         <div className={styles['token-ratio-quote']}>{quote.symbol ? quote.symbol : ""}</div>

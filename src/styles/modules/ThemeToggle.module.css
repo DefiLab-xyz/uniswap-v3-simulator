@@ -24,7 +24,8 @@
 .toggle {
   height: var(--toggle-height);
   width: var(--toggle-width);
-  background: var(--foreground);
+  box-shadow: var(--button-border);
+  background: var(--tooltip-background);
   border-radius: 40px;
   position: relative;
   transition: background var(--transition);
@@ -45,7 +46,7 @@
   top: calc(var(--toggle-height) * 0.15);
   left: calc((var(--toggle-width) * 0.06));
   padding: 0;
-  margin: 0
+  margin: 0;
 }
 
 .toggle.enabled::before {
@@ -64,10 +65,11 @@
   align-items: center;
   height: 100%;
   margin: 0 5px;
+
 }
 
 .toggle .icons svg {
-  fill: var(--background);
+  fill: var(--font-color);
   height: var(--toggle-button-height);
   width: var(--toggle-button-width);
   z-index: 0;
