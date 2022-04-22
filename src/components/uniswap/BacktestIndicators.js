@@ -8,15 +8,15 @@ const displayField = (supressFields, fieldName) => {
 
 const fields = (baseToken, quoteToken, page) => {
 
-  return [{key: 'feeroi', label: "Fee ROI %"}, 
-  {key: 'apr', label: page === 'perpetual' ? "Fee APR% Proj." : "APR %"}, 
-  {key: 'assetval', label: "Asset Value"}, 
-  {key: 'total', label: "Total Return"}, 
-  {key: 'token0Fee', label: `${baseToken} collected`}, 
-  {key: 'token1Fee', label: `${quoteToken} collected`}, 
-  {key: 'feeUSD', label: "Total Fee in USD"}, 
-  {key: 'activeliquidity', label: "% Time in Range"}, 
-  {key: 'confidence', label: "BackTest Confidence"}] 
+  return [{key: 'feeroi', label: "Fee ROI %", percent: "%"}, 
+  {key: 'apr', label: page === 'perpetual' ? "Fee APR% Proj." : "APR %", percent: "%"}, 
+  {key: 'assetval', label: "Asset Value", percent: ""}, 
+  {key: 'total', label: "Total Return",  percent: "%"}, 
+  {key: 'token0Fee', label: `${baseToken} collected`,  percent: ""}, 
+  {key: 'token1Fee', label: `${quoteToken} collected`,  percent: ""}, 
+  {key: 'feeUSD', label: "Total Fee in USD",  percent: ""}, 
+  {key: 'activeliquidity', label: "% Time in Range",  percent: ""}, 
+  {key: 'confidence', label: "BackTest Confidence",  percent: ""}] 
 }
 
 const TableRows = (props) => {
@@ -28,7 +28,7 @@ const TableRows = (props) => {
          {
             props.fields.map(tF => {
               if (displayField(props.supressFields, tF.key)) {
-                return <td className={styles[`td-${props.page}`]}><div className={styles[`td-text-${props.page}`]}>{d.data[tF.key]}</div></td>
+                return <td className={styles[`td-${props.page}`]}><div className={styles[`td-text-${props.page}`]}>{d.data[tF.key]}{tF.percent}</div></td>
               }
             })
           }

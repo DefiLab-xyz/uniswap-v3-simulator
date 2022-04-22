@@ -5,6 +5,7 @@
   --strategy-backtest-chart-span: 15;
   --strategy-backtest-chart-span-column: 25;
   --backtest-indicators-row-span: 8;
+  --backtest-indicators-column-span: 25;
   --strategy-dropdown-button-span: 4;
 }
 
@@ -63,7 +64,7 @@
 
 .backtest-indicators {
   grid-row: 1 / span var(--backtest-indicators-row-span);
-  grid-column: 1 / span 13;
+  grid-column: 1 / span var(--backtest-indicators-column-span);
 }
 
 .backtest-indicators td, .backtest-indicators th {
