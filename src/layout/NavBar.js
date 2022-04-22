@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from "react-router-dom";
-
 import NavData from '../data/NavBar.json'
-
 import styles from '../styles/modules/NavBar.module.css'
 
 import { ReactComponent as  Twitter } from '../assets/twitter.svg'
@@ -14,7 +12,6 @@ import { ReactComponent as Hamburger } from '../assets/menu.svg'
 import GitHub from '../assets/GitHub.png'
 import GitHubLight from '../assets/GitHub-light.png'
 import QrCode from '../assets/qrcode.png'
-
 import ThemeToggle from '../components/ThemeToggle';
 import Grid from '../components/Grid'
 import ToolTip from '../components/ToolTip'
