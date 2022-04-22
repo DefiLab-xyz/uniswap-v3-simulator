@@ -35,13 +35,13 @@ const StatContainer = (props) => {
     return (
       <div className={styles['stat-container']}>
         <label class={`${styles['stat-label-1']} sub-title`}>Base APR%
-          <span><ToolTip textStyle={{width: "400px", height: "fill-content", left:"-450px", top: "20px", border: "0.5px solid black", textAlign: "left"}} 
+          <span><ToolTip textStyle={{width: "200px", height: "fill-content", left:"0px", top: "20px", border: "0.5px solid black", textAlign: "left"}} 
             buttonStyle={{width: 15, height: 15}} text={HelpText[props.page].baseFee}>?</ToolTip>
           </span>
         </label>
         <div class={`${styles['stat-1']} inner-glow`}>{`${lowerBase}% - ${upperBase}%`}</div>&nbsp;&nbsp;
         <label class={`${styles['stat-label-2']} sub-title`}>Reward APR%
-        <span><ToolTip textStyle={{width: "400px", height: "fill-content", left:"-450px", top: "20px", border: "0.5px solid black", textAlign: "left"}} 
+        <span><ToolTip textStyle={{width: "200px", height: "fill-content", left:"0px", top: "20px", border: "0.5px solid black", textAlign: "left"}} 
             buttonStyle={{width: 15, height: 15}} text={HelpText[props.page].rewardAPR}>?</ToolTip>
           </span>
         </label>
@@ -51,7 +51,7 @@ const StatContainer = (props) => {
         <label class={`${styles['stat-label-4']} sub-title`}>Fee 24h</label>
         <div class={`${styles['stat-4']} inner-glow`}>{formatLargeNumber(fee24h)}</div>
         <label class={`${styles['stat-label-5']} sub-title`}>Volatility
-        <span><ToolTip textStyle={{width: "400px", height: "fill-content", left:"-450px", top: "20px", border: "0.5px solid black", textAlign: "left"}} 
+        <span><ToolTip textStyle={{width: "400px", height: "fill-content", left:"-400px", top: "20px", border: "0.5px solid black", textAlign: "left"}} 
             buttonStyle={{width: 15, height: 15}} text={HelpText[props.page].volatility}>?</ToolTip>
           </span>
         </label>
