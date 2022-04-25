@@ -10,7 +10,7 @@ const fields = (baseToken, quoteToken, page) => {
 
   return [{key: 'feeroi', label: "Fee ROI %", percent: "%"}, 
   {key: 'apr', label: page === 'perpetual' ? "Fee APR% Proj." : "APR %", percent: "%"}, 
-  {key: 'assetval', label: "Asset Value", percent: ""}, 
+  {key: 'assetval', label: "Asset Value", percent: "%"}, 
   {key: 'total', label: "Total Return",  percent: "%"}, 
   {key: 'token0Fee', label: `${baseToken} collected`,  percent: ""}, 
   {key: 'token1Fee', label: `${quoteToken} collected`,  percent: ""}, 

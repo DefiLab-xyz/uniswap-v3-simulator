@@ -15,6 +15,7 @@ import StrategyBacktest from '../layout/StrategyBacktest';
 
 // Components //
 import Grid from "../components/Grid"
+import PerpLink from '../components/perpetual/PerpLink';
 
 // Data //
 import { poolById, poolByIds } from '../api/thegraph/uniPools'
@@ -86,8 +87,12 @@ useEffect(() => {
   docEl.style.setProperty("--button-border", "1px solid black");
   docEl.style.setProperty("--button-border-hover", "none");
   docEl.style.setProperty("--strategy-dropdown-button-span", 3);
- 
- 
+  docEl.style.setProperty("--sidebar-row", 4);
+  docEl.style.setProperty("--sidebar-sticky-position", '60px');
+  docEl.style.setProperty("--backtest-indicators-column-span", 13);
+  docEl.style.setProperty("--sidebar-sub-container-background", "none");
+  docEl.style.setProperty("--dashboard-section-background", "none");
+  
 
 }, []);
 
@@ -255,12 +260,14 @@ const isEnriched = () => {
           
           <StrategyBacktest chartDataOverride="leveraged" page="perpetual" pageStyle={styles} customFeeDivisor={3} supressIndicatorFields={['assetval', 'total', 'token0Fee', 'token1Fee']} amountKey={"amountTR"}
           totalReturnKeys={[{ key: 'amountTR', name: "Amount", selected: true, color: colors['perpetual']['tokenratio'][0] }, {key: 'feeAcc', name: "Fee", selected: true, color: colors['perpetual']['tokenratio'][1]}]}></StrategyBacktest>
+         
           <SideBar page="perpetual" pageStyle={styles} width={windowDim.width} minWidth={pageMinWidth} baseTokenHidden={true} protocols={[4]}
            strategies={['S1', 'S2']}
            customSearch={handleSearch}
            enrichedSearchData={enrichedSearchData}
            perpStatsData={perpStatsData}>
           </SideBar>
+          <PerpLink></PerpLink>
           <DashBoard page="perpetual" pageStyle={styles}></DashBoard>
         </Grid>
       </div>

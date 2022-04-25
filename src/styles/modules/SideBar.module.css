@@ -1,15 +1,25 @@
+:root {
+  --sidebar-row: 2;
+  --sidebar-sticky-position: 20px;
+
+  --sidebar-sub-container-background-light: rgba(175,129,228,.05);
+  --sidebar-sub-container-background-dark: transparent;
+  --sidebar-sub-container-background: var(--sidebar-sub-container-background-light);
+}
+
 .sidebar {
   grid-column: 2 / span 11;
-  grid-row: 2;
+  grid-row: var(--sidebar-row);
   height: fit-content;
   padding-top: 5px;
   padding-bottom: 20px; 
   position: sticky;
-  top: 20px;
+  top: var(--sidebar-sticky-position);
+  background-color: var(--dashboard-section-background);
 }
 
 .sub-container {
-  background-color: var(--semi-transparent-background);
+  background-color: var(--sidebar-sub-container-background);
   border: var(--border-color);
   border-radius: 15px;
   box-shadow:  var(--inner-glow);

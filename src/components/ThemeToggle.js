@@ -28,6 +28,8 @@ const themeProperties = (mode) => {
       { setProperty: "--button-border-hover", getProperty: "--button-border-hover-dark"},
       { setProperty: "--input-background", getProperty: "--input-background-dark"},
       { setProperty: "--toggle-background", getProperty: "--toggle-background-dark"},
+      { setProperty: "--dashboard-section-background", getProperty: "--dashboard-section-background-dark"},
+      { setProperty: "--sidebar-sub-container-background", getProperty: "--sidebar-sub-container-background-dark"},
     ],
     light: [
       { setProperty: "--background", getProperty: "--light"},
@@ -50,6 +52,8 @@ const themeProperties = (mode) => {
       { setProperty: "--input-background", getProperty: "--input-background-light"},
       { setProperty: "--button-selected-background", getProperty: "--button-selected-background-light"},
       { setProperty: "--toggle-background", getProperty: "--toggle-background-light"},
+      { setProperty: "--dashboard-section-background", getProperty: "--dashboard-section-background-light"},
+      { setProperty: "--sidebar-sub-container-background", getProperty: "--sidebar-sub-container-background-light"},
     ]
   }
 

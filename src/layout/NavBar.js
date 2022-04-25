@@ -195,12 +195,12 @@ const genStyles = (props) => {
       display: "flex", 
       justifyContent: "flex-end",
       gridColumn: "42 / span 17",
-      gridRow: "3 / span 1",
+      gridRow: "2 / span 1",
       ...props.linkStyle 
     },
     themeToggle: {
       gridColumn: "42 / span 4",
-      gridRow: "3 / span 2",
+      gridRow: "2 / span 2",
       marginTop: 2
     }
   };
