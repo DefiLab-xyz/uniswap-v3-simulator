@@ -6,7 +6,9 @@ export const roundToNearestTick = (value, feeTier, baseDecimal, quoteDecimal) =>
   const tickIDXRaw = logWithBase(valToLog,  1.0001);
   const tickIDX = round(tickIDXRaw / divider, 0) * divider;
   const tick = Math.pow(1.0001, tickIDX) / Math.pow(10, (quoteDecimal - baseDecimal));
-  return tick;
+
+  const m = -Math.floor( Math.log(tick) / Math.log(10) + 1);
+  return round(tick, m + 6);
   
 }
 
