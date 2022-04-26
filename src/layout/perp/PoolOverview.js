@@ -47,9 +47,9 @@ const StatContainer = (props) => {
         </label>
         <div class={`${styles['stat-2']} inner-glow`}>{`${lowerReward}% - ${upperReward}%`}</div>
         <label class={`${styles['stat-label-3']} sub-title`}>Volume 24h</label>
-        <div class={`${styles['stat-3']} inner-glow`}>{volume24H}</div>
+        <div class={`${styles['stat-3']} inner-glow`}>$ {volume24H}</div>
         <label class={`${styles['stat-label-4']} sub-title`}>Fee 24h</label>
-        <div class={`${styles['stat-4']} inner-glow`}>{formatLargeNumber(fee24h)}</div>
+        <div class={`${styles['stat-4']} inner-glow`}>$ {formatLargeNumber(fee24h)}</div>
         <label class={`${styles['stat-label-5']} sub-title`}>Volatility
         <span><ToolTip textStyle={{width: "400px", height: "fill-content", left:"-400px", top: "20px", border: "0.5px solid black", textAlign: "left"}} 
             buttonStyle={{width: 15, height: 15}} text={HelpText[props.page].volatility}>?</ToolTip>

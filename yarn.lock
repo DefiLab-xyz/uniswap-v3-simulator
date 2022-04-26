@@ -7072,7 +7072,7 @@
   "resolved" "https://registry.yarnpkg.com/json-stable-stringify-without-jsonify/-/json-stable-stringify-without-jsonify-1.0.1.tgz"
   "version" "1.0.1"
 
-"json-stringify-safe@~5.0.1":
+"json-stringify-safe@^5.0.1", "json-stringify-safe@~5.0.1":
   "integrity" "sha1-Epai1Y/UXxmg9s4B1lcB4sc1tus="
   "resolved" "https://registry.yarnpkg.com/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz"
   "version" "5.0.1"
@@ -9366,6 +9366,13 @@
   dependencies:
     "performance-now" "^2.1.0"
 
+"random-seed@^0.3.0":
+  "integrity" "sha1-2UXy4fOPSejViRNDG4v2u5N1Vs0="
+  "resolved" "https://registry.npmjs.org/random-seed/-/random-seed-0.3.0.tgz"
+  "version" "0.3.0"
+  dependencies:
+    "json-stringify-safe" "^5.0.1"
+
 "randombytes@^2.0.0", "randombytes@^2.0.1", "randombytes@^2.0.5", "randombytes@^2.1.0":
   "integrity" "sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ=="
   "resolved" "https://registry.yarnpkg.com/randombytes/-/randombytes-2.1.0.tgz"
@@ -11194,6 +11201,13 @@
   "integrity" "sha1-oVe6QC2iTpv5V/mqadUk7tQpAaY="
   "resolved" "https://registry.yarnpkg.com/tty-browserify/-/tty-browserify-0.0.0.tgz"
   "version" "0.0.0"
+
+"tumult@^3.0.14":
+  "integrity" "sha512-yjr0vcpBplZeVhbJgJbfkmODna+WA9eKUmXUuZ8uoVAPWyqSXkHSLjmvPS49X5U1/RIzuNiWAz3SJGrpCERKHA=="
+  "resolved" "https://registry.npmjs.org/tumult/-/tumult-3.0.14.tgz"
+  "version" "3.0.14"
+  dependencies:
+    "random-seed" "^0.3.0"
 
 "tunnel-agent@^0.6.0":
   "integrity" "sha1-J6XeoGs2sEoKmWZ3SykIaPD8QP0="
