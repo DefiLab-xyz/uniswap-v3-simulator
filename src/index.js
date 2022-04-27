@@ -19,7 +19,7 @@ render(
     <Provider store={Store}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<PerpetualSimulator/>}/>
+          <Route path="/" element={<Home/>}/>
           <Route path="/uniswapv3simulator" element={<UniswapSimulator page="uniswap"/>}/>
           <Route path="/perpetualsimulator" element={<PerpetualSimulator page="perpetual"/>}/>
           <Route path="/home" element={<Home/>}/>

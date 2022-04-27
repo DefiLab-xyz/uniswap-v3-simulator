@@ -1,6 +1,7 @@
-import logo from './../assets/logo.jpeg'
+import logo from './../assets/defilab.png'
 import uniswap from './../assets/uniswap-uni-logo.png'
 import polygon from './../assets/polygon.png'
+import perpetual from './../assets/perpetual-logo.svg'
 import NavBar from '../layout/NavBar';
 import { Link } from "react-router-dom";
 
@@ -44,14 +45,15 @@ useEffect(() => {
 
   return(
    <>
-   <Genart width={windowDim.width} height={windowDim.height}></Genart>
+   {/* <Genart width={windowDim.width} height={windowDim.height}></Genart> */}
    <div className={styles["home-container"]}>
     <div className={`${styles["home-container-half"]} ${styles["home-container-half-a"]}`}>
       <div className={styles["logo-container"]}>
+      <div><img style={{height: 65, width: 65, position: 'absolute', left: 40, top: 30}} src={logo} alt="Defi-lab logo"></img></div>
         <NavBar
          width={windowDim.width} minWidth={pageMinWidth}
           themeToggleHidden={true} page="perpetual"
-          title={<Fragment><span><img style={{height: 32, width: 32}} src={logo} alt="Defi-lab logo"></img></span><span>Defi Simulators and Analytics</span></Fragment>}
+          title={<Fragment></Fragment>}
           themeProps={themeProps.uniswap}
           pageStyle={stylesUni}>
         </NavBar>
@@ -68,9 +70,16 @@ useEffect(() => {
       <div className={styles["link-container"]}>
         <div className={styles["link-uniswap"]}>
         <Link to="/uniswapv3simulator"><button className={styles["logo-img-container"]}><img src={uniswap} alt="Uniswap V3 Simulator"></img></button></Link>
-         <div className={styles["link-uniswap-text-container"]}><div></div>
+        <div className={styles["link-uniswap-text-container"]}><div></div>
         <Link to="/uniswapv3simulator"><button>Uniswap V3 Simulator</button></Link></div>
         </div>
+
+        <div className={styles["link-uniswap"]}>
+        <Link to="/perpetualsimulator"><button className={styles["logo-img-container"]}><img src={perpetual} alt="Perpetual V2 Simulator"></img></button></Link>
+        <div className={styles["link-uniswap-text-container"]}><div></div>
+        <Link to="/perpetualsimulator"><button>Perpetual V2 Simulator</button></Link></div>
+        </div>
+
         <div className={styles["link-polygon"]}>
         <Link to="/polygon"><button className={styles["logo-img-container"]}>
             <img src={polygon} alt="Polyon Gas and Network Stats"></img>
