@@ -1,13 +1,16 @@
+import {useEffect} from 'react'
 const Grid = (props) => {
 
 const styles = genStyles(props);
+
 
   return (
       <div style={styles.gridContainer} className={props.className}>
         {props.children}
       </div>
   )
-}
+  
+  }
 
 const genStyles = (props) => {
 
@@ -18,6 +21,8 @@ const genStyles = (props) => {
   const gridWidth = Math.max(props.gridWidth, props.minWidth) || '500px';
   const cellWidth = (gridWidth / columns) - gap;
   const cellHeight = cellWidth * cellAR;
+
+  if(props.print) {console.log(props.gridWidth, gridWidth)}
 
   return {
     gridContainer: {

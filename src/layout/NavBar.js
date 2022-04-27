@@ -175,7 +175,9 @@ const NavBar = (props) => {
         <ERC20Donation></ERC20Donation>
         <GitHubRepo darkMode={darkModeEnabled} page={props.page}></GitHubRepo>
         <NavMenu page={props.page} pageStyle={props.pageStyle}></NavMenu>
-      </div>   
+       
+      </div>  
+      {props.children} 
    </Grid>
   )
 }

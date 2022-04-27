@@ -69,23 +69,23 @@ useEffect(() => {
         <span style={{color:"#E784BA"}}>Community &nbsp;</span></div>
       <div className={styles["link-container"]}>
         <div className={styles["link-uniswap"]}>
-        <Link to="/uniswapv3simulator"><button className={styles["logo-img-container"]}><img src={uniswap} alt="Uniswap V3 Simulator"></img></button></Link>
+        <Link onClick={() => this.forceUpdate} to="/uniswapv3simulator"><button className={styles["logo-img-container"]}><img src={uniswap} alt="Uniswap V3 Simulator"></img></button></Link>
         <div className={styles["link-uniswap-text-container"]}><div></div>
-        <Link to="/uniswapv3simulator"><button>Uniswap V3 Simulator</button></Link></div>
+        <Link onClick={() => this.forceUpdate} to="/uniswapv3simulator"><button>Uniswap V3 Simulator</button></Link></div>
         </div>
 
         <div className={styles["link-uniswap"]}>
-        <Link to="/perpetualsimulator"><button className={styles["logo-img-container"]}><img src={perpetual} alt="Perpetual V2 Simulator"></img></button></Link>
+        <Link onClick={() => this.forceUpdate} to="/perpetualsimulator"><button className={styles["logo-img-container"]}><img src={perpetual} alt="Perpetual V2 Simulator"></img></button></Link>
         <div className={styles["link-uniswap-text-container"]}><div></div>
-        <Link to="/perpetualsimulator"><button>Perpetual V2 Simulator</button></Link></div>
+        <Link onClick={() => this.forceUpdate} to="/perpetualsimulator"><button>Perpetual V2 Simulator</button></Link></div>
         </div>
 
         <div className={styles["link-polygon"]}>
-        <Link to="/polygon"><button className={styles["logo-img-container"]}>
+        <Link onClick={() => this.forceUpdate} to="/polygon"><button className={styles["logo-img-container"]}>
             <img src={polygon} alt="Polyon Gas and Network Stats"></img>
           </button></Link>
           <div className={styles["link-uniswap-text-container"]}><div>
-            </div><Link to="/polygon"><button>Polygon Gas & Network Stats</button></Link></div>
+            </div><Link onClick={() => this.forceUpdate} to="/polygon"><button>Polygon Gas & Network Stats</button></Link></div>
         </div>
       </div>
       <div className={styles["bg bg1"]}></div>

@@ -1,6 +1,7 @@
 import { genRandBetween } from "../helpers/numbers";
 import {useState, useEffect, useRef} from 'react'
-import tumult from 'tumult'
+import NoiseGenerator from 'png5'
+import { Line } from "./charts/Line";
 
 
 const useFrameTime = () => {
@@ -22,17 +23,15 @@ const useFrameTime = () => {
 
 const Genart = (props) => {
 
-  var strokeCol;
-  var strokeChange;
-  const perlin = new tumult.Perlin1();
+  const perlin = new NoiseGenerator()
   const frameTime = useFrameTime();
 
   const angle = useRef(-Math.PI / 2);
   const radius = useRef(1);
-  const radiusNoise = useRef(genRandBetween(0, 5));
-  const angleNoise = useRef(genRandBetween(0, 5));
-  const xNoise = useRef(genRandBetween(0, 10));
-  const yNoise = useRef(genRandBetween(0, 10)); 
+  const radiusNoise = useRef(genRandBetween(0, 5, 0));
+  const angleNoise = useRef(genRandBetween(0, 5, 0));
+  const xNoise = useRef(genRandBetween(0, 10, 0));
+  const yNoise = useRef(genRandBetween(0, 10, 0)); 
   const centX = useRef();
   const centY = useRef();
   const rad = useRef();
@@ -41,41 +40,72 @@ const Genart = (props) => {
   const x2 = useRef();
   const y1 = useRef();
   const y2 = useRef();
+  const strokeChange = useRef(-1);
+  const strokeCol = useRef(254);
   const [lines, setLines] = useState([]);
 
   useEffect(() => {
 
-    const tempLines = [...lines];
-    radiusNoise.current += 0.005;
-    angleNoise.current += 0.005;
-    radius.current = (perlin.gen(radiusNoise) * 550) + 1;
+    if (lines.length < 200) {
+      const tempLines = [...lines];
 
-    const newAngle = angle.current + (perlin.gen(angleNoise) * 6) - 3;
-    angle.current = newAngle > 360 ? angle.current - 360 :  newAngle < 0  ? angle.current = 360 : newAngle;
+      radiusNoise.current += 0.005;
+      angleNoise.current += 0.005;
+      radius.current = (perlin.getPerlinNoise(radiusNoise.current) * 550) + 1;
+  
+      angle.current += (perlin.getPerlinNoise(angleNoise.current) * 6) - 3;
 
-    xNoise.current += 0.01;
-    yNoise.current += 0.01;
-    centX.current = props.width / 2 + (perlin.gen(xNoise) * 100) - 50;
-    centY.current = props.height / 2 + (perlin.gen(yNoise) * 100) - 50;
+      if (angle.current > 360) {
+        angle.current -= 360;
+      }
+      if (angle.current < 0) {
+        angle.current += 360;
+      }
+  
+      xNoise.current += 0.01;
+      yNoise.current += 0.01;
 
-    rad.current = Math.rad(angle);
-    x1.current = centX.current + (radius.current * Math.cos(rad.current));
-    y1.current = centY.current + (radius.current * Math.sin(rad.current));
+      centX.current = props.width / 2 + (perlin.getPerlinNoise(xNoise.current) * 150) - 75;
+      centY.current = props.height / 2 + (perlin.getPerlinNoise(yNoise.current) * 150) - 75;
+     
+      rad.current = (angle.current * Math.PI) / 180.0;
+      x1.current = centX.current + (radius.current * Math.cos(rad.current));
+      y1.current = centY.current + (radius.current * Math.sin(rad.current));
+  
+      oppRad.current = rad.current + Math.PI;
+      x2.current = centX.current + (radius.current * Math.cos(oppRad.current));
+      y2.current = centY.current + (radius.current * Math.sin(oppRad.current));
 
-    oppRad.current = rad.current + Math.PI;
-    x2.current = centX.current + (radius.current * Math.cos(oppRad));
-    y2.current = centY.current + (radius.current * Math.sin(oppRad));
+      strokeCol.current += strokeChange.current;
+      if (strokeCol.current > 255) {
+        strokeChange.current *= -1;
+      }
+      if (strokeCol.current < 1) {
+        strokeChange.current *= -1;
+      }
 
-    tempLines.push({x1: x1, x2: x2, y1: y1, y2: y2 });
-    console.log(tempLines)
-    setLines(tempLines);
-
+      tempLines.push({x1: x1.current, x2: x2.current, y1: y1.current, y2: y2.current, opacity: genRandBetween(0.01, 0.2, 2), 
+        stroke: `rgb(${strokeCol.current}, ${strokeCol.current}, ${strokeCol.current})` });
+        console.log(strokeCol.current, strokeChange.current)
+      setLines(tempLines);
+    }
   }, [frameTime, props.height, props.width]);
 
 
   return (
-    <div style={{position: "absolute", width: 100, height: 100, top: 0, left: 0}}>
+    <div style={{position: "absolute", width: "100%", height: "100%", top: 0, left: 0}}>
       <svg height="100%" width="100%">
+        { lines.map( line => {
+         return <line className="gen-art-line" 
+         x1={line.x1}
+         x2={line.x2}
+         y1={line.y1}
+         y2={line.y2}
+         strokeWidth="0.5px"
+         stroke={line.stroke}
+        //  strokeOpacity={line.opacity}
+         ></line>
+        })}
       </svg>
     </div>
   )

@@ -28,7 +28,7 @@ const PerpVals = (props) => {
       <div className={styles["perp-vals-instructions"]}>
         <p>Provide liquidity for {quoteToken.symbol}/{baseToken.symbol} on Perpetual Protocol:</p>
           1. Go to Pool on <span className={styles['perp-url']}>
-          <a href={props.perpUrl} target="_blank" rel="noreferrer">Perp.com</a></span><br></br><br></br>
+          <a href={props.perpUrl} target="_blank" rel="noreferrer" className="perp-dot-com-url">Perp.com</a></span><br></br><br></br>
           2. Click <b>Connect wallet</b> if your wallet isn't connected already <br></br>
           3. Click <b>Add Liquidity</b> button<br></br>
           4. Choose the <b>Advanced</b> tab<br></br>
@@ -77,7 +77,7 @@ const PerpLink = (props) => {
 
   useEffect(() => {
     if (quoteToken && quoteToken.symbol) {
-      const url = `https://app.perp.com/pools/${quoteToken.symbol.slice(1)}:USD`;
+      const url = `https://app.perp.com/pools/${quoteToken.symbol.slice(1)}:USD?code=defi-lab`;
       setPerpUrl(url)
     }
   }, [quoteToken]);
@@ -91,12 +91,6 @@ const PerpLink = (props) => {
       </div>
       <div className={styles['perp-link-container']}>
         <button onClick={() => handleModalToggle(true)}>Provide Liquidity</button>
-       
-         
-          {/* <div className={styles['perp-url']}>
-            <a href={perpUrl} target="_blank" rel="noreferrer">Provide Liquidity on Perp.com</a>
-          </div> */}
-        
       </div>
   </Fragment>)
 }
