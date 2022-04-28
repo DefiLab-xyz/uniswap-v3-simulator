@@ -90,7 +90,8 @@ useEffect(() => {
           themeToggleHidden={true} page="perpetual"
           // title={<Logo></Logo>}
           themeProps={themeProps.uniswap}
-          pageStyle={styles}>
+          pageStyle={styles}
+          pageid="Polygon">
           <Logo></Logo>
          
         

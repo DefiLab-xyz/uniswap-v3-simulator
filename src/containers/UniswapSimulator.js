@@ -92,6 +92,7 @@ useEffect(() => {
           title="Uniswap V3 Strategy Simulator"
           themeProps={themeProps.uniswap}
           pageStyle={styles}
+          pageid="UniswapV3"
           >
         </NavBar>
         <Grid className={styles["dashboard-container"]}

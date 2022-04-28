@@ -55,7 +55,8 @@ useEffect(() => {
           themeToggleHidden={true} page="perpetual"
           title={<Fragment></Fragment>}
           themeProps={themeProps.uniswap}
-          pageStyle={stylesUni}>
+          pageStyle={stylesUni}
+          pageid="home">
         </NavBar>
       </div>
       <div className={styles["tag-line"]}>
@@ -79,13 +80,12 @@ useEffect(() => {
         <div className={styles["link-uniswap-text-container"]}><div></div>
         <Link onClick={() => this.forceUpdate} to="/perpetualsimulator"><button>Perpetual V2 Simulator</button></Link></div>
         </div>
-
         <div className={styles["link-polygon"]}>
-        <Link onClick={() => this.forceUpdate} to="/polygon"><button className={styles["logo-img-container"]}>
+        <Link onClick={() => this.forceUpdate} to="/polygonnow"><button className={styles["logo-img-container"]}>
             <img src={polygon} alt="Polyon Gas and Network Stats"></img>
           </button></Link>
           <div className={styles["link-uniswap-text-container"]}><div>
-            </div><Link onClick={() => this.forceUpdate} to="/polygon"><button>Polygon Gas & Network Stats</button></Link></div>
+            </div><Link onClick={() => this.forceUpdate} to="/polygonnow"><button>Polygon Gas & Network Stats</button></Link></div>
         </div>
       </div>
       <div className={styles["bg bg1"]}></div>

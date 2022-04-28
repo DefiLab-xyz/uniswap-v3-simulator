@@ -233,7 +233,8 @@ const isEnriched = () => {
           themeToggleHidden={true} page="perpetual"
           title={<Fragment><span><img style={{height: 32, width: 32}} src={perplogo} alt="Perpetual Logo"></img></span><span>Perpetual Liquidity Strategy Simulator</span></Fragment>}
           themeProps={themeProps.uniswap}
-          pageStyle={styles}>
+          pageStyle={styles}
+          pageid="PerpetualV2">
         </NavBar>
         <Grid className={styles["dashboard-container"]}
           rows={150} columns={62}

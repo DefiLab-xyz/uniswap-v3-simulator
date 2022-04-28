@@ -3,6 +3,6 @@
     {"name": "DefiLab Home", "id": "home", "link": "/home"},
     {"name": "Uniswap V3 Simulator", "id": "UniswapV3", "link": "/uniswapv3simulator"},
     {"name": "Perpetual V2 Simulator", "id": "PerpetualV2", "link": "/perpetualsimulator"},
-    {"name": "Polygon Now", "id": "Polygon", "link": "/home"}
+    {"name": "Polygon Now", "id": "Polygon", "link": "/polygonnow"}
   ]
 }

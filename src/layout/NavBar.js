@@ -34,7 +34,7 @@ const NavMenu = (props) => {
     border: props.page === 'perpetual' ? "1px solid black" : ""
   }
 
-  const navItemData = NavData.navItems;
+  const navItemData = NavData.navItems.filter( d => d.id !== props.pageid);
 
   const NavItems = () => {
     return (navItemData.map((item) => 
@@ -174,7 +174,7 @@ const NavBar = (props) => {
         <SocialLinks></SocialLinks>
         <ERC20Donation></ERC20Donation>
         <GitHubRepo darkMode={darkModeEnabled} page={props.page}></GitHubRepo>
-        <NavMenu page={props.page} pageStyle={props.pageStyle}></NavMenu>
+        <NavMenu page={props.page} pageStyle={props.pageStyle} pageid={props.pageid}></NavMenu>
        
       </div>  
       {props.children} 

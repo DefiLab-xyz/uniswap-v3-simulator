@@ -242,6 +242,14 @@ body {
   padding-right: 15px;
 }
 
+.link-uniswap-text-container button:hover {
+  box-shadow: none;
+}
+
+.link-uniswap-text-container:hover {
+  box-shadow: var(--button-border-hover)
+}
+
 .link-uniswap-text-container button {
   outline: none;
   border: none;
@@ -251,6 +259,7 @@ body {
   font-weight: 300;
   font-family: 'Barlow', serif;
   color: #2f698c;
+ 
   /* text-decoration: underline;
   text-decoration-thickness: 1px; */
   cursor: pointer;
