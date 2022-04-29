@@ -6,10 +6,20 @@ import { Store } from './store'
 import reportWebVitals from './reportWebVitals'
 import './styles/index.css';
 
+import ReactGA from "react-ga"
+
 import UniswapSimulator from './containers/UniswapSimulator';
 import PerpetualSimulator from './containers/PerpetualSimulator';
 import Home from './containers/Home';
 import PolygonNow from './containers/PolygonNow';
+
+
+//-----------------------------------------------------------------------------------------------
+// GOOGLE ANALYTICS
+//-----------------------------------------------------------------------------------------------
+
+ReactGA.initialize('UA-195992730-1');
+ReactGA.pageview(window.location.pathname);
 
 
 const rootElement = document.getElementById("root");
