@@ -148,20 +148,26 @@ export const filterTicks = (data, currentTick, refPrices, poolSelected, zoomLeve
 
 // Concentrated Liquidity Index //
 export const calcCLI = (data, normStd, pool, basePrice) => {
-  const CLIdata = [...data];
 
-  const percent = (100 - normStd) / 100;
-  const price = basePrice * percent;
+  if (data && data.length) {
+    const CLIdata = [...data];
 
-  const liquidity = Array.from(CLIdata, d => d.liquidity);
-  const totalSum = sumArray(liquidity);
-
-  const filteredData = filterTicks(CLIdata, parseFloat(CLIdata[0].pool.tick), [price], pool, 1); 
-  const filteredLiquidity = Array.from(filteredData, d => d.liquidity);
-  const filteredSum = sumArray(filteredLiquidity);
-
-  return (filteredSum / totalSum) * 100;
-
+    const percent = (100 - normStd) / 100;
+    const price = basePrice * percent;
+  
+    const liquidity = Array.from(CLIdata, d => d.liquidity);
+    const totalSum = sumArray(liquidity);
+  
+    const filteredData = filterTicks(CLIdata, parseFloat(CLIdata[0].pool.tick), [price], pool, 1); 
+    const filteredLiquidity = Array.from(filteredData, d => d.liquidity);
+    const filteredSum = sumArray(filteredLiquidity);
+  
+    return (filteredSum / totalSum) * 100;
+  }
+  else {
+    return 0;
+  }
+  
 }
 
 // Calculate the liquidity share for a strategy based on the number of tokens owned 
