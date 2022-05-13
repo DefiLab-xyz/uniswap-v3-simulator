@@ -139,7 +139,7 @@ export const pivotFeeData = (data, baseID, investment, leverage, tokenRatio) => 
 
 
 export const backtestIndicators = (data, investment, customCalc) => {
-  // hoverData.feeV / investment * 100
+
   let feeRoi = 0, token0Fee = 0, token1Fee = 0, feeUSD = 0, activeliquidity = 0, feeV = 0;
   if (data && data.length) {
 

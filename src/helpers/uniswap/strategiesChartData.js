@@ -24,9 +24,15 @@ export const genChartData = (currentPrice, investment, strategyRanges, strategie
 
   if (chartDataOverride === 'leveraged') {
 
-    const tokenCoeff = (chartData) => {
+    
 
-      const strategyRange = strategyRanges.find(sr => sr.id === chartData.id);
+    const tokenCoeff = (chartData, strategyRange) => {
+
+    //       hedging:
+    // amount: 1000
+    // leverage: 5.9
+    // type: "short"
+
       const leveragedInvestment = strategyRange.leverage * investment;
       
       const tokenRatio = genTokenRatios(chartData.data, currentPrice);
@@ -43,20 +49,26 @@ export const genChartData = (currentPrice, investment, strategyRanges, strategie
     });
 
     const chartData = chartDataTemp.map( cd => {
-      
+      const strategyRange = strategyRanges.find(sr => sr.id === cd.id);
       if ( cd.id === 'S1' || cd.id === 'S2') {
-        
-        const {x0, y0} = tokenCoeff(cd);
-        const test = tokenCoeff(cd);
+
+        console.log(strategyRange.hedging)
+        const {x0, y0} = tokenCoeff(cd, strategyRange) ;
+        const test = tokenCoeff(cd, strategyRange);
         const newData = cd.data.map( d => {
   
           const perpDebtVal = (x0 * parseFloat(d.x)) + y0;
           const impLoss = d.y - perpDebtVal;
+
+          const hedging = strategyRange.hedging; 
+          const impLossHedge = hedging.type === 'long' ? impLoss +  ( hedging.amount * hedging.leverage * ( (d.x - currentPrice) / currentPrice) )  :
+          hedging.type === 'short' ? impLoss + ( hedging.amount * hedging.leverage * (( (d.x - currentPrice) / currentPrice) * -1) )  : 0;
+
           const impPos = x0 - d.token;
           const notionalSize = Math.abs(impPos * d.x);
           const margin = (impLoss >= 0 && impLoss < 0.00001) ?  "∞" : ((parseFloat(investment) + parseFloat(impLoss)) / notionalSize) * 100;
   
-          return {...d, investment: investment, test: test, perpDebtVal: perpDebtVal, impLoss: impLoss, impPos: impPos, notionalSize: notionalSize, margin: margin, y: impLoss}
+          return {...d, investment: investment, test: test, perpDebtVal: perpDebtVal, impLoss: impLoss, impPos: impPos, notionalSize: notionalSize, margin: margin, y: impLossHedge }
         });
   
         cd[chartDataOverride] = newData;

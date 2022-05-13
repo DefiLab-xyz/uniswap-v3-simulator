@@ -6,11 +6,11 @@ import chartColors from "../data/colors.json";
 const initialState = [
 {id: "S1", name: "Strategy 1", color: chartColors['uniswap'].S1, 
   inputs: { min: { value: 1, name: "Min", label: "Min Range S1" }, max: {value: 1, name: "Max", label: "Max Range S1" } },
-  liquidityMultiplier: 1, selected: true, leverage: 1, rangesEditable: true, tokenratio: {token0: 0.5, token1: 0.5}
+  liquidityMultiplier: 1, selected: true, leverage: 1, rangesEditable: true, tokenratio: {token0: 0.5, token1: 0.5}, hedging: {type: "short", leverage: 1, amount: 0}
 }, 
 {id: "S2", name: "Strategy 2", color: chartColors['uniswap'].S2, 
   inputs:  { min: { value: 1, name: "Min", label: "Min Range S1" }, max: {value: 1, name: "Max", label: "Max Range S2" } },
-  liquidityMultiplier: 1, selected: false, leverage: 1, rangesEditable: true, tokenratio: {token0: 0.5, token1: 0.5}
+  liquidityMultiplier: 1, selected: false, leverage: 1, rangesEditable: true, tokenratio: {token0: 0.5, token1: 0.5}, hedging: {type: "short", leverage: 1, amount: 0}
 },
 {id: "v2", name: "Unbounded", color: chartColors['uniswap'].v2, 
   inputs:  { min: { value: Math.pow(1.0001, -887220), name: "Min", label: "Min Range V2" }, max: {value: Math.pow(1.0001, 887220), name: "Max", label: "Max Range V2" } },
@@ -139,6 +139,26 @@ export const strategyRanges = createSlice({
         state[index].leverage = parseFloat(action.payload.leverage);
       }
     },
+    setStrategyHedgingType: (state, action) => {
+  
+      const index = state.findIndex(i => i.id === action.payload.id);
+      if (index >= 0) {
+
+        state[index].hedging.type = action.payload.type;
+      }
+    }, 
+    setStrategyHedgingLeverage: (state, action) => {
+      const index = state.findIndex(i => i.id === action.payload.id);
+      if (index >= 0) {
+        state[index].hedging.leverage = parseFloat(action.payload.leverage);
+      }
+    }, 
+    setStrategyHedgingAmount: (state, action) => {
+      const index = state.findIndex(i => i.id === action.payload.id);
+      if (index >= 0) {
+        state[index].hedging.amount = parseFloat(action.payload.amount);
+      }
+    }, 
     setTokenRatio: (state, action) => {
       const index = state.findIndex(i => i.id === action.payload.id);
       if (index >=0) {
@@ -228,6 +248,7 @@ export const selectStrategyRangeMinMaxValues = state => {
 }
 
 export const { setStrategyRangeInputVal, setDefaultStrategyRangeInputVals, setStrategyLeverage,
-  crementStrategyRangeInputVal, toggleStrategyRangeInputVals, setStrategyRangeSelected, setTokenRatio, setStrategyRangeColors} = strategyRanges.actions;
+  crementStrategyRangeInputVal, toggleStrategyRangeInputVals, setStrategyRangeSelected, 
+  setTokenRatio, setStrategyRangeColors, setStrategyHedgingAmount, setStrategyHedgingLeverage, setStrategyHedgingType} = strategyRanges.actions;
 
 export default strategyRanges.reducer;
