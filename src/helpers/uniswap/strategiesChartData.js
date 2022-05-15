@@ -52,7 +52,6 @@ export const genChartData = (currentPrice, investment, strategyRanges, strategie
       const strategyRange = strategyRanges.find(sr => sr.id === cd.id);
       if ( cd.id === 'S1' || cd.id === 'S2') {
 
-        console.log(strategyRange.hedging)
         const {x0, y0} = tokenCoeff(cd, strategyRange) ;
         const test = tokenCoeff(cd, strategyRange);
         const newData = cd.data.map( d => {

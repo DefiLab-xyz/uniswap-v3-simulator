@@ -1,14 +1,15 @@
 import { useState, useRef, useEffect, Fragment } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import {selectBaseToken, selectFeeTier} from '../store/pool'
+import {selectPool, selectBaseToken, selectFeeTier, selectQuoteToken} from '../store/pool'
 import { selectInvestment } from '../store/investment';
 import { selectSelectedStrategyRanges, updateStrategyRangeInputVal, setStrategyRangeInputVal, 
-  setStrategyLeverage, selectStrategyRangeById, selectStrategyRanges, setStrategyHedgingAmount, setStrategyHedgingLeverage, setStrategyHedgingType } from '../store/strategyRanges'
+  setStrategyLeverage, selectStrategyRangeById, selectStrategyRanges, selectStrategyRangeType, setStrategyRangeType, setStrategyRangeInputPerc} from '../store/strategyRanges'
 import { CrementButton } from '../components/Button'
 import styles from '../styles/modules/SideBar.module.css'
-import {parsePrice} from '../helpers/numbers'
+import {parsePrice, round} from '../helpers/numbers'
 import Hedging from './Hedging';
 import { ButtonListToggle } from './ButtonList';
+import { roundToNearestTick } from '../helpers/uniswap/liquidity';
 
 const Leverage = (props) => {
 
@@ -39,41 +40,87 @@ const Leverage = (props) => {
 const StrategyInput = (props) => {
 
   const dispatch = useDispatch();
+  const baseToken = useSelector(selectBaseToken);
+  const quoteToken = useSelector(selectQuoteToken);
+  const pool = useSelector(selectPool);
   const strategyRanges = useSelector(selectStrategyRanges);
+  const type = useSelector(selectStrategyRangeType);
   const strategyRange = selectStrategyRangeById(strategyRanges, props.id);
   const inputRef = useRef();
   const [inputVal, setInputVal] = useState(parsePrice(props.inputVals.value));
-  const [oldInputVal, setOldInputVal] = useState()
+  const [inputPerc, setInputPerc] = useState(props.inputVals.percent);
+  const [oldInputVal, setOldInputVal] = useState();
+  const [oldInputPerc, setOldInputPerc] = useState();
   const feeTier = useSelector(selectFeeTier);
   const tick = props.inputVals.value * ((feeTier / 1000000) * 2);
+  
+  useEffect(() => {
+    console.log(strategyRanges)
+  }, [strategyRanges]);
 
   useEffect(() => {
     setInputVal(props.inputVals.value)
   }, [props.inputVals.value]);
 
   useEffect(() => {
+    setInputPerc(props.inputVals.percent)
+  }, [props.inputVals.percent]);
+
+  useEffect(() => {
     setOldInputVal(parsePrice(props.inputVals.value));
-  }, [])
+    setOldInputPerc(props.inputVals.percent);
+  }, []);
 
   const handleCrement = (crement) => {
-    dispatch(updateStrategyRangeInputVal({id: props.id, key: props.keyId, value: (parseFloat(inputRef.current.value) + (tick * crement)) }));
+
+    let value, percent;
+
+    if (type === 'amount') {
+       value = roundToNearestTick((parseFloat(inputRef.current.value) + (tick * crement)), pool.feeTier, baseToken.decimals, quoteToken.decimals);
+    }
+    else if (type === 'percent') {
+      
+      value = roundToNearestTick((baseToken.currentPrice + ( baseToken.currentPrice * parseFloat((parseFloat(inputRef.current.value) + crement) / 100))), pool.feeTier, baseToken.decimals, quoteToken.decimals);
+      console.log(value, inputRef.current.value + crement);
+    }
+
+    percent = round((( value - baseToken.currentPrice) / baseToken.currentPrice) * 100, 1);
+    dispatch(setStrategyRangeInputVal({id: props.id, key: props.keyId, value: value , percent: percent }));
   }
 
   const handleInputChange = (e) => {
-    dispatch(setStrategyRangeInputVal({id: props.id, key: props.keyId, value: e.target.value }));
+    if (type === 'amount') {
+      const percent = round(((e.target.value - baseToken.currentPrice) / baseToken.currentPrice) * 100, 1);
+      dispatch(setStrategyRangeInputVal({id: props.id, key: props.keyId, value: e.target.value, percent:  percent}));
+    }
+    else if ( type === 'percent') {
+      const value = baseToken.currentPrice + (baseToken.currentPrice * parseFloat(e.target.value / 100));
+      dispatch(setStrategyRangeInputPerc({id: props.id, key: props.keyId, percent: e.target.value, value: value }));
+    }
   }
 
   const handleBlur = (e) => {
-    const maxVal = strategyRange.inputs.max.value;
-    const minVal = strategyRange.inputs.min.value;
 
-    if ( (props.keyId === 'max' && maxVal < minVal)  ||  (props.keyId === 'min' && minVal > maxVal)) {
-      dispatch(updateStrategyRangeInputVal({id: props.id, key: props.keyId, value: oldInputVal }));
+    if (type === 'amount') { 
+      const maxVal = strategyRange.inputs.max.value;
+      const minVal = strategyRange.inputs.min.value;
+  
+      if ( (props.keyId === 'max' && maxVal < minVal)  ||  (props.keyId === 'min' && minVal > maxVal)) {
+        dispatch(updateStrategyRangeInputVal({id: props.id, key: props.keyId, value: oldInputVal }));
+        // dispatch(updateStrategyRangeInputPerc({id: props.id, key: props.keyId, value: oldInputPerc }));
+      }
+      else {
+        dispatch(updateStrategyRangeInputVal({id: props.id, key: props.keyId, value: e.target.value }));
+        setOldInputVal(e.target.value);
+      }
     }
-    else {
-      dispatch(updateStrategyRangeInputVal({id: props.id, key: props.keyId, value: e.target.value }));
-      setOldInputVal(e.target.value);
+
+    if (type === 'percent') {
+
+      console.log()
+
     }
+
   }
 
   return (
@@ -82,10 +129,9 @@ const StrategyInput = (props) => {
       <label className={styles["input-label"]} style={{marginLeft: 20, marginRight: 20}}>{props.inputVals.name}</label>
       <CrementButton type="incremement" onCrement={handleCrement}></CrementButton><br></br>
       <input ref={inputRef}
-        type="number" 
         className={`${props.pageStyle["input"]} ${styles["default-input"]}`} 
         label={props.inputVals.label} 
-        value={inputVal} 
+        value={type ===  'percent' ? inputPerc : inputVal} 
         onChange={(e) => handleInputChange(e)}
         onBlur={(e) => handleBlur(e)}>
       </input><br></br>
@@ -95,6 +141,7 @@ const StrategyInput = (props) => {
 const StrategyRange = (props) => {
 
   const strategies = useSelector(selectSelectedStrategyRanges);
+  const dispatch = useDispatch();
 
   const buttonList = [
     {id: "amount", label: "$", style: {color: "black", width: 25, padding: 5, margin: 5}},
@@ -102,7 +149,8 @@ const StrategyRange = (props) => {
   ]
 
   const handleAmountType = (e) => {
-    console.log(e)
+    dispatch(setStrategyRangeType(e.id));
+    console.log(e.id)
   }
 
   const containers = strategies.filter(strat => strat.id !== 'v2').map(strat => {
@@ -114,7 +162,6 @@ const StrategyRange = (props) => {
       </div>
       <StrategyInput pageStyle={props.pageStyle} inputVals={strat.inputs.min} id={strat.id} keyId={"min"}></StrategyInput>
       <StrategyInput pageStyle={props.pageStyle} inputVals={strat.inputs.max} id={strat.id} keyId={"max"}></StrategyInput>
-     
       </div>
       { props.leverageHidden ? <></> : <Leverage pageStyle={props.pageStyle} strategy={strat}></Leverage> }
       { props.leverageHidden ? <></> : <Hedging pageStyle={props.pageStyle} strategy={strat}></Hedging> }

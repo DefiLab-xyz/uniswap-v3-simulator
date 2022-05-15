@@ -17,7 +17,9 @@
   top: var(--sidebar-sticky-position);
   background-color: var(--dashboard-section-background);
   max-height: calc(var(--window-height) - 100px);
-  overflow: scroll;
+  overflow-x: visible;
+  overflow-y: scroll;
+ 
 }
 
 .sub-container {
