@@ -1,7 +1,12 @@
 import { useContext, useEffect, useState, useRef } from "react";
 
+//helpers 
+
+import { round } from "../../helpers/numbers";
+
 // redux store
 import { selectStrategyRanges, selectStrategyRangeById, updateStrategyRangeInputVal, validateStrategyRangeValue } from "../../store/strategyRanges";
+import { selectBaseToken } from "../../store/pool";
 
 // Components
 import { Lines } from "./LineChart"
@@ -12,6 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 const DoubleRangeHorizontal = (props) => {
 
   const dispatch = useDispatch();
+  const baseToken = useSelector(selectBaseToken);
   const chartContextData = useContext(ChartContext);
   const [xPosition, setXPosition] = useState();
   const dragging = useRef({id: "", key: "", dragging: false});
@@ -26,6 +32,7 @@ const DoubleRangeHorizontal = (props) => {
     dragging.current.dragging = false;
   };
 
+
   const onDrag = (e) => {
 
     if (dragging.current.dragging === true && props.scale && props.scale.x) {
@@ -33,7 +40,10 @@ const DoubleRangeHorizontal = (props) => {
 
       if (validateStrategyRangeValue(props.strategyRange, dragging.current.key, props.scale.x.invert(xEvent))) {
         setXPosition(xEvent);
-        dispatch(updateStrategyRangeInputVal({id: dragging.current.id, key: dragging.current.key, value: props.scale.x.invert(xEvent)}));
+        const value = props.scale.x.invert(xEvent);
+        const percent = round((( value - baseToken.currentPrice) / baseToken.currentPrice) * 100, 1);
+        console.log(baseToken)
+        dispatch(updateStrategyRangeInputVal({id: dragging.current.id, key: dragging.current.key, value: value, percent: percent}));
       }
     }
   }

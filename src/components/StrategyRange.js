@@ -54,16 +54,16 @@ const StrategyInput = (props) => {
   const feeTier = useSelector(selectFeeTier);
   const tick = props.inputVals.value * ((feeTier / 1000000) * 2);
   
-  useEffect(() => {
-    console.log(strategyRanges)
-  }, [strategyRanges]);
+  // useEffect(() => {
+  //   console.log(strategyRanges)
+  // }, [strategyRanges]);
 
   useEffect(() => {
-    setInputVal(props.inputVals.value)
+    setInputVal(props.inputVals.value);
   }, [props.inputVals.value]);
 
   useEffect(() => {
-    setInputPerc(props.inputVals.percent)
+    setInputPerc(props.inputVals.percent);
   }, [props.inputVals.percent]);
 
   useEffect(() => {
@@ -79,9 +79,7 @@ const StrategyInput = (props) => {
        value = roundToNearestTick((parseFloat(inputRef.current.value) + (tick * crement)), pool.feeTier, baseToken.decimals, quoteToken.decimals);
     }
     else if (type === 'percent') {
-      
       value = roundToNearestTick((baseToken.currentPrice + ( baseToken.currentPrice * parseFloat((parseFloat(inputRef.current.value) + crement) / 100))), pool.feeTier, baseToken.decimals, quoteToken.decimals);
-      console.log(value, inputRef.current.value + crement);
     }
 
     percent = round((( value - baseToken.currentPrice) / baseToken.currentPrice) * 100, 1);
@@ -94,34 +92,38 @@ const StrategyInput = (props) => {
       dispatch(setStrategyRangeInputVal({id: props.id, key: props.keyId, value: e.target.value, percent:  percent}));
     }
     else if ( type === 'percent') {
-      const value = baseToken.currentPrice + (baseToken.currentPrice * parseFloat(e.target.value / 100));
+      const value = parsePrice(baseToken.currentPrice + (baseToken.currentPrice * parseFloat(e.target.value / 100)));
       dispatch(setStrategyRangeInputPerc({id: props.id, key: props.keyId, percent: e.target.value, value: value }));
     }
   }
 
   const handleBlur = (e) => {
 
-    if (type === 'amount') { 
       const maxVal = strategyRange.inputs.max.value;
       const minVal = strategyRange.inputs.min.value;
   
       if ( (props.keyId === 'max' && maxVal < minVal)  ||  (props.keyId === 'min' && minVal > maxVal)) {
-        dispatch(updateStrategyRangeInputVal({id: props.id, key: props.keyId, value: oldInputVal }));
-        // dispatch(updateStrategyRangeInputPerc({id: props.id, key: props.keyId, value: oldInputPerc }));
+        dispatch(updateStrategyRangeInputVal({id: props.id, key: props.keyId, value: oldInputVal, percent: oldInputPerc }));
       }
       else {
-        dispatch(updateStrategyRangeInputVal({id: props.id, key: props.keyId, value: e.target.value }));
-        setOldInputVal(e.target.value);
+        if (type === 'amount') {
+          const percent = round(((e.target.value - baseToken.currentPrice) / baseToken.currentPrice) * 100, 1);
+          dispatch(updateStrategyRangeInputVal({id: props.id, key: props.keyId, value: e.target.value, percent: percent }));
+          setOldInputVal(e.target.value);
+          setOldInputPerc(percent);
+        }
+        else if (type === 'percent') {
+          const value = parsePrice(baseToken.currentPrice + (baseToken.currentPrice * parseFloat(e.target.value / 100)));
+          dispatch(setStrategyRangeInputPerc({id: props.id, key: props.keyId, percent: e.target.value, value: value }));
+          setOldInputVal(value);
+          setOldInputPerc(e.target.value);
+        }
       }
-    }
-
-    if (type === 'percent') {
-
-      console.log()
-
-    }
-
   }
+
+  useEffect(() => {
+    console.log(props.keyId , inputPerc, inputVal)
+  }, [type])
 
   return (
     <Fragment>
@@ -150,7 +152,6 @@ const StrategyRange = (props) => {
 
   const handleAmountType = (e) => {
     dispatch(setStrategyRangeType(e.id));
-    console.log(e.id)
   }
 
   const containers = strategies.filter(strat => strat.id !== 'v2').map(strat => {
