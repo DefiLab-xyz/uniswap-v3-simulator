@@ -2,7 +2,7 @@ import { Fragment, useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectBaseToken, selectPool, selectPoolDayData, selectPriceBase, selectPriceToken } from "../../store/pool";
 import { parsePrice } from "../../helpers/numbers";
-import { selectSelectedEditableStrategyRanges } from "../../store/strategyRanges";
+import { selectSelectedEditableStrategyRanges, selectStrategyRangeType } from "../../store/strategyRanges";
 import CandleChart from "../charts/CandleChart";
 import { ChartContext } from "../charts/ChartContainer";
 
@@ -73,12 +73,21 @@ const StrategyRangeOverlay = (props) => {
 const StrategyOverlays = (props) => {
 
   const chartContextData = useContext(ChartContext);
+  const strategyType = useSelector(selectStrategyRangeType);
+
+  const rangeValFromPercent = (currentPrice, strategy, key) => {
+    return parsePrice(currentPrice + (currentPrice * parseFloat(strategy.inputs[key].percent / 100)))
+  }
 
   if (props.strategyRanges && chartContextData && chartContextData.chartWidth && chartContextData.scale) {
     return (
       props.strategyRanges.map(d => {
+
+        const min = strategyType === 'percent' && props.entryPrice ? rangeValFromPercent(props.entryPrice, d, 'min') : d.inputs.min.value;
+        const max = strategyType === 'percent' && props.entryPrice ? rangeValFromPercent(props.entryPrice, d, 'max') : d.inputs.max.value;
+
         return <StrategyRangeOverlay 
-          line={{ x: 0, width: chartContextData.chartWidth , y: chartContextData.scale.y(d.inputs.max.value), height: chartContextData.scale.y(d.inputs.min.value) - chartContextData.scale.y(d.inputs.max.value)}}
+          line={{ x: 0, width: chartContextData.chartWidth , y: chartContextData.scale.y(max), height: chartContextData.scale.y(min) - chartContextData.scale.y(max)}}
           color={d.color}>
           </StrategyRangeOverlay>
       })
@@ -175,7 +184,7 @@ const StrategyOverlays = (props) => {
       data={chartData} domain={chartDomain}
       avgLine={false} chartProps={chartProps}
       mouseOverMarker={true}>
-        <StrategyOverlays strategyRanges={strategyRanges}></StrategyOverlays>
+        <StrategyOverlays strategyRanges={strategyRanges} entryPrice={props.entryPrice} ></StrategyOverlays>
         {props.children}
     </CandleChart>
   )

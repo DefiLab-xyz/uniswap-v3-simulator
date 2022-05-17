@@ -50,10 +50,14 @@ export const calcFees = (data, pool, baseID, liquidity, unboundedLiquidity, min,
 
     const date = new Date(d.periodStartUnix*1000);
 
+    if (date.getUTCMonth() === 4 && date.getUTCDate() === 9) {
+      console.log(d.periodStartUnix, d.close, feeUSD, activeLiquidity)
+    }
+    
     return {
       ...d,
-      day: date.getDate(),
-      month: date.getMonth(),
+      day: date.getUTCDate(),
+      month: date.getUTCMonth(),
       year: date.getFullYear(), 
       fg0 : fg[0],
       fg1 : fg[1],
@@ -133,6 +137,10 @@ export const pivotFeeData = (data, baseID, investment, leverage, tokenRatio) => 
       }
     }
   });
+
+  // pivot.forEach(d => {
+  //   console.log(d.date, "-", d.feeUSD, "-", d.activeliquidity)
+  // })
 
   return pivot;
 }
