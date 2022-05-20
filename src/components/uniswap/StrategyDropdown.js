@@ -43,9 +43,9 @@ const DropdownSelect = (props) => {
 //${props.pageStyle["button"]} ${props.pageStyle["selected"]}
     return (
       <Fragment>
-        <button className={`${buttonStyles["button-list-grid"]} ${props.pageStyle["button"]} ${props.pageStyle["selected"]}`} style={{color: props.page === 'perpetual' ? "black" : selected.style.color, textAlign: 'bottom', border: props.page === 'perpetual' ? "1px solid " + selected.style.color : ""}}
+        <button className={`${buttonStyles["button-list-grid"]} ${props.pageStyle["button"]}`} style={{color: props.page === 'perpetual' ? "black" : selected.style.color, textAlign: 'bottom', border: props.page === 'perpetual' ? "1px solid " + selected.style.color : "", backgroundColor: null}}
         onClick={toggleVisibility} onBlur={handleBlur}>{selected.name}</button>
-        <ButtonListToggle page={props.page} pageStyle={props.pageStyle} style={{visibility: visibility}} buttons={buttonList} labelKey="name" handleSelected={handleSelected} classNameButton={props.pageStyle["button"]} type="grid"></ButtonListToggle>
+        <ButtonListToggle page={props.page} pageStyle={props.pageStyle} style={{visibility: visibility}} buttons={buttonList} labelKey="name" handleSelected={handleSelected} classNameButton={props.pageStyle["button"]} type="grid" noSelected={true}></ButtonListToggle>
       </Fragment>
  
     )

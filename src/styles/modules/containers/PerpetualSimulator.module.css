@@ -22,7 +22,7 @@ input[type="range"] {
 }
 
 :root {
-
+  --window-height: 100px;
   --perp-purple: #CCBCFC;
   --perp-green: #5AFBC7;
   --perp-blue: #83E7F2;
@@ -241,7 +241,7 @@ svg {
 
 }
 
-.button:hover {
+.button:hover, .button.selected:hover {
   box-shadow: none;
   border: 1px solid #DAC5E3;
 }
@@ -254,8 +254,8 @@ svg {
 
 .button.selected {
   /* box-shadow: var(--perp-button-border-selected); */
-  border: 1px solid  #f38352;
-  background-color: #7afbd2;
+  border: 1px solid  black;
+  background-color: rgba(252, 212, 212, 0.4);
   /* border: 0.9px solid black; */
 
 }

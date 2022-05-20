@@ -41,6 +41,8 @@ const windowDim = useSelector(selectWindowDimensions);
 const dispatch = useDispatch();
 
 const handleResize = () => {
+  const docEl = document.documentElement;
+  docEl.style.setProperty("--window-height", parseInt(window.innerHeight) + "px");
   if (window.innerWidth >= pageMinWidth) {
     dispatch(setWindowDimensions({ width: window.innerWidth, height: window.innerHeight }));
   }

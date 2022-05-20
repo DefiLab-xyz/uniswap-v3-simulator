@@ -31,6 +31,7 @@
   top: 0;
   background: var(--semi-transparent-background);
   background-image: var(--background-linear-2);
+  position: absolute;
 }
 
 .results-container {

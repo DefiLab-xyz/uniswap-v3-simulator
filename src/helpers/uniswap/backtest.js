@@ -1,7 +1,7 @@
 import { calcUnboundedFees, getTickFromPrice, activeLiquidityForCandle, tokensFromLiquidity } from "./liquidity";
 import { round, parsePrice } from "../numbers";
 
-export const calcFees = (data, pool, baseID, liquidity, unboundedLiquidity, min, max, customFeeDivisor, leverage, investment, tokenRatio) => {
+export const calcFees = (data, pool, baseID, liquidity, unboundedLiquidity, min, max, customFeeDivisor, leverage, investment, tokenRatio, hedging) => {
 
   return data.map((d, i) => {
 
@@ -26,10 +26,14 @@ export const calcFees = (data, pool, baseID, liquidity, unboundedLiquidity, min,
     let fgV, feeV, feeUnb, amountV, feeUSD, amountTR;
     const latestRec = data[(data.length - 1)];
     const firstClose = baseID === 1 ? 1 / data[0].close : data[0].close;
+    const currentClose =  baseID === 1 ? 1 / d.close : d.close;
 
     const tokenRatioFirstClose = tokensFromLiquidity(firstClose, min, max, liquidity, pool.token0.decimals, pool.token1.decimals);
     const x0 = tokenRatioFirstClose[1];
     const y0 = tokenRatioFirstClose[0];
+
+     const impLossHedge = hedging.type === 'long' ? ( hedging.amount * hedging.leverage * ( (currentClose - firstClose) / firstClose) )  :
+     hedging.type === 'short' ? ( hedging.amount * hedging.leverage * (( (currentClose - firstClose) / firstClose) * -1) )  : 0;
 
     if (baseID === 0) {
       fgV = i === 0 ? 0 : fg[0] + (fg[1] * d.close);
@@ -37,7 +41,7 @@ export const calcFees = (data, pool, baseID, liquidity, unboundedLiquidity, min,
       feeUnb =  i === 0 ? 0 : feeUnb0 + (feeUnb1 * d.close);
       amountV = tokens[0] + (tokens[1] * d.close);
       feeUSD = feeV * parseFloat(latestRec.pool.totalValueLockedUSD) / ((parseFloat(latestRec.pool.totalValueLockedToken1) * parseFloat(latestRec.close) ) + parseFloat(latestRec.pool.totalValueLockedToken0) );
-      amountTR = investment + (amountV - ((x0 * d.close) + y0));
+      amountTR = (investment + (amountV - ((x0 * d.close) + y0))) + impLossHedge;
     }
     else if (baseID === 1) {
       fgV = i === 0 ? 0 : (fg[0] / d.close) + fg[1];
@@ -45,15 +49,15 @@ export const calcFees = (data, pool, baseID, liquidity, unboundedLiquidity, min,
       feeUnb =  i === 0 ? 0 : feeUnb0 + (feeUnb1 * d.close);
       amountV = (tokens[1] / d.close) + tokens[0];
       feeUSD = feeV * parseFloat(latestRec.pool.totalValueLockedUSD) / (parseFloat(latestRec.pool.totalValueLockedToken1) + (parseFloat(latestRec.pool.totalValueLockedToken0) / parseFloat(latestRec.close)));
-      amountTR = investment + (amountV - ((x0 * (1 / d.close)) + y0));
+      amountTR = (investment + (amountV - ((x0 * (1 / d.close)) + y0))) + impLossHedge;
     }
 
     const date = new Date(d.periodStartUnix*1000);
-
+    
     return {
       ...d,
-      day: date.getDate(),
-      month: date.getMonth(),
+      day: date.getUTCDate(),
+      month: date.getUTCMonth(),
       year: date.getFullYear(), 
       fg0 : fg[0],
       fg1 : fg[1],
@@ -134,12 +138,16 @@ export const pivotFeeData = (data, baseID, investment, leverage, tokenRatio) => 
     }
   });
 
+  // pivot.forEach(d => {
+  //   console.log(d.date, "-", d.feeUSD, "-", d.activeliquidity)
+  // })
+
   return pivot;
 }
 
 
-export const backtestIndicators = (data, investment, customCalc) => {
-  // hoverData.feeV / investment * 100
+export const backtestIndicators = (data, investment, customCalc, hedging) => {
+
   let feeRoi = 0, token0Fee = 0, token1Fee = 0, feeUSD = 0, activeliquidity = 0, feeV = 0;
   if (data && data.length) {
 
@@ -152,7 +160,7 @@ export const backtestIndicators = (data, investment, customCalc) => {
       activeliquidity += d.activeliquidity;
     });
   
-    feeRoi = customCalc ? feeV / investment * 100 : feeRoi / data[0].amountV * 100;
+    feeRoi = customCalc ? feeV / (investment + hedging.amount) * 100 : feeV / (data[0].amountV + hedging.amount) * 100;
     activeliquidity = activeliquidity / data.length;
     const apr = feeRoi * 365 / data.length;
     const asset =  ((data[(data.length - 1)].amountV - data[0].amountV) / data[0].amountV) * 100;

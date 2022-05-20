@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import StrategyOverviewChart from "./StrategyOverviewChart"
 import { selectInvestment } from '../../store/investment';
 import { selectStrategies, selectStrategiesByIds } from '../../store/strategies';
-import { selectStrategyRanges } from '../../store/strategyRanges';
+import { selectStrategyRanges, selectStrategyRangeType } from '../../store/strategyRanges';
 import { genChartData, genV3StrategyData } from "../../helpers/uniswap/strategiesChartData"
 import { selectPoolDayData } from '../../store/pool';
 import { maxInArray, minInArray } from '../../helpers/numbers';
@@ -13,6 +13,7 @@ const BacktestStrategyOverview = (props) => {
 
   const investment = useSelector(selectInvestment);
   const strategiesAll = useSelector(selectStrategies);
+  const strategyType = useSelector(selectStrategyRangeType)
   const [strategies, setStrategies] = useState(selectStrategiesByIds(strategiesAll, ["S1", "S2"])); 
   const strategyRanges = useSelector(selectStrategyRanges);
   const [chartData, setChartData] = useState();
@@ -24,9 +25,9 @@ const BacktestStrategyOverview = (props) => {
   const margin = {top: 20, right: 20, bottom: 30, left: 50};
 
   useEffect(() => {
-      const data = genChartData(props.currentPrice, investment, strategyRanges, strategies, "leveraged")
+      const data = genChartData(props.currentPrice, investment, strategyRanges, strategies, "leveraged", strategyType)
       setChartData(data);
-  }, [props.currentPrice, investment, strategyRanges, strategies]);
+  }, [props.currentPrice, investment, strategyRanges, strategies, strategyType]);
 
   // Generate Asset Value Chart's domain when chart data changes
   useEffect(() => {
@@ -44,9 +45,9 @@ const BacktestStrategyOverview = (props) => {
     // Generate V3 Strategy data used for drag controls when chart data or Strategy Range values change
     useEffect(() => {
       if (chartData) {
-        setV3StrategyData(genV3StrategyData(props.currentPrice, investment, strategyRanges, strategies, chartData, 'leveraged'));
+        setV3StrategyData(genV3StrategyData(props.currentPrice, investment, strategyRanges, strategies, chartData, 'leveraged', strategyType));
       }
-    }, [chartData, props.currentPrice, investment, props.chartDataOverride, strategies, strategyRanges]);
+    }, [chartData, props.currentPrice, investment, props.chartDataOverride, strategies, strategyRanges, strategyType]);
 
   return (
       <StrategyOverviewChart handleLiquidationLines={props.handleLiquidationLines} page={props.page} pageStyle={props.pageStyle} className={props.className} chartData={chartData} v3StrategyData={v3StrategyData} chartDomain={chartDomain} 

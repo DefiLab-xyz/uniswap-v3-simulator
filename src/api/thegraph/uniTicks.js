@@ -3,7 +3,7 @@ import { urlForProtocol, requestBody } from "./helpers";
 export const liquidityByPoolId = async (pool, signal, protocol) => {
 
   const query =  `query Ticks($pool: ID!) {
-      ticks (first: 1000, where:{pool:$pool}, orderBy: tickIdx) {
+      ticks (first: 1000, where:{ pool:$pool }, orderBy: tickIdx) {
           liquidityGross
           liquidityNet
           price0

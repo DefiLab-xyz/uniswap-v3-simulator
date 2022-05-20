@@ -16,13 +16,6 @@ const PerpVals = (props) => {
   const tokenRatios = useSelector(selectTokenRatios);
   const investment = useSelector(selectInvestment);
 
-  useEffect(() => {
-    console.log(tokenRatios);
-    console.log(`priceBase: ${priceBase}`);
-    console.log(baseToken);
-    console.log(quoteToken);
-  }, [tokenRatios]);
-
   return (
     <div className={styles["perp-vals-container"]}>
       <div className={styles["perp-vals-instructions"]}>

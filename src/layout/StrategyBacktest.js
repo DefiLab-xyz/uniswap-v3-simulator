@@ -10,7 +10,7 @@ import { getPoolHourData } from '../api/thegraph/uniPoolHourDatas';
 
 import { selectBaseToken, selectBaseTokenId, selectPool, selectPoolID } from '../store/pool';
 import { selectProtocolId } from '../store/protocol';
-import {  selectSelectedStrategyRanges } from '../store/strategyRanges';
+import {  selectSelectedStrategyRanges, selectStrategyRangeType } from '../store/strategyRanges';
 import { selectInvestment } from '../store/investment';
 import { selectSelectedEditableStrategyRanges, selectEditableStrategyRanges } from '../store/strategyRanges';
 import { selectTokenRatios } from '../store/tokenRatios'
@@ -82,6 +82,7 @@ const StrategyBacktest = (props) => {
   const baseToken = useSelector(selectBaseToken)
   const investment = useSelector(selectInvestment);
   const strategyRanges = useSelector(selectSelectedStrategyRanges);
+  const strategyType = useSelector(selectStrategyRangeType)
   const editableStrategyRanges = useSelector(selectSelectedEditableStrategyRanges);
   const tokenRatios = useSelector(selectTokenRatios);
   const [strategies, setStrategies] = useState();
@@ -106,14 +107,26 @@ const StrategyBacktest = (props) => {
     setDays(days);
   }
 
+  const rangeValFromPercent = (currentPrice, strategy, key) => {
+    return parsePrice(parseFloat(currentPrice) + (parseFloat(currentPrice) * parseFloat(strategy.inputs[key].percent / 100)))
+  }
 
-  const genChartData = (strategyRanges, pool, investment, price, hourlyPoolData, baseTokenId, customFeeDivisor) => {
+
+  const genChartData = (strategyRanges, pool, investment, price, hourlyPoolData, baseTokenId, customFeeDivisor, type) => {
+
     return strategyRanges.map(d => {
+
+      const min = type === 'percent' ? rangeValFromPercent(price, d, 'min') : d.inputs.min.value;
+      const max = type === 'percent' ? rangeValFromPercent(price, d, 'max') : d.inputs.max.value;
+
+      console.log(price, min, max)
+
       const tokenRatio = tokenRatios ? tokenRatios.find(t => d.id === t.id) : null;
-      const tokens = tokensForStrategy(d.inputs.min.value, d.inputs.max.value, investment * d.leverage, price, pool.token1.decimals - pool.token0.decimals);
-      const liquidity = liquidityForStrategy(price, d.inputs.min.value, d.inputs.max.value, tokens[0], tokens[1], pool.token0.decimals, pool.token1.decimals);
+      const tokens = tokensForStrategy(min, max, investment * d.leverage, price, pool.token1.decimals - pool.token0.decimals);
+      const liquidity = liquidityForStrategy(price, min, max, tokens[0], tokens[1], pool.token0.decimals, pool.token1.decimals);
       const unboundedLiquidity = liquidityForStrategy(price, Math.pow(1.0001, -887220), Math.pow(1.0001, 887220), tokens[0], tokens[1], pool.token0.decimals, pool.token1.decimals);
-      const fees = calcFees( hourlyPoolData, pool, baseTokenId, liquidity, unboundedLiquidity, d.inputs.min.value, d.inputs.max.value, customFeeDivisor || 1, d.leverage, investment, tokenRatio  );
+      const fees = calcFees( hourlyPoolData, pool, baseTokenId, liquidity, unboundedLiquidity, min, max, customFeeDivisor || 1, d.leverage, investment, tokenRatio, d.hedging );
+      console.log( baseTokenId, liquidity, unboundedLiquidity, min, max)
       return { id: d.id, name: d.name, color: d.color, data: pivotFeeData(fees, baseTokenId, investment, d.leverage, tokenRatio) } ;
     });
   }
@@ -142,9 +155,9 @@ const StrategyBacktest = (props) => {
     if (pool && pool.token0 && hourlyPoolData && hourlyPoolData.length && pool.id === hourlyPoolData[0].pool.id) {
       
       const startPrice = baseTokenId === 0 ? hourlyPoolData[0].close : 1 / hourlyPoolData[0].close;
-      setChartData(genChartData(strategies, pool, investment, startPrice,  hourlyPoolData, baseTokenId, props.customFeeDivisor));
+      setChartData(genChartData(strategies, pool, investment, startPrice,  hourlyPoolData, baseTokenId, props.customFeeDivisor, strategyType));
     }
-  }, [baseTokenId, hourlyPoolData, investment, pool, props.customFeeDivisor, strategies]);
+  }, [baseTokenId, hourlyPoolData, investment, pool, props.customFeeDivisor, strategies, strategyType]);
 
   // Generate chart data using selected Strategies. 
   // ChartData is restructured to fit into the required data structure for a grouped bar chart
@@ -186,7 +199,7 @@ const StrategyBacktest = (props) => {
     if (chartData && chartData.length) {
       const customCalc = props.customFeeDivisor ? true : false
       const indicators = chartData.map( cD => {
-        return {...cD, data: backtestIndicators(cD.data, investment, customCalc)};
+        return {...cD, data: backtestIndicators(cD.data, investment, customCalc, strategies.find(d => d.id === cD.id).hedging)};
       });
       setIndicatorsData(indicators);
     }
@@ -266,12 +279,33 @@ const StrategyBacktest = (props) => {
       onMouseLeave={() => { setMouseOverText([])}}>
       <div className={`title ${styles['strategy-backtest-title']}`}>
         <span>{props.page === "uniswap" ? "Strategy Backtest" : ""}</span>
+        
         <RangeSlider className={styles['range-slider-backtest-days']} handleInputChange={handleDaysChange} min={5} max={30} value={days} step={1}></RangeSlider>
-        <span style={{fontSize:12}}>Last {days} days &nbsp; |  &nbsp;{entryPrice && entryPrice > 0 ? `Entry price: ${parsePrice(entryPrice)} ${baseToken.symbol}` : ""}</span>
-        <span className={props.pageStyle['help-icon']}>
+        
+        <span className={props.pageStyle['help-icon']} style={{marginLeft: 0}}>
         <ToolTip textStyle={{width: "450px", height: "fill-content", left:"-450px", top: "20px", border: props.page === 'perpetual' ? "0.5px solid black" : "", textAlign: "left"}} 
             buttonStyle={{width: 15, height: 15}} text={HelpText[props.page].backtest}>?</ToolTip>
-      </span>
+        </span>
+        
+        <span style={{fontSize:12}}>Last {days} days &nbsp; |  &nbsp;{entryPrice && entryPrice > 0 ? `Entry price: ${parsePrice(entryPrice)} ${baseToken.symbol}` : ""}
+
+        {
+          editableStrategyRanges.map(d => {
+           return <span style={{fontSize:12}}>&nbsp;|  &nbsp; {d.name} &nbsp; Min:  {strategyType === 'percent' ? d.inputs.min.percent + '%' : d.inputs.min.value + " " + baseToken.symbol}
+           &nbsp; Max:  {strategyType === 'percent' ? d.inputs.max.percent + '%' : d.inputs.max.value + " " + baseToken.symbol}</span>
+          })
+        }
+        
+        </span>
+{/*         
+        {
+          editableStrategyRanges.map(d => {
+           return <span style={{fontSize:12}}>|  &nbsp; {d.name} &nbsp; Min:  {strategyType === 'percent' ? d.inputs.min.percent + '%' : d.inputs.min.value + " " + baseToken.symbol}
+           &nbsp; Max:  {strategyType === 'percent' ? d.inputs.max.percent + '%' : d.inputs.max.value + " " + baseToken.symbol}</span>
+          })
+        } */}
+        
+
       </div>
 
       <BarChartGrouped className={`${props.pageStyle ? props.pageStyle["inner-glow"] : "inner-glow"} ${styles['strategy-backtest-chart']}`}
@@ -296,7 +330,7 @@ const StrategyBacktest = (props) => {
         <BacktestIndicators page={props.page} pageStyle={props.pageStyle} className={styles["backtest-indicators"]} data={selectedIndicatorsData} loading={dataLoading} supressFields={props.supressIndicatorFields}></BacktestIndicators>
         
         {
-        props.page === 'perpetual' ? <DailyPriceChart page={props.page} pageStyle={props.pageStyle} className={styles['daily-prices']} days={days} 
+        props.page === 'perpetual' ? <DailyPriceChart entryPrice={entryPrice} page={props.page} pageStyle={props.pageStyle} className={styles['daily-prices']} days={days} 
         minMaxVals={liquidationLines.map(d => d.y)}>
           {
             liquidationLines.map( (d, i) => {

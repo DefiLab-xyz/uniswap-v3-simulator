@@ -15,7 +15,7 @@ export const ToggleButtonsFlex = (props) => {
     return ( 
     <button  style={ props.page === 'perpetual' ? { color: "black", fontSize: 12 } : d.style}
       onClick={() => handleToggle(d, i)} 
-      className={selected === i? `${props.pageStyle['button']} ${props.pageStyle['selected']}` : `${props.pageStyle['button']}` }>
+      className={selected === i && !props.noSelected? `${props.pageStyle['button']} ${props.pageStyle['selected']}` : `${props.pageStyle['button']}` }>
       {d.label}
     </button>
     );
@@ -42,7 +42,7 @@ export const ButtonListToggle = (props) => {
     return ( 
       <button  style={ props.page === 'perpetual' ? { color: "black", fontSize: 12, border: `1px solid ${d.style.color}` } : d.style}
         onMouseDown={() => handleSelected(d, i)} 
-        className={selected === i ? `${props.pageStyle['button']} ${props.pageStyle['selected']}` : `${props.pageStyle['button']}` }>
+        className={ selected === i && !props.noSelected ? `${props.pageStyle['button']} ${props.pageStyle['selected']}` : `${props.pageStyle['button']}` }>
         { props.labelKey ? d[props.labelKey] : d.label || ""}
       </button>
     );
@@ -77,7 +77,7 @@ export const ButtonList = (props) => {
           return ( 
             <button style={{...d.style, width: 70}}
               onMouseDown={() => handleSelected(d, i)} 
-              className={ d.selected ? `${styles[`button-list-${props.type}`]} ${props.pageStyle['button']} ${props.pageStyle['selected']}` : `${styles[`button-list-${props.type}`]} ${props.pageStyle['button']}` }>
+              className={ d.selected && !props.noSelected ? `${styles[`button-list-${props.type}`]} ${props.pageStyle['button']} ${props.pageStyle['selected']}` : `${styles[`button-list-${props.type}`]} ${props.pageStyle['button']}` }>
               { props.labelKey ? d[props.labelKey] : d.label || ""}
             </button>
          )}) : <></>
