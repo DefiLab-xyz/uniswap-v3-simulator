@@ -108,7 +108,7 @@ const StrategyBacktest = (props) => {
   }
 
   const rangeValFromPercent = (currentPrice, strategy, key) => {
-    return parsePrice(currentPrice + (currentPrice * parseFloat(strategy.inputs[key].percent / 100)))
+    return parsePrice(parseFloat(currentPrice) + (parseFloat(currentPrice) * parseFloat(strategy.inputs[key].percent / 100)))
   }
 
 
@@ -119,11 +119,13 @@ const StrategyBacktest = (props) => {
       const min = type === 'percent' ? rangeValFromPercent(price, d, 'min') : d.inputs.min.value;
       const max = type === 'percent' ? rangeValFromPercent(price, d, 'max') : d.inputs.max.value;
 
+      console.log(price, min, max)
+
       const tokenRatio = tokenRatios ? tokenRatios.find(t => d.id === t.id) : null;
       const tokens = tokensForStrategy(min, max, investment * d.leverage, price, pool.token1.decimals - pool.token0.decimals);
       const liquidity = liquidityForStrategy(price, min, max, tokens[0], tokens[1], pool.token0.decimals, pool.token1.decimals);
       const unboundedLiquidity = liquidityForStrategy(price, Math.pow(1.0001, -887220), Math.pow(1.0001, 887220), tokens[0], tokens[1], pool.token0.decimals, pool.token1.decimals);
-      const fees = calcFees( hourlyPoolData, pool, baseTokenId, liquidity, unboundedLiquidity, min, max, customFeeDivisor || 1, d.leverage, investment, tokenRatio );
+      const fees = calcFees( hourlyPoolData, pool, baseTokenId, liquidity, unboundedLiquidity, min, max, customFeeDivisor || 1, d.leverage, investment, tokenRatio, d.hedging );
       console.log( baseTokenId, liquidity, unboundedLiquidity, min, max)
       return { id: d.id, name: d.name, color: d.color, data: pivotFeeData(fees, baseTokenId, investment, d.leverage, tokenRatio) } ;
     });
@@ -197,7 +199,7 @@ const StrategyBacktest = (props) => {
     if (chartData && chartData.length) {
       const customCalc = props.customFeeDivisor ? true : false
       const indicators = chartData.map( cD => {
-        return {...cD, data: backtestIndicators(cD.data, investment, customCalc)};
+        return {...cD, data: backtestIndicators(cD.data, investment, customCalc, strategies.find(d => d.id === cD.id).hedging)};
       });
       setIndicatorsData(indicators);
     }

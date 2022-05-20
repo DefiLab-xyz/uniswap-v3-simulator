@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, Fragment } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import styles from '../styles/modules/SideBar.module.css'
@@ -26,11 +26,14 @@ const BaseToken = (props) => {
   }
 
   return ( 
-    <div className={styles["input-container"]}>
+    <div className={props.pageStyle['sub-container'] ? `${props.pageStyle['sub-container']} ` : `${styles['sub-container']}`}>
+      <div className={styles["input-container"]}>
       <label className={styles["input-label"]}>Base Token</label><br></br>
       <input className={`${props.pageStyle["input"]} ${styles["toggle-input"]}`} label="Base Token" value={baseToken ? baseToken.symbol : ""}></input>
       <ToggleButton pageStyle={props.pageStyle} onClick={handlePriceToggle} alt="toggle base currency"></ToggleButton>
     </div>
+    </div>
+    
   );
 }
 
@@ -84,19 +87,28 @@ const SideBar = (props) => {
   const baseToken = props.baseTokenHidden === true ? false : <BaseToken pageStyle={props.pageStyle}></BaseToken>
 
   return (
-    <div className={`${styles["sidebar"]} ${props.pageStyle["outer-glow"]} `}>
-      <div className={props.pageStyle['sub-container'] ? props.pageStyle['sub-container'] : styles['sub-container']}>
+    <Fragment>
+      <div className={`${styles["pool-search"]} ${props.pageStyle["outer-glow"]} `}>
+        <div className={ props.pageStyle['sub-container'] ? `${props.pageStyle['sub-container']} ` : `${styles['sub-container']}`}>
         <PoolSearch page={props.page} pageStyle={props.pageStyle} protocols={props.protocols} 
         customSearch={props.customSearch} baseTokenHidden={props.baseTokenHidden} perpStatsData={props.perpStatsData} enrichedSearchData={props.enrichedSearchData}></PoolSearch>
-        {baseToken}
+
+        </div>
       </div>
-      <div className={props.pageStyle['sub-container'] ? props.pageStyle['sub-container'] : styles['sub-container']}>
-        <Investment pageStyle={props.pageStyle}></Investment>
-        <CurrentPrice pageStyle={props.pageStyle}></CurrentPrice>
+      <div className={`${styles["sidebar"]} ${props.pageStyle["outer-glow"]} `} style={{overflowY: "scroll"}}>
+        <div>
+          {baseToken}
+          <div className={props.pageStyle['sub-container'] ? props.pageStyle['sub-container'] : styles['sub-container']}>
+            <Investment pageStyle={props.pageStyle}></Investment>
+            <CurrentPrice pageStyle={props.pageStyle}></CurrentPrice>
+          </div>
+          <StrategyPicker page={props.page} pageStyle={props.pageStyle} strategies={props.strategies}></StrategyPicker>
+          <StrategyRange pageStyle={props.pageStyle} leverageHidden={props.leverageHidden}></StrategyRange>
+        </div>
       </div>
-      <StrategyPicker page={props.page} pageStyle={props.pageStyle} strategies={props.strategies}></StrategyPicker>
-      <StrategyRange pageStyle={props.pageStyle} leverageHidden={props.leverageHidden}></StrategyRange>
-    </div>
+    </Fragment>
+   
+   
   )
 }
 

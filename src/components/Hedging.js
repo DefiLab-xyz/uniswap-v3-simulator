@@ -7,7 +7,8 @@ import styles from '../styles/modules/Hedging.module.css'
 
 const HedgingTitle = (props) => {
 
-  const arrows = ["⬆", "⬇"]
+  const  arrows = ["up", "down"];
+  
   const arrow = useRef(1); 
   const handleToggle = () => {
     arrow.current = 1 - arrow.current;
@@ -17,7 +18,7 @@ const HedgingTitle = (props) => {
   return (
   <div className={`${styles["input-label"]} ${styles['hedging-label']}`} onClick={handleToggle}>
     <div>Hedging Strategy</div>
-    <div className={styles["hedging-arrow"]} >{arrows[arrow.current]}</div>
+    <div className={styles["hedging-arrow"]} ><i className={`${styles['arrow']} ${styles[arrows[arrow.current]]}`}></i></div>
   </div>
   )
 }

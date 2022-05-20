@@ -127,7 +127,7 @@ export const BacktestTotalReturn = (props) => {
     <div className={props.classNameTitle}>
       <span>LP Total Return  
       &nbsp;&nbsp;&nbsp;</span>
-      <BacktestTotalReturnSelect page={props.page} pageStyle={props.pageStyle} buttons={chartKeys} handleSelected={handleKeySelect}></BacktestTotalReturnSelect>
+      <BacktestTotalReturnSelect page={props.page} pageStyle={props.pageStyle} buttons={chartKeys} handleSelected={handleKeySelect} ></BacktestTotalReturnSelect>
       <ToolTip textStyle={{width: "300px", height: "fill-content", left:"-0px", top: "20px", border: props.page === 'perpetual' ? "0.5px solid black" : "", textAlign: "left"}} 
             buttonStyle={{width: 15, height: 15}} text={HelpText[props.page].totalReturn}>?</ToolTip>
     </div>

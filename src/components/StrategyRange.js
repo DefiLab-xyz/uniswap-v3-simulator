@@ -28,7 +28,7 @@ const Leverage = (props) => {
   else {
     return (
     <div className={ props.pageStyle['sub-container'] ? `${props.pageStyle['sub-container']}` : `${styles['sub-container']}`} style={{backgroundColor: "#8bfcd7"}}>
-      <label className={styles["input-label"]} style={{ display: 'grid', alignItems: 'center', justifyContent: 'center', fontSize: 16, }}>Leverage: <span style={{fontWeight: 600}}>{props.strategy.leverage}x</span></label>
+      <label className={styles["input-label"]} style={{ display: 'grid', alignItems: 'center', justifyContent: 'center', fontSize: 16, }}>Leverage: <span style={{fontWeight: 500}}>{props.strategy.leverage}x</span></label>
       <input type="range" min="1" max="10" className="leverage-range-control" step={0.1} value={props.strategy.leverage} style={{ display: 'grid', alignItems: 'center', justifyContent: 'center', width: '85%', marginLeft: '5%'}}
       onInput={handleInputChange}></input>
       <div className={`${styles["default-input"]} ${styles['leverage-value']}`} style={{width: "100%", textAlign: 'center', fontSize: 16}}>{parsePrice(props.strategy.leverage * investment)} {baseToken.symbol}</div>
@@ -146,8 +146,8 @@ const StrategyRange = (props) => {
   const dispatch = useDispatch();
 
   const buttonList = [
-    {id: "amount", label: "$", style: {color: "black", width: 25, padding: 5, margin: 5}},
-    {id: "percent", label: "%", style: {color: "black", width: 25, padding: 5,  margin: 5}}
+    {id: "amount", label: "$", style: {width: 25, padding: 5, margin: 5}},
+    {id: "percent", label: "%", style: {width: 25, padding: 5,  margin: 5}}
   ]
 
   const handleAmountType = (e) => {
@@ -155,7 +155,7 @@ const StrategyRange = (props) => {
   }
 
   const containers = strategies.filter(strat => strat.id !== 'v2').map(strat => {
-    return <div className={ props.pageStyle['sub-container'] ? `${props.pageStyle['sub-container']}` : `${styles['sub-container']}`}>
+    return <div className={ props.pageStyle['sub-container'] ? `${props.pageStyle['sub-container']} ${styles['sidebar-scroll']}` : `${styles['sub-container']}`}>
       <div className={styles["input-container"]}>
       <div>
         <label className={styles["input-label"]} style={{color: strat.color}}>{strat.name}</label><br></br>

@@ -15,7 +15,7 @@ const initialState ={type: "amount", strategies: [
   },
   {id: "v2", name: "Unbounded", color: chartColors['uniswap'].v2, 
     inputs:  { min: { value: Math.pow(1.0001, -887220), name: "Min", label: "Min Range V2", percent: 0 }, max: {value: Math.pow(1.0001, 887220), name: "Max", label: "Max Range V2", percent: 0 } },
-    liquidityMultiplier: 1, selected: true, leverage: 1, rangesEditable: false, tokenratio: {token0: 0.5, token1: 0.5}
+    liquidityMultiplier: 1, selected: true, leverage: 1, rangesEditable: false, tokenratio: {token0: 0.5, token1: 0.5}, hedging: {type: "short", leverage: 1, amount: 0}
   }]} ;
 
 const calcContrentratedLiquidityMultiplier = (min, max) => {

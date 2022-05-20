@@ -361,9 +361,11 @@ const PoolSearch = (props) => {
   }
 
   return (
-    <div className={styles["container"]} style={props.containerStyle}>
+    <Fragment>
+      <div className={styles["container"]} style={props.containerStyle}>
       <div className={styles["label"]} style={props.labelStyle}>{ props.label || 'Pool'}</div> 
-      <div className= {visibility === 'none' ? styles["results-container-hidden"] : styles['results-container']}>
+    </div>
+    <div className= {visibility === 'none' ? styles["results-container-hidden"] : styles['results-container']}>
         <SearchDescription visibility={visibility}           
           pageStyle={props.pageStyle}
           page={props.page}></SearchDescription>
@@ -395,7 +397,8 @@ const PoolSearch = (props) => {
           perpStatsData={props.perpStatsData}>
         </SearchResults>
       </div>
-    </div>
+    </Fragment>
+   
   );
 }
 

@@ -62,14 +62,22 @@ export const genChartData = (currentPrice, investment, strategyRanges, strategie
           const impLoss = d.y - perpDebtVal;
 
           const hedging = strategyRange.hedging; 
-          const impLossHedge = hedging.type === 'long' ? impLoss +  ( hedging.amount * hedging.leverage * ( (d.x - currentPrice) / currentPrice) )  :
-          hedging.type === 'short' ? impLoss + ( hedging.amount * hedging.leverage * (( (d.x - currentPrice) / currentPrice) * -1) )  : 0;
+    
+          const impLossHedge = hedging.type === 'long' ? ( hedging.amount * hedging.leverage * ( (d.x - currentPrice) / currentPrice) )  :
+          hedging.type === 'short' ? ( hedging.amount * hedging.leverage * (( (d.x - currentPrice) / currentPrice) * -1) )  : 0;
 
           const impPos = x0 - d.token;
           const notionalSize = Math.abs(impPos * d.x);
-          const margin = (impLoss >= 0 && impLoss < 0.00001) ?  "∞" : ((parseFloat(investment) + parseFloat(impLoss)) / notionalSize) * 100;
-  
-          return {...d, investment: investment, test: test, perpDebtVal: perpDebtVal, impLoss: impLoss, impPos: impPos, notionalSize: notionalSize, margin: margin, y: impLossHedge }
+          // const margin = (impLoss >= 0 && impLoss < 0.00001) ?  "∞" : ((parseFloat(investment) + parseFloat(impLoss)) / notionalSize) * 100;
+          const margin = (impLoss >= 0 && impLoss < 0.00001) ?  "∞" : 
+          ((parseFloat(investment) + impLoss + parseFloat(hedging.amount) + impLossHedge ) / (notionalSize + ((parseFloat(hedging.amount) * parseFloat(hedging.leverage)) + impLossHedge ))) * 100;
+          
+
+          //  (Investment LP (not leveraged) + Impermanent Loss LP + Investment Hedge  (not leveraged) + Impermanent Loss hedge ) / (Notional size LP + ((Hedge investment leverage)+Impermanent loss hedge ))
+
+
+
+          return {...d, investment: investment, test: test, perpDebtVal: perpDebtVal, impLoss: impLoss, impPos: impPos, notionalSize: notionalSize, margin: margin, y: impLoss + impLossHedge }
         });
   
         cd[chartDataOverride] = newData;

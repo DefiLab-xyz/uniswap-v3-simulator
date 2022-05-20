@@ -1,26 +1,35 @@
 :root {
   --sidebar-row: 2;
   --sidebar-sticky-position: 20px;
-
   --sidebar-sub-container-background-light: rgba(175,129,228,.05);
   --sidebar-sub-container-background-dark: transparent;
   --sidebar-sub-container-background: var(--sidebar-sub-container-background-light);
+  --column-height: calc(var(--window-height) / 115);
+}
+
+.pool-search {
+  grid-column: 2 / span 11;
+  grid-row: var(--sidebar-row);
+  height: 100px;
+  position: sticky;
+  top: var(--sidebar-sticky-position);
+  z-index: 99999;
 }
 
 .sidebar {
   grid-column: 2 / span 11;
-  grid-row: var(--sidebar-row);
+  grid-row: calc(var(--sidebar-row));
+  margin-top: calc(110px);
   height: fit-content;
   padding-top: 5px;
   padding-bottom: 20px; 
   position: sticky;
-  top: var(--sidebar-sticky-position);
+  top: calc( var(--sidebar-sticky-position) + 110px);
   background-color: var(--dashboard-section-background);
-  max-height: calc(var(--window-height) - 100px);
-  overflow-x: visible;
+  max-height: calc(var(--window-height) - 220px);
   overflow-y: scroll;
- 
 }
+
 
 .sub-container {
   background-color: var(--sidebar-sub-container-background);
@@ -103,4 +112,8 @@
 .strategy-amount-type-button {
   display: flex;
   justify-content: center;
+}
+
+.strategy-amount-type-button button {
+  color: var(--font-color);
 }
