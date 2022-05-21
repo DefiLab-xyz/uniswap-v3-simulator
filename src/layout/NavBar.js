@@ -123,7 +123,7 @@ const GitHubRepo = (props) => {
   return (
     <ToolTip text={"GitHub Open Source Code Repo"} 
     >
-      <a href="https://github.com/DefiLab-xyz/uniswap-v3-simulator" target="_blank" rel="noreferrer">
+      <a href="https://github.com/DefiLab-xyz" target="_blank" rel="noreferrer">
         <img alt="GitHub Open Source Code DefiLab" src={img} className={styles["nav-icon"]}></img>
       </a>
     </ToolTip>
