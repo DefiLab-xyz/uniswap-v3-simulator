@@ -45,7 +45,9 @@ const HedgingAmount = (props) => {
 
   const dispatch = useDispatch();
   const handleAmount = (e) => {
-    dispatch(setStrategyHedgingAmount({id: props.strategy.id, amount: e.target.value}))
+
+    dispatch(setStrategyHedgingAmount({id: props.strategy.id, amount: e.target.value === "" ? 0 : e.target.value}))
+
   }
 
   return (
@@ -81,7 +83,6 @@ export const Hedging = (props) => {
     const handleToggle = () => setVisibility(!visibility);
 
     const handleType = (type) => {
-      console.log(type)
       dispatch(setStrategyHedgingType({id: props.strategy.id, type: type}));
     }
 
