@@ -71,8 +71,8 @@ const StrategyOverviewChart = (props) => {
           mouseOverTextExtended.push([`${hd.label}:`,
           `Price: ${parsePrice(hd.data[idx].x)} ${baseToken.symbol}`,
           `Impermanant Loss: ${parsePrice(hd.data[idx].impLoss)} USD`,
-          `Impermanant Position: ${parsePrice(hd.data[idx].impPos)} ${quoteToken.symbol} ${longShort}`,
-          `Notional Size: ${parsePrice(hd.data[idx].notionalSize)}`,
+          `LP Impermanant Position: ${parsePrice(hd.data[idx].impPos)} ${quoteToken.symbol} ${longShort}`,
+          // `Notional Size: ${parsePrice(hd.data[idx].notionalSize)}`,
           `Margin: ${margin}`]);
         });
         setMouseOverText(mouseOverTextExtended);
