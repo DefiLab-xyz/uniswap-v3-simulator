@@ -1,4 +1,3 @@
-import {useEffect} from 'react'
 const Grid = (props) => {
 
 const styles = genStyles(props);
@@ -18,11 +17,9 @@ const genStyles = (props) => {
   const rows = props.rows || 12;
   const gap = props.gridGap || 0;
   const cellAR = props.cellAspectRatio || 1;
-  const gridWidth = Math.max(props.gridWidth, props.minWidth) || '500px';
+  const gridWidth = props.minWidth ? Math.max(props.gridWidth, props.minWidth) : props.gridWidth || '500px';
   const cellWidth = (gridWidth / columns) - gap;
   const cellHeight = cellWidth * cellAR;
-
-  if(props.print) {console.log(props.gridWidth, gridWidth)}
 
   return {
     gridContainer: {

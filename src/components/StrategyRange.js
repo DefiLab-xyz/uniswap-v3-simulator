@@ -10,6 +10,8 @@ import {parsePrice, round} from '../helpers/numbers'
 import Hedging from './Hedging';
 import { ButtonListToggle } from './ButtonList';
 import { roundToNearestTick } from '../helpers/uniswap/liquidity';
+import ToolTip from './ToolTip';
+import HelpText from '../data/HelpText';
 
 const Leverage = (props) => {
 
@@ -159,10 +161,16 @@ const StrategyRange = (props) => {
       <div className={styles["input-container"]}>
       <div>
         <label className={styles["input-label"]} style={{color: strat.color}}>{strat.name}</label><br></br>
+        <div style={{display: "flex", justifyContent: "center", marginTop: 5}}>
         <ButtonListToggle handleSelected={handleAmountType} page={props.page} pageStyle={props.pageStyle} buttons={buttonList} className={styles["strategy-amount-type-button"]}></ButtonListToggle>
+        <ToolTip textStyle={{width: "200px", height: "fill-content", left:"-120px", top: "20px", textAlign: "left"}} 
+      buttonStyle={{width: 15, height: 15}} text={HelpText.perpetual.rangeToggle}>?</ToolTip>
       </div>
+        </div>
+       
       <StrategyInput pageStyle={props.pageStyle} inputVals={strat.inputs.min} id={strat.id} keyId={"min"}></StrategyInput>
       <StrategyInput pageStyle={props.pageStyle} inputVals={strat.inputs.max} id={strat.id} keyId={"max"}></StrategyInput>
+      
       </div>
       { props.leverageHidden ? <></> : <Leverage pageStyle={props.pageStyle} strategy={strat}></Leverage> }
       { props.leverageHidden ? <></> : <Hedging pageStyle={props.pageStyle} strategy={strat}></Hedging> }

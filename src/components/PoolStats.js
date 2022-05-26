@@ -36,10 +36,6 @@ const PoolStats = (props) => {
   }, [yesterday, pool, normStd, liquidity, basePrice]);
 
 
-  useEffect(() => {
-    console.log(HelpText)
-  }, [HelpText])
-
 
   return (
     <div className={styles["pool-stats-container"]}>
