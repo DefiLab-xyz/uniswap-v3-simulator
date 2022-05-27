@@ -163,8 +163,8 @@ const StrategyRange = (props) => {
         <label className={styles["input-label"]} style={{color: strat.color}}>{strat.name}</label><br></br>
         <div style={{display: "flex", justifyContent: "center", marginTop: 5}}>
         <ButtonListToggle handleSelected={handleAmountType} page={props.page} pageStyle={props.pageStyle} buttons={buttonList} className={styles["strategy-amount-type-button"]}></ButtonListToggle>
-        <ToolTip textStyle={{width: "200px", height: "fill-content", left:"-120px", top: "20px", textAlign: "left"}} 
-      buttonStyle={{width: 15, height: 15}} text={HelpText.perpetual.rangeToggle}>?</ToolTip>
+        <ToolTip textStyle={{width: "150px", height: "fill-content", left:"-120px", top: "20px", textAlign: "left", border: props.page === 'perpetual' ? "0.5px solid black" : "",}} 
+        buttonStyle={{width: 15, height: 15}} text={HelpText.perpetual.rangeToggle}>?</ToolTip>
       </div>
         </div>
        

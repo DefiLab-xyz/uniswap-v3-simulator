@@ -103,7 +103,7 @@ const SideBar = (props) => {
             <CurrentPrice pageStyle={props.pageStyle}></CurrentPrice>
           </div>
           <StrategyPicker page={props.page} pageStyle={props.pageStyle} strategies={props.strategies}></StrategyPicker>
-          <StrategyRange pageStyle={props.pageStyle} leverageHidden={props.leverageHidden}></StrategyRange>
+          <StrategyRange page={props.page} pageStyle={props.pageStyle} leverageHidden={props.leverageHidden}></StrategyRange>
         </div>
       </div>
     </Fragment>
