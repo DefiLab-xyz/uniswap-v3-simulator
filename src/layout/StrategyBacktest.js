@@ -116,17 +116,14 @@ const StrategyBacktest = (props) => {
 
     return strategyRanges.map(d => {
 
-      const min = type === 'percent' ? rangeValFromPercent(price, d, 'min') : d.inputs.min.value;
-      const max = type === 'percent' ? rangeValFromPercent(price, d, 'max') : d.inputs.max.value;
-
-      console.log(price, min, max)
+      const min = type === 'percent' && d.id !== 'v2' ? rangeValFromPercent(price, d, 'min') : d.inputs.min.value;
+      const max = type === 'percent' && d.id !== 'v2' ? rangeValFromPercent(price, d, 'max') : d.inputs.max.value;
 
       const tokenRatio = tokenRatios ? tokenRatios.find(t => d.id === t.id) : null;
       const tokens = tokensForStrategy(min, max, investment * d.leverage, price, pool.token1.decimals - pool.token0.decimals);
       const liquidity = liquidityForStrategy(price, min, max, tokens[0], tokens[1], pool.token0.decimals, pool.token1.decimals);
       const unboundedLiquidity = liquidityForStrategy(price, Math.pow(1.0001, -887220), Math.pow(1.0001, 887220), tokens[0], tokens[1], pool.token0.decimals, pool.token1.decimals);
       const fees = calcFees( hourlyPoolData, pool, baseTokenId, liquidity, unboundedLiquidity, min, max, customFeeDivisor || 1, d.leverage, investment, tokenRatio, d.hedging );
-      console.log( baseTokenId, liquidity, unboundedLiquidity, min, max)
       return { id: d.id, name: d.name, color: d.color, data: pivotFeeData(fees, baseTokenId, investment, d.leverage, tokenRatio) } ;
     });
   }
