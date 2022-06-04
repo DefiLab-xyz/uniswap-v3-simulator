@@ -16,6 +16,7 @@ import StrategyBacktest from '../layout/StrategyBacktest';
 
 // Components //
 import Grid from "../components/Grid"
+import UniswapLink from '../components/uniswap/UniswapLink';
 
 // Data //
 import { poolById } from '../api/thegraph/uniPools'
@@ -26,6 +27,7 @@ import { setStrategyColors } from '../store/strategies';
 import colors from '../data/colors.json'
 import { setTokenRatioColors } from '../store/tokenRatios';
 import { setStrategyRangeColors } from '../store/strategyRanges';
+
 
 const UniswapSimulator = (props) => {
 
@@ -106,6 +108,7 @@ useEffect(() => {
           <PoolPriceLiquidity page="uniswap" pageStyle={styles}></PoolPriceLiquidity>
           <StrategyBacktest  page="uniswap" pageStyle={styles}></StrategyBacktest>
           <SideBar  page="uniswap" width={windowDim.width} minWidth={pageMinWidth} protocols={[0, 1, 2, 3]} leverageHidden={true} pageStyle={styles}></SideBar>
+          <UniswapLink></UniswapLink>
           <DashBoard page="uniswap" pageStyle={styles}></DashBoard>
         </Grid>
       </div>

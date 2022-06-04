@@ -1,6 +1,6 @@
 :root {
-  --sidebar-row: 2;
-  --sidebar-sticky-position: 20px;
+  --sidebar-row: 4;
+  --sidebar-sticky-position: 60px;
   --sidebar-sub-container-background-light: rgba(175,129,228,.05);
   --sidebar-sub-container-background-dark: transparent;
   --sidebar-sub-container-background: var(--sidebar-sub-container-background-light);
