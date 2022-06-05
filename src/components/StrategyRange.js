@@ -55,10 +55,9 @@ const StrategyInput = (props) => {
   const [oldInputPerc, setOldInputPerc] = useState();
   const feeTier = useSelector(selectFeeTier);
   const tick = props.inputVals.value * ((feeTier / 1000000) * 2);
-  
-  // useEffect(() => {
-  //   console.log(strategyRanges)
-  // }, [strategyRanges]);
+
+  const decimal0 = baseToken.id === 0 ? baseToken.decimals : quoteToken.decimals;
+  const decimal1 = baseToken.id === 1 ? baseToken.decimals : quoteToken.decimals;
 
   useEffect(() => {
     setInputVal(props.inputVals.value);
@@ -81,7 +80,7 @@ const StrategyInput = (props) => {
        value = roundToNearestTick((parseFloat(inputRef.current.value) + (tick * crement)), pool.feeTier, baseToken.decimals, quoteToken.decimals);
     }
     else if (type === 'percent') {
-      value = roundToNearestTick((baseToken.currentPrice + ( baseToken.currentPrice * parseFloat((parseFloat(inputRef.current.value) + crement) / 100))), pool.feeTier, baseToken.decimals, quoteToken.decimals);
+      value = roundToNearestTick((baseToken.currentPrice + ( baseToken.currentPrice * parseFloat((parseFloat(inputRef.current.value) + crement) / 100))), pool.feeTier,  baseToken.decimals , quoteToken.decimals);
     }
 
     percent = round((( value - baseToken.currentPrice) / baseToken.currentPrice) * 100, 1);

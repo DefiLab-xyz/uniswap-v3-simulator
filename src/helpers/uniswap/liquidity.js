@@ -1,11 +1,17 @@
 import { logWithBase, round, sumArray, parsePrice } from "../numbers";
 
 export const roundToNearestTick = (value, feeTier, baseDecimal, quoteDecimal) => {
+
   const divider = feeTier / 50;
-  const valToLog = parseFloat(value) * Math.pow(10, (quoteDecimal - baseDecimal));
+  const valToLog = parseFloat(value) * Math.pow(10, parseInt(baseDecimal) - parseInt(quoteDecimal));
   const tickIDXRaw = logWithBase(valToLog,  1.0001);
   const tickIDX = round(tickIDXRaw / divider, 0) * divider;
-  const tick = Math.pow(1.0001, tickIDX) / Math.pow(10, (quoteDecimal - baseDecimal));
+  const tick = Math.pow(1.0001, tickIDX) / Math.pow(10, parseInt(baseDecimal) - parseInt(quoteDecimal));
+  console.log(value, tickIDXRaw)
+  // div= vertier/50
+// TickIDXraw=log(priceinput *(10^(abs(decimal0-decimal1),1.0001)
+// TickIDX=round(TickIDXraw/div) * div
+// Pricetick = 1.0001^TickIDX/(10^(abs(decimal0-decimal1)
 
   const m = -Math.floor( Math.log(tick) / Math.log(10) + 1);
   return round(tick, m + 6);

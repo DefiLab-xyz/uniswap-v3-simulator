@@ -20,9 +20,9 @@ const UniswapLink = (props) => {
 
       // https://app.uniswap.org/#/add/0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/500?chain=polygon&minPrice=1713&maxPrice=1775.8
 
-      console.log(pool)
-      console.log(strategyRanges)
-      console.log(protocol)
+      // console.log(pool)
+      // console.log(strategyRanges)
+      // console.log(protocol)
       const t0 = quoteToken.tokenId;
       const t1 = baseToken.tokenId;
       const feeTier = pool.feeTier
@@ -31,7 +31,7 @@ const UniswapLink = (props) => {
       const max = strategyRanges[0].inputs.max.value;
 
       const url = 'https://app.uniswap.org/#/add/' + t0 + '/' + t1 + '/' + feeTier + '?chain=' + prot + '&minPrice=' + min + '&maxPrice=' + max;
-      console.log(url)
+      // console.log(url)
       //0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/500?chain=polygon&minPrice=1713&maxPrice=1775.8`;
       setUniUrl(url)
     }
