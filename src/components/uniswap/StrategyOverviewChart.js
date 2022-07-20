@@ -70,7 +70,7 @@ const StrategyOverviewChart = (props) => {
           const margin = hd.data[idx].margin === "∞" ? hd.data[idx].margin : hd.data[idx].margin < 6.25 ? "LIQUIDATION" : `${parsePrice(hd.data[idx].margin, true)}%`;
           mouseOverTextExtended.push([`${hd.label}:`,
           `Price: ${parsePrice(hd.data[idx].x)} ${baseToken.symbol}`,
-          `Impermanant Loss: ${parsePrice(hd.data[idx].impLoss)} USD`,
+          `Impermanant Loss: ${parsePrice(hd.data[idx].y)} USD`,
           `LP Impermanant Position: ${parsePrice(hd.data[idx].impPos)} ${quoteToken.symbol} ${longShort}`,
           // `Notional Size: ${parsePrice(hd.data[idx].notionalSize)}`,
           `Margin: ${margin}`]);
