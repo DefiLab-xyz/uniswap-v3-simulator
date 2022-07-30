@@ -15,7 +15,7 @@ const DropdownSelect = (props) => {
   useEffect(() => {
     if (strategies && props.selectedStrategy) {
       const buttonListTemp = strategies.filter(d => {
-        return props.page === 'perpetual' ? d.id !== props.selectedStrategy.id && d.id !== selected.id && d.id !== "v2" : d.id !== props.selectedStrategy.id && d.id !== selected.id
+        return props.page === 'perpetual' ? d.id !== props.selectedStrategy.id && d.id !== selected.id && d.id !== "v2" : d.id !== props.selectedStrategy.id && d.id !== selected.id && d.id !== "v2"
       });
       setButtonList(buttonListTemp);
     }
