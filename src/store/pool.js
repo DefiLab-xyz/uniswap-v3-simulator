@@ -122,6 +122,7 @@ export const fetchPoolData = pool => {
 export const toggleBaseToken = () => {
   return (dispatch, getState) => {
     dispatch(setToggleBaseToken());
+    dispatch(updatePoolStrategyNames({base: getState().pool.value.baseToken.symbol, quote: getState().pool.value.quoteToken.symbol}));
     dispatch(toggleStrategyRangeInputVals(getState().pool.value));
   }
 }

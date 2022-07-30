@@ -98,7 +98,7 @@ export const finalPrinciple = (inputs) => {
 
 }
 
-export const hodlToken1 = (inputs) => {
+export const hodlToken2 = (inputs) => {
 
   const step = inputs.step ? inputs.step / 100 : inputs.currentPrice / 100;
   const from = 0;
@@ -113,7 +113,7 @@ export const hodlToken1 = (inputs) => {
 
 }
 
-export const hodlToken2 = (inputs) => {
+export const hodlToken1 = (inputs) => {
 
   const step = inputs.step ? inputs.step / 100 : inputs.currentPrice / 100;
   const from = 0;
