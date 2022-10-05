@@ -106,11 +106,15 @@ useEffect(() => {
           <PoolOverview page="uniswap" pageStyle={styles}></PoolOverview>
           <StrategyOverview page="uniswap" pageStyle={styles} colors={colors["uniswap"]}></StrategyOverview>
           <PoolPriceLiquidity page="uniswap" pageStyle={styles}></PoolPriceLiquidity>
-          <StrategyBacktest  page="uniswap" pageStyle={styles}></StrategyBacktest>
+          {
+            protocol === 2 ?   <div className={styles["arbitrum-error-message"]}> Sorry, we're not able to genarate an accurate backtest for Arbitrum currently. We'll be sure to add it once accurate data becomes available.<br></br> </div> : <StrategyBacktest  page="uniswap" pageStyle={styles}></StrategyBacktest>
+          }
+          {/* <StrategyBacktest  page="uniswap" pageStyle={styles}></StrategyBacktest> */}
           <SideBar  page="uniswap" width={windowDim.width} minWidth={pageMinWidth} protocols={[0, 1, 2, 3]} leverageHidden={true} pageStyle={styles}></SideBar>
           <UniswapLink></UniswapLink>
           <DashBoard page="uniswap" pageStyle={styles}></DashBoard>
         </Grid>
+       
       </div>
     </div>
   )

@@ -339,5 +339,9 @@ g.chart-axis-ticks {
   font-weight: 600;
 }
 
+.arbitrum-error-message {
+  grid-row: var(--strategy-backtest-container-row-start) / span 20;
+  grid-column: 15 / span 50;
+}
 
 
