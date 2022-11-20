@@ -3,12 +3,14 @@ import optimism from '../assets/optimism-logo.svg'
 import ethereum from '../assets/eth-logo.svg'
 import arbitrum from '../assets/arbitrum-logo.png'
 import polygon from '../assets/polygon.png'
+import celo from '../assets/celo-logo.png'
 
 const protocols = [{id: 0, title: "ethereum", logo: ethereum, chain: "mainnet"}, 
 {id: 1, title: "optimism", logo: optimism, chain: "optimism"}, 
 {id: 2, title: "arbitrum", logo: arbitrum, chain: "arbitrum"},
 {id: 3, title: "polygon", logo: polygon, chain: "polygon"},
-{id: 4, title: "perpetual", logo: optimism, chain: "optimism"}];
+{id: 4, title: "perpetual", logo: optimism, chain: "optimism"},
+{id: 5, title: "celo", logo: celo, chain: "celo"}];
 
 export const protocolSlice = createSlice({
   name: "protocol",

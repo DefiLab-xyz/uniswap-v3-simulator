@@ -3,6 +3,7 @@ export const urlForProtocol = (protocol) => {
     protocol === 2 ? "https://api.thegraph.com/subgraphs/name/ianlapham/arbitrum-minimal" :
     protocol === 3 ? "https://api.thegraph.com/subgraphs/name/ianlapham/uniswap-v3-polygon" :
     protocol === 4 ? "https://api.thegraph.com/subgraphs/name/perpetual-protocol/perpetual-v2-optimism" :
+    protocol === 5 ? "https://api.thegraph.com/subgraphs/name/jesse-sawa/uniswap-celo" :
     "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3";
 }
 

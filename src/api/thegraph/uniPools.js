@@ -76,7 +76,7 @@ export const top50PoolsByTvl = async (signal, protocol) => {
   const url = urlForProtocol(protocol);
 
   const query = `
-  query { pools (first:50, where: {totalValueLockedUSD_gt: ${minTvl(protocol)}} , orderBy:totalValueLockedETH, orderDirection:desc) 
+  query { pools (first:50, where: {totalValueLockedUSD_gt: ${minTvl(protocol)}, volumeUSD_gt: 1} , orderBy:totalValueLockedETH, orderDirection:desc) 
       ${poolQueryFields}
   }`
   
